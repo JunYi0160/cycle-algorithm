@@ -65,19 +65,27 @@ async function pingHelper(){
 function updateHelperUI(){
   const dot=$('helper-dot'),statusText=$('helper-status');
   const costOk=helperConnected&&helperInfo?.costProtection===true;
+  const autostartActive=helperConnected&&helperInfo?.autostart===true;
+  const autostartHtml=helperConnected ? `
+    <div style="margin-top:10px;padding-top:8px;border-top:1px dashed rgba(0,0,0,0.12);font-size:13px;display:flex;align-items:center;gap:8px;">
+      <span>守护进程开机自启：</span>
+      <b style="color:${autostartActive ? '#2e7d32' : '#666'}">${autostartActive ? '已开启（开机静默运行）' : '未开启'}</b>
+      <button id="btn-toggle-autostart" class="btn secondary" style="padding:2px 8px;font-size:12px;margin-left:auto;">${autostartActive ? '关闭自启' : '开启开机自启'}</button>
+    </div>` : '';
+
   if(helperConnected&&costOk){
     dot.className='dot ok';
     statusText.textContent=`Antigravity 已连接 · 套餐额度已保护`;
     $('action-word').textContent='Antigravity 助手运行中';
     $('action-amount').textContent='已连接 · 基础额度已保护';
-    $('helper-note').innerHTML=`已连接本机助手（端口 ${helperInfo?.port||8789}），useG1Credits: false 已锁定。<br>保存持仓后将自动调用官方 CLI 联网检索数据并严格复核。`;
+    $('helper-note').innerHTML=`已连接本机助手（端口 ${helperInfo?.port||8789}），useG1Credits: false 已锁定。<br>保存持仓后将自动调用官方 CLI 联网检索数据并严格复核。${autostartHtml}`;
     if($('btn-auto-enrich'))$('btn-auto-enrich').disabled=false;
   }else if(helperConnected&&!costOk){
     dot.className='dot warning';
     statusText.textContent=`Antigravity 已连接 · ⚠️ 费用保护未激活`;
     $('action-word').textContent='费用保护检查未通过';
     $('action-amount').textContent='暂停自动补数';
-    $('helper-note').innerHTML=`检测到 CLI 配置可能启用了外部 API 或 credits 超额回退。为防止产生费用，自动补数已暂停。<br><button id="btn-fix-cost" class="btn primary" style="margin-top:8px;">立即锁定套餐基础额度</button>`;
+    $('helper-note').innerHTML=`检测到 CLI 配置可能启用了外部 API 或 credits 超额回退。为防止产生费用，自动补数已暂停。<br><button id="btn-fix-cost" class="btn primary" style="margin-top:8px;">立即锁定套餐基础额度</button>${autostartHtml}`;
     if($('btn-auto-enrich'))$('btn-auto-enrich').disabled=true;
     setTimeout(()=>{
       const btn=document.getElementById('btn-fix-cost');
@@ -91,8 +99,26 @@ function updateHelperUI(){
     statusText.textContent='本机助手未连接（离线模式）';
     $('action-word').textContent='本机助手未启动';
     $('action-amount').textContent='可离线使用已有数据';
-    $('helper-note').innerHTML=`可正常使用已有数据与回放。如需自动联网补数，请在终端运行 <code>npm run helper</code> 或双击 <code>scripts/start-helper.cmd</code> 启动助手。`;
+    $('helper-note').innerHTML=`可正常使用已有数据与回放。如需自动联网补数，请双击桌面的“Cycle Algorithm 守护进程”快捷方式或运行 <code>npm run helper</code>。`;
     if($('btn-auto-enrich'))$('btn-auto-enrich').disabled=false;
+  }
+
+  if(helperConnected){
+    setTimeout(()=>{
+      const autoBtn=document.getElementById('btn-toggle-autostart');
+      if(autoBtn)autoBtn.onclick=asyncAction(async()=>{
+        await ensureHelperToken();
+        const res=await fetch(`${HELPER_BASE}/api/autostart`,{
+          method:'POST',
+          mode:'cors',
+          headers:{'Content-Type':'application/json','X-Helper-Token':helperToken},
+          body:JSON.stringify({enabled:!autostartActive})
+        });
+        const data=await res.json();
+        await pingHelper();
+        toast(data.enabled ? '已开启开机自启动（已加入 Windows 启动项）' : '已关闭开机自启动（已移除启动项）');
+      });
+    },50);
   }
 }
 
@@ -325,7 +351,7 @@ function render(){
   renderAssets(asOf);
   renderFormal();
   $('record-count').textContent=`${data.valuations.filter(r=>r.is_current).length} 条当前记录 · ${data.valuations.length} 条含修订记录`;
-  $('migration-notes').innerHTML=data.migrationNotes.length?`<details class="small-detail"><summary>查看迁移说明</summary>${data.migrationNotes.map(n=>'<p class="muted">'+esc(n)+'</p>').join('')}</details>`:'';
+  $('migration-notes').innerHTML=data.migrationNotes.length?`<details class="small-detail"><summary>查看算法升级与数据迁移说明</summary>${data.migrationNotes.map(n=>'<p class="muted">'+esc(n)+'</p>').join('')}</details>`:'';
 
   if(currentPreviewSymbol)showPreview(currentPreviewSymbol,false);
 }
@@ -564,7 +590,7 @@ $('download-raw').onclick=action(()=>download(localStorage.getItem(STORAGE_KEY)|
 
 $('restore-file').onchange=()=>fileAction($('restore-file'),text=>{
   restoreCandidate=validateBackup(JSON.parse(text));
-  $('restore-summary').textContent=`参考币种 ${restoreCandidate.referenceCurrency} · ${restoreCandidate.holdings.length} 笔持仓 · ${restoreCandidate.valuations.length} 条估值 · ${restoreCandidate.formalEvents.length} 条正式事件。`;
+  $('restore-summary').textContent=`参考币种 ${restoreCandidate.referenceCurrency} · ${restoreCandidate.holdings.length} 笔持仓 · ${restoreCandidate.valuations.length} 条估值 · ${restoreCandidate.formalEvents.length} 条正式事件 · ${restoreCandidate.legacyFormalEvents.length} 条旧版审计事件。`;
   $('restore-dialog').showModal();
 });
 

@@ -5,6 +5,7 @@ import { resolve, dirname, join, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomBytes } from 'node:crypto';
 import { computeTechValuation, INPUT_FIELDS } from '../src/valuation.js';
+import { isAutostartEnabled, enableAutostart, disableAutostart } from './daemon-manager.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -475,10 +476,26 @@ export function startServer({ port = 8789 } = {}) {
           costProtection: config.costProtectionActive,
           useG1Credits: config.useG1Credits,
           permissionsOk: config.permissionsOk,
+          autostart: isAutostartEnabled(),
           port,
           serverTime: new Date().toISOString()
         });
         return;
+      }
+
+      // Autostart toggle endpoint
+      if (pathname === '/api/autostart') {
+        if (req.method === 'GET') {
+          json({ ok: true, enabled: isAutostartEnabled() });
+          return;
+        }
+        if (req.method === 'POST') {
+          if (!requireAuth()) return;
+          const body = await readBody();
+          const enabled = body.enabled ? enableAutostart() : disableAutostart();
+          json({ ok: true, enabled: isAutostartEnabled() });
+          return;
+        }
       }
 
       // Session token endpoint for local loopback web app

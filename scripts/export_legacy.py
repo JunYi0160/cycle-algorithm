@@ -19,6 +19,10 @@ from directus_client import DirectusClient,DirectusConfig
 from core.strategy import CFG
 from dataclasses import asdict
 
+ALGORITHM_ID='finite-rational-pivot-v2-60-rho0.9'
+if getattr(CFG,'controller_version',None)!='pivot-hysteresis-v2':
+    raise RuntimeError('导出需要包含 pivot-hysteresis-v2 的 Python 引擎；请通过 --engine 指定新版 engine 目录。')
+
 def export_data(client):
     assets=client.get_items('assets',params={'limit':-1,'fields':'id,symbol,name,active'})
     names={str(a['id']):a['symbol'] for a in assets}
@@ -81,30 +85,49 @@ def export_data(client):
         notes.append(f'迁自账户快照 {snap["id"]}；旧 A={snap.get("stock_value_a")}、旧 B={snap.get("financing_b")}、E={equity}。新 A 取持仓市值合计 {a}，B=A−E，保留净值；请核对手动账户。')
     runs=client.get_items('strategy_runs',params={'limit':-1,'sort':'run_time,id',
         'fields':'id,asset,x,z,entered,entry_pending,controller_direction,controller_alpha,controller_beta,pending_target,current_target,strategy_config,strategy_engine_hash,signal_month,effective_date,event_type,run_time'})
-    events=[];skipped=0
+    events=[];archived=[]
+    def archive(run,sym):
+        archived.append({'id':f'directus-run-{run["id"]}','symbol':sym,'source_run':run})
     for run in runs:
         sym=names.get(asset_id(run.get('asset')));cfg=run.get('strategy_config')
         if isinstance(cfg,str):
             try:cfg=json.loads(cfg)
             except ValueError:cfg=None
-        if not sym or not isinstance(cfg,dict) or any(cfg.get(k)!=v for k,v in asdict(CFG).items()):skipped+=1;continue
+        if not sym or not isinstance(cfg,dict) or any(cfg.get(k)!=v for k,v in asdict(CFG).items()):
+            archive(run,sym);continue
+        pivot=cfg.get('controller_pivot') or {}
+        initialized=bool(run.get('entered') or run.get('entry_pending') or run.get('z') is not None)
+        try:
+            valid_pivot=isinstance(pivot,dict) and all(pivot.get(k) is not None and math.isfinite(float(pivot[k])) and 0<=float(pivot[k])<=1 for k in ['x','z'])
+        except (TypeError,ValueError):valid_pivot=False
+        if initialized and not valid_pivot:
+            archive(run,sym);continue
+        if not isinstance(pivot,dict):
+            archive(run,sym);continue
         month=str(run.get('signal_month') or '')
-        if len(month)!=7:skipped+=1;continue
-        year,mon=map(int,month.split('-'));signal=f'{month}-{calendar.monthrange(year,mon)[1]:02d}'
+        try:
+            if len(month)!=7:raise ValueError('invalid month')
+            year,mon=map(int,month.split('-'));signal=f'{month}-{calendar.monthrange(year,mon)[1]:02d}'
+        except (TypeError,ValueError):
+            archive(run,sym);continue
         n=lambda key:float(run[key]) if run.get(key) is not None else None
-        state={'initialized':bool(run.get('entered') or run.get('entry_pending') or run.get('z') is not None),
+        state={'initialized':initialized,
             'entered':bool(run.get('entered')),'entry_pending':bool(run.get('entry_pending')),'z':n('z'),'previous_x':n('x'),
             'direction':run.get('controller_direction') or 'flat','alpha':n('controller_alpha') if n('controller_alpha') is not None else 1,
-            'beta':n('controller_beta') if n('controller_beta') is not None else 1,'pending_target':n('pending_target'),'current_target':n('current_target')}
+            'beta':n('controller_beta') if n('controller_beta') is not None else 1,
+            'pivot_x':float(pivot['x']) if pivot.get('x') is not None else None,
+            'pivot_z':float(pivot['z']) if pivot.get('z') is not None else None,
+            'pending_target':n('pending_target'),'current_target':n('current_target')}
         events.append({'id':f'directus-run-{run["id"]}','symbol':sym,'event_type':run['event_type'] if run.get('event_type') in ['month_end','activate'] else 'migration',
             'signal_date':signal,'effective_date':str(run['effective_date'])[:10] if run.get('effective_date') else None,
             'createdAt':run.get('run_time'),'x':n('x'),'config':cfg,'state':state,'source_engine_hash':run.get('strategy_engine_hash')})
-    if skipped:notes.append(f'{skipped} 条旧版或不兼容策略事件未作为新控制器状态载入，仍保留在旧数据库。')
+    if archived:notes.append(f'{len(archived)} 条旧版或不兼容策略事件完整归档到 legacyFormalEvents，也仍保留在旧数据库；不能作为新版状态或 pending target 使用。')
     disabled=[a['symbol'] for a in assets if not a.get('active')]
     if disabled:notes.append('旧系统中未启用的标的也保留了历史；新版由手动持仓确定计算范围：'+', '.join(disabled))
     stamp=datetime.now(timezone.utc).isoformat()
-    return {'schemaVersion':1,'algorithm':'finite-rational-60-rho0.9','account':account,'holdings':holdings,
-        'valuations':rows,'formalEvents':events,'migrationNotes':notes,'updatedAt':stamp,'exportedAt':stamp}
+    return {'schemaVersion':3,'algorithm':ALGORITHM_ID,'referenceCurrency':currency if account else 'USD',
+        'account':account,'holdings':holdings,'valuations':rows,'formalEvents':events,'legacyFormalEvents':archived,
+        'migrationNotes':notes,'updatedAt':stamp,'exportedAt':stamp}
 
 def main():
     output=args.output or Path(__file__).resolve().parents[1]/'private-exports'/('legacy-migration-'+datetime.now().strftime('%Y%m%d-%H%M%S')+'.json')

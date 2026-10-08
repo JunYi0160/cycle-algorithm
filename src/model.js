@@ -1,11 +1,11 @@
-import {CONFIG,Controller,valuationState,envelope,Account} from './strategy.js';
+import {ALGORITHM_ID,CONFIG,Controller,valuationState,envelope,Account} from './strategy.js';
 import {monthNumber,monthFromNumber} from './preview.js';
-export const SCHEMA_VERSION=2;
+export const SCHEMA_VERSION=3;
 export const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
 export const uid=()=>globalThis.crypto?.randomUUID?.()||`${Date.now()}-${Math.random().toString(16).slice(2)}`;
-export function emptyData(){return {schemaVersion:SCHEMA_VERSION,algorithm:'finite-rational-60-rho0.9',
+export function emptyData(){return {schemaVersion:SCHEMA_VERSION,algorithm:ALGORITHM_ID,
   referenceCurrency:'USD',account:null,holdings:[],quotes:{},fxRates:{},
-  valuations:[],enrichmentJobs:[],formalEvents:[],migrationNotes:[],updatedAt:null};}
+  valuations:[],enrichmentJobs:[],formalEvents:[],legacyFormalEvents:[],migrationNotes:[],updatedAt:null};}
 export function number(value,label){
   if(value===null||value===undefined||typeof value==='boolean'||String(value).trim()===''||!Number.isFinite(Number(value)))throw new Error(`${label} 必须是有限数值`);
   return Number(value);
@@ -141,20 +141,24 @@ export function accountSummary(data,portfolio){
 }
 export function controllerFromLegacyRun(run){
   let cfg=run.strategy_config;if(typeof cfg==='string'){try{cfg=JSON.parse(cfg);}catch{cfg=null;}}
-  if(!cfg||!('rho' in cfg))return null;
-  return {initialized:!!(run.entered||run.entry_pending||run.z!==null&&run.z!==undefined),entered:!!run.entered,entry_pending:!!run.entry_pending,
+  if(!cfg||Object.entries(CONFIG).some(([key,value])=>cfg[key]!==value))return null;
+  const pivot=cfg.controller_pivot;
+  if((run.entered||run.entry_pending||run.z!=null)&&(!pivot||pivot.x==null||pivot.z==null))return null;
+  return validateControllerState({initialized:!!(run.entered||run.entry_pending||run.z!==null&&run.z!==undefined),entered:!!run.entered,entry_pending:!!run.entry_pending,
     z:run.z==null?null:Number(run.z),previous_x:run.x==null?null:Number(run.x),direction:run.controller_direction||'flat',
     alpha:run.controller_alpha==null?1:Number(run.controller_alpha),beta:run.controller_beta==null?1:Number(run.controller_beta),
-    pending_target:run.pending_target==null?null:Number(run.pending_target),current_target:run.current_target==null?null:Number(run.current_target)};
+    pivot_x:pivot?.x==null?null:Number(pivot.x),pivot_z:pivot?.z==null?null:Number(pivot.z),
+    pending_target:run.pending_target==null?null:Number(run.pending_target),current_target:run.current_target==null?null:Number(run.current_target)});
 }
 export function validateControllerState(st){
   if(!st||typeof st!=='object')throw new Error('正式控制器状态无效');
   for(const k of ['initialized','entered','entry_pending'])if(typeof st[k]!=='boolean')throw new Error(`控制器 ${k} 无效`);
   if(!['up','down','flat'].includes(st.direction))throw new Error('控制器方向无效');
-  for(const k of ['z','previous_x'])if(st[k]!==null&&(!Number.isFinite(st[k])||st[k]<0||st[k]>1))throw new Error(`控制器 ${k} 无效`);
+  for(const k of ['z','previous_x','pivot_x','pivot_z'])if(st[k]!==null&&(!Number.isFinite(st[k])||st[k]<0||st[k]>1))throw new Error(`控制器 ${k} 无效`);
   for(const k of ['alpha','beta'])if(!Number.isFinite(st[k])||st[k]<0)throw new Error(`控制器 ${k} 无效`);
   for(const k of ['pending_target','current_target'])if(st[k]!==null&&(!Number.isFinite(st[k])||st[k]<CONFIG.l_min||st[k]>CONFIG.l_max))throw new Error(`控制器 ${k} 无效`);
   if((st.entered||st.entry_pending)&&(st.z===null||st.previous_x===null))throw new Error('正式控制器缺少 z / previous_x');
+  if(st.initialized&&(st.pivot_x===null||st.pivot_z===null))throw new Error('正式控制器缺少反转锚点');
   if(st.entry_pending&&st.pending_target===null||st.entered&&st.current_target===null)throw new Error('正式控制器缺少目标');
   return structuredClone(st);
 }
@@ -185,10 +189,11 @@ export function normalizeJob(job){
     created_at:job.created_at||new Date().toISOString(),updated_at:job.updated_at||new Date().toISOString()};
 }
 export function validateBackup(input){
-  if(input?.algorithm!=='finite-rational-60-rho0.9'||![1,2].includes(input?.schemaVersion))throw new Error('备份版本或策略标识不兼容');
+  const legacy=input?.algorithm==='finite-rational-60-rho0.9'&&[1,2].includes(input?.schemaVersion);
+  const current=input?.algorithm===ALGORITHM_ID&&[2,SCHEMA_VERSION].includes(input?.schemaVersion);
+  if(!legacy&&!current)throw new Error('备份版本或策略标识不兼容');
   if(!['holdings','valuations','formalEvents'].every(k=>Array.isArray(input[k])))throw new Error('备份缺少持仓、估值或正式状态数组');
   const data=emptyData();
-  data.schemaVersion=2;
   data.referenceCurrency=String(input.referenceCurrency||input.account?.currency||'USD').toUpperCase();
   if(input.schemaVersion===1&&input.account){
     if(!input.holdings.length&&Number(input.account.financing)===0){
@@ -206,7 +211,7 @@ export function validateBackup(input){
   const ids=new Set(),currents=new Set();
   for(const row of data.valuations){if(ids.has(row.id))throw new Error('估值记录 ID 重复');ids.add(row.id);
     if(row.is_current){const key=`${row.symbol}/${row.valuation_date}`;if(currents.has(key))throw new Error('同日当前估值记录重复');currents.add(key);}}
-  data.formalEvents=input.formalEvents.map(event=>{
+  data.formalEvents=(legacy?[]:input.formalEvents).map(event=>{
     if(!event.config||JSON.stringify(Object.keys(CONFIG).map(k=>event.config[k]))!==JSON.stringify(Object.values(CONFIG)))throw new Error('正式事件参数与当前策略不一致');
     if(!['month_end','activate','migration'].includes(event.event_type))throw new Error('正式事件类型无效');
     validDate(event.signal_date);if(event.effective_date)validDate(event.effective_date);
@@ -215,7 +220,12 @@ export function validateBackup(input){
   data.quotes=(input.quotes&&typeof input.quotes==='object')?structuredClone(input.quotes):{};
   data.fxRates=(input.fxRates&&typeof input.fxRates==='object')?structuredClone(input.fxRates):{};
   data.enrichmentJobs=Array.isArray(input.enrichmentJobs)?structuredClone(input.enrichmentJobs):[];
-  data.migrationNotes=Array.isArray(input.migrationNotes)?input.migrationNotes:[];
+  data.migrationNotes=Array.isArray(input.migrationNotes)?structuredClone(input.migrationNotes):[];
+  data.legacyFormalEvents=Array.isArray(input.legacyFormalEvents)?structuredClone(input.legacyFormalEvents):[];
+  if(legacy){
+    data.legacyFormalEvents.push(...structuredClone(input.formalEvents));
+    data.migrationNotes.push('控制器已升级至反转锚点 v2。旧正式事件完整保存在 legacyFormalEvents 供审计；旧 pending target 不可激活，首次新版正式信号从截至该月的估值历史重建状态。');
+  }
   data.updatedAt=input.updatedAt??null;return data;
 }
 export function formalMonthEnd(data,sym,date,asOf=today()){
@@ -228,9 +238,14 @@ export function formalMonthEnd(data,sym,date,asOf=today()){
     const m=row.valuation_date.slice(0,7),old=monthly.get(m);if(!old||row.valuation_date>=old.valuation_date)monthly.set(m,row);}
   const current=monthly.get(date.slice(0,7));if(!current)throw new Error('该月没有有效 S_Tech');
   const previous=[...monthly.entries()].filter(([m])=>m<date.slice(0,7)).sort(([a],[b])=>a.localeCompare(b)).map(([,r])=>r.s_tech);
-  const x=valuationState(current.s_tech,previous,true),ctl=new Controller(CONFIG,last?.state??null);ctl.observeMonthEnd(x);
+  const x=valuationState(current.s_tech,previous,true),ctl=new Controller(CONFIG,last?.state??null);
+  const replayed=!last&&(data.legacyFormalEvents||[]).some(e=>String(e.symbol||'').trim().toUpperCase()===sym);
+  if(replayed)for(let i=CONFIG.valuation_window_months-1;i<previous.length;i++){
+    ctl.observeMonthEnd(valuationState(previous[i],previous.slice(0,i),true));ctl.activatePendingTarget();
+  }
+  ctl.observeMonthEnd(x);
   const event={id:uid(),symbol:sym,event_type:'month_end',signal_date:date,effective_date:null,createdAt:new Date().toISOString(),
-    valuation_id:current.id,x,boundaries:envelope(x),config:{...CONFIG},state:structuredClone(ctl.state)};
+    valuation_id:current.id,x,boundaries:envelope(x),config:{...CONFIG},state:structuredClone(ctl.state),history_replayed:replayed};
   const next=structuredClone(data);next.formalEvents.push(event);return next;
 }
 export function activateFormal(data,sym,effectiveDate,asOf=today()){

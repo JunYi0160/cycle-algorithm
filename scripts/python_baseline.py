@@ -31,7 +31,7 @@ for path in paths:
         activated=ctl.activate_pending_target()
         steps.append({'x':x,'target':target,'observed':observed,'activated':activated,'state':asdict(ctl.state)})
     controllers.append({'steps':steps})
-initial=ControllerState(initialized=True,entered=True,z=.4,previous_x=.2,direction='up',alpha=.7,beta=.8,current_target=1.5)
+initial=ControllerState(initialized=True,entered=True,z=.4,previous_x=.2,direction='up',alpha=.7,beta=.8,pivot_x=.2,pivot_z=.4,current_target=1.3)
 restored=ValuationLeverageController();restored.state=initial
 restored_initial=asdict(initial)
 restored_target=restored.observe_month_end(.3)

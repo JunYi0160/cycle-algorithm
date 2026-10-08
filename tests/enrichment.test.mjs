@@ -300,7 +300,7 @@ test('12.C.10: Cost protection enforces useG1Credits: false', () => {
   assert.equal(configAfter.permissionsOk, true);
 });
 
-test('12.C.12: v1 to v2 migration compatibility', () => {
+test('12.C.12: v1 to schema 3 migration compatibility', () => {
   // Legacy v1 backup structure
   const legacyV1 = {
     schemaVersion: 1,
@@ -314,7 +314,7 @@ test('12.C.12: v1 to v2 migration compatibility', () => {
   };
 
   const migrated = validateBackup(legacyV1);
-  assert.equal(migrated.schemaVersion, 2);
+  assert.equal(migrated.schemaVersion, 3);
   assert.equal(migrated.referenceCurrency, 'EUR');
   assert.equal(migrated.holdings[0].symbol, 'AAA');
   assert.equal(migrated.holdings[0].market_value, 1000);

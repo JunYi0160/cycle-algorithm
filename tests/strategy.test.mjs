@@ -30,14 +30,16 @@ test('controller entry, pending/activation, turns, endpoints and 1,000+ path ste
     compare(c.observeMonthEnd(step.x),step.target);compare(c.state,step.observed);compare(c.activatePendingTarget(),step.activated);compare(c.state,step.state);
   }}
 });
-test('restoring the entire controller retains alpha/beta and paths',()=>{
+test('restoring the entire controller retains reversal pivots and paths',()=>{
   const p=baseline.restored,c=new Controller(CONFIG,p.initial);compare(c.observeMonthEnd(p.x),p.target);compare(c.state,p.state);
   const waiting=new Controller();waiting.observeMonthEnd(.2);const before=structuredClone(waiting.state);
   waiting.observeMonthEnd(.1);assert.deepEqual(waiting.state,before);
 });
-test('same current x can have different leverage after a different historical path',()=>{
+test('same current x has different leverage after a non-extreme historical reversal',()=>{
   const finish=path=>{const c=new Controller();for(const x of path){c.observeMonthEnd(x);c.activatePendingTarget();}return c.state.current_target;};
-  assert.notEqual(finish([.2,.4]),finish([.2,0,.4]));
+  assert.notEqual(finish([.2,.4]),finish([.2,.7,.4]));
+  assert.throws(()=>new Controller(CONFIG,{...baseline.restored.initial,pivot_x:null}),/反转锚点/);
+  assert.throws(()=>new Controller(CONFIG,{...baseline.restored.initial,pivot_z:1.1}),/反转锚点/);
 });
 test('interest, scheduled trades, cap trigger and exact fees match Python',()=>{
   for(const sample of baseline.accounts){const p=sample.input,a=new Account(p.a,p.b);

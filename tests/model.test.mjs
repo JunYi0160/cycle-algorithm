@@ -1,8 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {emptyData,parseCSV,parseValuations,normalizeValuation,mergeValuations,normalizeAccount,accountSummary,validateBackup,formalMonthEnd,activateFormal,monthEnd} from '../src/model.js';
+import {emptyData,parseCSV,parseValuations,normalizeValuation,mergeValuations,normalizeAccount,accountSummary,validateBackup,formalMonthEnd,activateFormal,monthEnd,controllerFromLegacyRun} from '../src/model.js';
+import {CONFIG,ALGORITHM_ID} from '../src/strategy.js';
 import {calculatePortfolio,aggregateWeightedResults,buildMonthlyScores} from '../src/preview.js';
-import {load,save,exportBackup} from '../src/storage.js';
+import {load,save,exportBackup,STORAGE_KEY,LEGACY_STORAGE_KEY} from '../src/storage.js';
 const history=()=>Array.from({length:61},(_,i)=>normalizeValuation({id:'record'+i,symbol:'AAA',valuation_date:monthEnd(`${2020+Math.floor(i/12)}-${String(i%12+1).padStart(2,'0')}`),s_tech:i+1}));
 const held=symbol=>({id:symbol,symbol,quantity:10,market_value:1000,sec_type:'STK',currency:'EUR'});
 test('quoted CSV, BOM, multiline notes and atomic row errors',()=>{
@@ -71,4 +72,67 @@ test('persistent roundtrip and quota failure preserve prior data',()=>{
   const original=text;store.setItem=()=>{throw new Error('QuotaExceeded');};assert.throws(()=>save({...saved,migrationNotes:['x']},store));assert.equal(text,original);
   assert.throws(()=>validateBackup({...saved,schemaVersion:999}));
   assert.throws(()=>validateBackup({...saved,valuations:[...history(),history()[0]]}));
+});
+
+function oldBackup(version=2){
+  const config={...CONFIG};delete config.controller_version;
+  return {...emptyData(),schemaVersion:version,algorithm:'finite-rational-60-rho0.9',
+    referenceCurrency:'EUR',account:{currency:'EUR',financing:200,updatedAt:'2025-01-01'},
+    holdings:[held('AAA')],valuations:history(),quotes:{AAA:{price:31,currency:'USD'}},
+    fxRates:{'EUR/USD':{rate:1.1,source_url:'https://example.org/fx'}},
+    enrichmentJobs:[{id:'job1',symbol:'AAA',status:'completed',details:'source evidence'}],migrationNotes:['prior note'],
+    formalEvents:[{id:'old-pending',symbol:'AAA',event_type:'month_end',signal_date:'2024-12-31',config,
+      state:{initialized:true,entered:false,entry_pending:true,z:.4,previous_x:.2,direction:'flat',
+        alpha:1,beta:1,pending_target:1.3,current_target:null}}]};
+}
+
+test('old schema 1/2 backups retain financial data, evidence and full audit events without mutation',()=>{
+  for(const version of [1,2]){
+    const original=oldBackup(version),snapshot=JSON.stringify(original),upgraded=validateBackup(original);
+    assert.equal(JSON.stringify(original),snapshot);assert.equal(upgraded.schemaVersion,3);
+    assert.equal(upgraded.algorithm,ALGORITHM_ID);assert.equal(upgraded.formalEvents.length,0);
+    assert.deepEqual(upgraded.legacyFormalEvents,original.formalEvents);
+    for(const key of ['valuations','quotes','fxRates','enrichmentJobs'])assert.deepEqual(upgraded[key],original[key]);
+    assert.deepEqual(upgraded.account,original.account);assert.equal(upgraded.holdings[0].market_value,1000);
+    assert.throws(()=>activateFormal(upgraded,'AAA','2025-01-02','2025-03-01'),/没有正式信号/);
+    const roundtrip=validateBackup(JSON.parse(exportBackup(upgraded)));
+    assert.deepEqual(roundtrip,upgraded);
+  }
+});
+
+test('the first v2 formal signal replays prior history, then restored pivots continue identically',()=>{
+  let upgraded=validateBackup(oldBackup());
+  upgraded=formalMonthEnd(upgraded,'AAA','2025-01-31','2025-03-01');
+  const event=upgraded.formalEvents.at(-1);
+  assert.equal(event.history_replayed,true);assert.equal(event.state.entered,true);
+  assert.equal(event.state.current_target,1.75);assert.equal(event.state.pending_target,1.75);
+  upgraded=activateFormal(upgraded,'AAA','2025-02-03','2025-03-01');
+  upgraded.valuations.push(normalizeValuation({symbol:'AAA',valuation_date:'2025-02-28',s_tech:31}));
+  const restored=validateBackup(JSON.parse(exportBackup(upgraded)));
+  const resumed=formalMonthEnd(restored,'AAA','2025-02-28','2025-03-01');
+  const continuous=formalMonthEnd(upgraded,'AAA','2025-02-28','2025-03-01');
+  assert.deepEqual(resumed.formalEvents.at(-1).state,continuous.formalEvents.at(-1).state);
+  assert.equal(resumed.formalEvents.at(-1).history_replayed,false);
+  assert.deepEqual(resumed.legacyFormalEvents,oldBackup().formalEvents);
+});
+
+test('existing storage namespaces upgrade without deleting old raw data',()=>{
+  for(const key of [STORAGE_KEY,LEGACY_STORAGE_KEY]){
+    const original=JSON.stringify(oldBackup(key===LEGACY_STORAGE_KEY?1:2)),entries=new Map([[key,original]]);
+    const store={getItem:k=>entries.get(k)??null,setItem:(k,v)=>entries.set(k,v)};
+    const upgraded=load(store);assert.equal(upgraded.algorithm,ALGORITHM_ID);
+    assert.equal(upgraded.legacyFormalEvents.length,1);
+    if(key===STORAGE_KEY)assert.equal(entries.get(key),original);
+    save(upgraded,store);assert.equal(load(store).legacyFormalEvents.length,1);
+    if(key===LEGACY_STORAGE_KEY)assert.equal(entries.get(key),original);
+  }
+});
+
+test('current v2 controller backups validate pivots and accept compatible schema 2 exports',()=>{
+  const data=formalMonthEnd({...emptyData(),valuations:history()},'AAA','2024-12-31','2025-03-01');
+  assert.equal(validateBackup({...data,schemaVersion:2}).formalEvents.length,1);
+  const corrupt=structuredClone(data);delete corrupt.formalEvents[0].state.pivot_x;
+  assert.throws(()=>validateBackup(corrupt),/pivot_x/);
+  assert.equal(controllerFromLegacyRun({z:.4,entered:true,strategy_config:{rho:.9}}),null);
+  assert.equal(controllerFromLegacyRun({z:.4,entered:true,strategy_config:CONFIG}),null);
 });

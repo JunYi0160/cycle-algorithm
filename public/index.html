@@ -71,7 +71,7 @@
       <article class="card metric"><div class="label">加权估值百分位 x</div><div class="value" id="portfolio-x">—</div><div class="sub">越低越便宜 · 60 个月滚动样本</div></article>
       <article class="card metric"><div class="label">参考基础币种</div><div class="value" id="summary-currency">USD</div><div class="sub">不同币种按公开汇率自动折算</div></article>
     </div>
-    <div class="notice" id="risk-note">策略核心参数：固定 60 个月 · finite-rational ρ=0.9 · 目标杠杆范围 1.00–1.75× · 硬风控上限 2.25×</div>
+    <div class="notice" id="risk-note">策略核心：反转锚点 v2 · 固定 60 个月 · finite-rational ρ=0.9 · 目标杠杆范围 1.00–1.75× · 硬风控上限 2.25×</div>
   </section>
 
   <section class="section" id="account-editor">
@@ -186,7 +186,7 @@
       </details>
       <div class="backup-block">
         <h3>完整备份与恢复</h3>
-        <p class="muted">数据保存在当前浏览器中，支持平滑迁移旧版 v1 备份。换设备或清理缓存前，请下载完整备份。备份覆盖持仓、报价缓存、全部估值修订、补数记录与正式策略状态。</p>
+        <p class="muted">数据保存在当前浏览器中，支持升级旧版 v1/v2 备份。旧正式事件完整归档供审计，新版状态从历史重建。换设备或清理缓存前，请下载完整备份。备份覆盖持仓、报价缓存、全部估值修订、补数记录与正式策略状态。</p>
         <div class="toolbar">
           <button class="btn primary" id="export-backup" type="button">下载完整 JSON 备份</button>
           <label class="btn soft file-button">恢复完整 JSON 备份<input id="restore-file" type="file" accept=".json,application/json"></label>
@@ -211,7 +211,7 @@
       <div class="recent"><table><thead><tr><th>标的</th><th>信号月</th><th>x</th><th>Pending</th><th>Current</th><th>事件</th></tr></thead><tbody id="formal-list"></tbody></table></div>
     </article>
   </section>
-  <p class="footer-note">固定 60 个月 · finite-rational ρ=0.9 · 本地计算与保存 · 不自动交易</p>
+  <p class="footer-note">反转锚点 v2 · 固定 60 个月 · finite-rational ρ=0.9 · 本地计算与保存 · 不自动交易</p>
 </main>
 <dialog id="restore-dialog">
   <h2>恢复完整备份</h2>

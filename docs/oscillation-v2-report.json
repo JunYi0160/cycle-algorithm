@@ -1,0 +1,216 @@
+{
+  "kind": "synthetic_intent_validation_not_historical_backtest",
+  "config": {
+    "valuation_window_months": 60,
+    "entry_x": 0.3,
+    "rho": 0.9,
+    "l_min": 1,
+    "l_max": 1.75,
+    "hard_cap": 2.25,
+    "financing_rate": 0.053,
+    "one_way_cost": 0.0005,
+    "day_basis": 365,
+    "controller_version": "pivot-hysteresis-v2"
+  },
+  "timing": "month-end signal, next month first weekday close; weekday prices, calendar-day interest, no exchange holidays",
+  "source_sha256": {
+    "src/strategy.js": "69654e6620a1a7e9343fc6378c85e72af06038dae185caea2ed945af0046dfd4",
+    "src/valuation.js": "4d97ce6dc8ba77088378d226d7563303f058883e795745c7eee5b87862ec1b26",
+    "tests/fixtures/strategy-v1.mjs": "8f4f7b17b044676efc779f021d53d5e33e59d0dcc2ce35f29b09b55df040f627",
+    "scripts/validate-oscillation.mjs": "4f80d94cb605d3e474b2134d2df37df1b888733cb1f70ae17355d3c15ba3bf8a"
+  },
+  "scenarios": [
+    {
+      "scenario": "wide_slow",
+      "monthly_log_amplitude": 0.35,
+      "period_months": 24,
+      "month_count": 180,
+      "results": {
+        "legacy_v1": {
+          "signal_entry_index": 74,
+          "terminal_equity": 1.4284346128282583,
+          "net_return": 0.42843461282825834,
+          "max_drawdown": -0.5372271226366516,
+          "financing_interest": 0.09941213159185694,
+          "transaction_fees": 0.0037814983651308014,
+          "gross_turnover": 7.562996730261606,
+          "hard_cap_interventions": 0
+        },
+        "pivot_v2": {
+          "signal_entry_index": 74,
+          "terminal_equity": 3.4684349541405455,
+          "net_return": 2.4684349541405455,
+          "max_drawdown": -0.5372271226366516,
+          "financing_interest": 0.2960019204809028,
+          "transaction_fees": 0.007000555339414813,
+          "gross_turnover": 14.00111067882963,
+          "hard_cap_interventions": 0
+        },
+        "unlevered": {
+          "signal_entry_index": 74,
+          "terminal_equity": 1.0912951903481147,
+          "net_return": 0.09129519034811473,
+          "max_drawdown": -0.5034146962085939,
+          "financing_interest": 0,
+          "transaction_fees": 0.0004997501249375312,
+          "gross_turnover": 0.9995002498750625,
+          "hard_cap_interventions": 0
+        },
+        "fixed_1_75": {
+          "signal_entry_index": 74,
+          "terminal_equity": 0.6167965980201725,
+          "net_return": -0.3832034019798275,
+          "max_drawdown": -0.8257335861359598,
+          "financing_interest": 0.37372996550127635,
+          "transaction_fees": 0.005004307341545829,
+          "gross_turnover": 10.00861468309166,
+          "hard_cap_interventions": 0
+        }
+      }
+    },
+    {
+      "scenario": "wide_fast",
+      "monthly_log_amplitude": 0.35,
+      "period_months": 12,
+      "month_count": 180,
+      "results": {
+        "legacy_v1": {
+          "signal_entry_index": 68,
+          "terminal_equity": 2.286040320104196,
+          "net_return": 1.2860403201041959,
+          "max_drawdown": -0.5259309351586063,
+          "financing_interest": 0.10567840800614564,
+          "transaction_fees": 0.007431902204534218,
+          "gross_turnover": 14.863804409068434,
+          "hard_cap_interventions": 0
+        },
+        "pivot_v2": {
+          "signal_entry_index": 68,
+          "terminal_equity": 9.813408647810427,
+          "net_return": 8.813408647810427,
+          "max_drawdown": -0.5262568791490123,
+          "financing_interest": 0.5268230222164175,
+          "transaction_fees": 0.024586167985774284,
+          "gross_turnover": 49.17233597154857,
+          "hard_cap_interventions": 0
+        },
+        "unlevered": {
+          "signal_entry_index": 68,
+          "terminal_equity": 1.1385328163600874,
+          "net_return": 0.1385328163600874,
+          "max_drawdown": -0.503414696208593,
+          "financing_interest": 0,
+          "transaction_fees": 0.0004997501249375312,
+          "gross_turnover": 0.9995002498750625,
+          "hard_cap_interventions": 0
+        },
+        "fixed_1_75": {
+          "signal_entry_index": 68,
+          "terminal_equity": 0.2600798073340933,
+          "net_return": -0.7399201926659067,
+          "max_drawdown": -0.9330766093828713,
+          "financing_interest": 0.3469814223127798,
+          "transaction_fees": 0.008560853197329858,
+          "gross_turnover": 17.121706394659718,
+          "hard_cap_interventions": 0
+        }
+      }
+    },
+    {
+      "scenario": "small_fast",
+      "monthly_log_amplitude": 0.025,
+      "period_months": 6,
+      "month_count": 180,
+      "results": {
+        "legacy_v1": {
+          "signal_entry_index": 101,
+          "terminal_equity": 1.0236089466935223,
+          "net_return": 0.023608946693522315,
+          "max_drawdown": -0.045851870625151614,
+          "financing_interest": 0.019463163273365402,
+          "transaction_fees": 0.0028650873279892396,
+          "gross_turnover": 5.730174655978476,
+          "hard_cap_interventions": 0
+        },
+        "pivot_v2": {
+          "signal_entry_index": 101,
+          "terminal_equity": 1.0127115780645624,
+          "net_return": 0.012711578064562357,
+          "max_drawdown": -0.07325621305082752,
+          "financing_interest": 0.0550079208827414,
+          "transaction_fees": 0.0023312582003985304,
+          "gross_turnover": 4.66251640079706,
+          "hard_cap_interventions": 0
+        },
+        "unlevered": {
+          "signal_entry_index": 101,
+          "terminal_equity": 0.9985171057571561,
+          "net_return": -0.0014828942428438685,
+          "max_drawdown": -0.042377156611276945,
+          "financing_interest": 0,
+          "transaction_fees": 0.0004997501249375312,
+          "gross_turnover": 0.9995002498750625,
+          "hard_cap_interventions": 0
+        },
+        "fixed_1_75": {
+          "signal_entry_index": 101,
+          "terminal_equity": 0.7569786708693145,
+          "net_return": -0.24302132913068553,
+          "max_drawdown": -0.2915603610884494,
+          "financing_interest": 0.23506837807404918,
+          "transaction_fees": 0.0016000816491878018,
+          "gross_turnover": 3.2001632983756036,
+          "hard_cap_interventions": 0
+        }
+      }
+    },
+    {
+      "scenario": "very_small_slow",
+      "monthly_log_amplitude": 0.005,
+      "period_months": 24,
+      "month_count": 180,
+      "results": {
+        "legacy_v1": {
+          "signal_entry_index": 102,
+          "terminal_equity": 0.9733540260917816,
+          "net_return": -0.026645973908218434,
+          "max_drawdown": -0.03625882008722914,
+          "financing_interest": 0.028292277804255382,
+          "transaction_fees": 0.002167029755154995,
+          "gross_turnover": 4.3340595103099915,
+          "hard_cap_interventions": 0
+        },
+        "pivot_v2": {
+          "signal_entry_index": 102,
+          "terminal_equity": 0.937516923365981,
+          "net_return": -0.062483076634018975,
+          "max_drawdown": -0.06760617121400436,
+          "financing_interest": 0.07473454761008787,
+          "transaction_fees": 0.001941045815090996,
+          "gross_turnover": 3.8820916301819923,
+          "hard_cap_interventions": 0
+        },
+        "unlevered": {
+          "signal_entry_index": 102,
+          "terminal_equity": 1.003203743354729,
+          "net_return": 0.0032037433547289496,
+          "max_drawdown": -0.009950166250842551,
+          "financing_interest": 0,
+          "transaction_fees": 0.0004997501249375312,
+          "gross_turnover": 0.9995002498750625,
+          "hard_cap_interventions": 0
+        },
+        "fixed_1_75": {
+          "signal_entry_index": 102,
+          "terminal_equity": 0.7781202258666159,
+          "net_return": -0.2218797741333841,
+          "max_drawdown": -0.2218797741333841,
+          "financing_interest": 0.2277071129753705,
+          "transaction_fees": 0.0010694951021876903,
+          "gross_turnover": 2.13899020437538,
+          "hard_cap_interventions": 0
+        }
+      }
+    }
+  ]
+}

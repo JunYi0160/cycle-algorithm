@@ -24,7 +24,7 @@ class FakeClient:
             'positions':[{'id':8,'asset':{'symbol':'DEMO'},'quantity':10,'market_value':1000,'sec_type':'STK','currency':'EUR'}],
             'strategy_runs':[
                 {'id':10,'asset':1,'x':.2,'z':.4,'entered':True,'entry_pending':False,'controller_direction':'up','controller_alpha':.7,'controller_beta':.8,
-                    'pending_target':None,'current_target':1.3,'strategy_config':asdict(module.CFG),'signal_month':'2025-01','effective_date':'2025-02-03',
+                    'pending_target':None,'current_target':1.3,'strategy_config':{**asdict(module.CFG),'controller_pivot':{'x':.2,'z':.4}},'signal_month':'2025-01','effective_date':'2025-02-03',
                     'event_type':'activate','run_time':'2025-02-03T00:00:00Z','strategy_engine_hash':'synthetic-hash'},
                 {'id':9,'asset':1,'strategy_config':{'k':5},'signal_month':'2024-12'},
             ],
@@ -40,6 +40,12 @@ assert data['valuations'][1]['provenance']=='legacy-unknown'
 assert data['valuations'][1]['supersedes']=='directus-valuation-1'
 assert data['account']['financing']==200
 assert data['formalEvents'][0]['state']['alpha']==.7
+assert data['formalEvents'][0]['state']['pivot_x']==.2
+assert data['formalEvents'][0]['state']['pivot_z']==.4
+assert data['schemaVersion']==3
+assert data['algorithm']==module.ALGORITHM_ID
+assert len(data['legacyFormalEvents'])==1
+assert data['legacyFormalEvents'][0]['source_run']['id']==9
 assert len(data['formalEvents'])==1
 assert data['holdings'][0]['currency']=='EUR'
 assert all(collection in ['assets','valuation_history','account_snapshots','positions','strategy_runs'] for collection,_ in client.reads)

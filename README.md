@@ -110,8 +110,11 @@ $$w_i = \frac{v_i}{\sum_j v_j}, \quad L_{\text{portfolio}} = \sum_i (w_i \times 
 ## 5. 数据存储与迁移
 
 - **存储隔离与升级**：数据保存在浏览器 localStorage 的 `cycle-algorithm-v2:` 命名空间下。
-- **v1 平滑升级**：读取旧版 `cycle-algorithm-v1:` 数据或恢复 v1 备份时，自动平滑升级为 v2 架构，旧持仓自动转换为 `input_mode: 'market_value'`，旧估值、修订历史与正式事件 100% 完整保留。
-- **完整 JSON 备份**：支持一键导出和导入包含持仓、最新报价缓存、汇率缓存、估值历史、正式事件和补数任务的完整备份。
+- **算法与数据升级**：控制器为 `pivot-hysteresis-v2`，备份为 schema 3，沿用原存储键。读取原算法 schema 1/2 数据时，保留持仓、报价、汇率、估值修订、来源证据和补数任务，旧正式事件完整归档到 `legacyFormalEvents`。
+- **旧正式状态处理**：旧 pending target 不能直接激活；首次新版正式信号从截至该月的估值历史重建锚点。兼容 pivot v2 schema 2 备份的导入，新正式状态恢复后沿原路径继续。
+- **完整 JSON 备份**：支持一键导出和导入持仓、最新报价缓存、汇率缓存、估值历史、正式事件、旧版审计事件和补数任务。
+
+2026-10-08 修复非极端折返沿下边界原路返回的数学问题，支持区域内部局部回环。公式、升级规则、验收和含费用合成结果见 [控制器 v2 数学与升级](docs/hysteresis-v2.md)。小幅震荡可能不足以覆盖费用，修复不保证所有震荡盈利。
 
 ---
 
@@ -122,8 +125,8 @@ $$w_i = \frac{v_i}{\sum_j v_j}, \quad L_{\text{portfolio}} = \sum_i (w_i \times 
 | `src/valuation.js` | 权威 11 项基本面输入计算 `S_Tech` 固定公式及 N/A 判定 |
 | `src/strategy.js` | 百分位、曲线、包络、控制器有状态路径回放、账户利息与费用 |
 | `src/preview.js` | 多币种汇率换算、持仓权重归一化、各标的回放与组合加权 |
-| `src/model.js` | Schema v2 数据归一化、备份导入导出、历史修订幂等合并 |
-| `src/storage.js` | 浏览器 localStorage 存储管理与 v1/v2 自动迁移 |
+| `src/model.js` | Schema 3 数据归一化、旧控制器审计归档、正式状态重建、备份及历史修订 |
+| `src/storage.js` | 保留现有 v2 存储命名空间、读取旧 v1 数据 |
 | `src/app.js` | 响应式前端交互、持仓编辑器、补数任务调度与可视化图表 |
 | `scripts/helper.mjs` | 本机轻量级 HTTP 守护进程（端口 8789），负责 agy CLI 调度与费用锁定 |
 | `scripts/build.mjs` | 严格白名单静态资源打包至 `dist/` |
@@ -131,8 +134,11 @@ $$w_i = \frac{v_i}{\sum_j v_j}, \quad L_{\text{portfolio}} = \sum_i (w_i \times 
 
 ### 运行测试与构建
 ```powershell
-# 运行全部 30 项单元与集成测试（包含 Python 数值基准与 12.A/B/C 验收标准）
+# 运行全部 43 项测试（包含 Python 数值基准、内部回环、状态迁移与 12.A/B/C 验收）
 node --test tests/*.test.mjs
+
+# 重现固定的含融资/交易费用合成场景；不调用真实账户或市场接口
+node scripts/validate-oscillation.mjs
 
 # 构建静态产物至 dist/ 目录（11 个白名单文件）
 node scripts/build.mjs
@@ -141,4 +147,5 @@ node scripts/build.mjs
 测试覆盖：
 - **Acceptance 12.A**：市值模式权重（75%/25% 对应 1.3× 组合杠杆）、股数模式报价推导、比例缩放不变性、多币种折算与阻塞、逐标的独立路径控制器加权。
 - **Acceptance 12.B**：11 项公式严谨性与 N/A 拦截、来源证据保留与往返还原、部分补齐与公开数据不足报告。
-- **Acceptance 12.C**：`useG1Credits: false` 费用保护拦截、本地助手 `/api/status` 与 `/api/protect-cost` 接口、v1 至 v2 兼容往返、重复合并幂等性（修订号自增且不重复记录）。
+- **Acceptance 12.C**：`useG1Credits: false` 费用保护拦截、本地助手 `/api/status` 与 `/api/protect-cost` 接口、旧版至 schema 3 兼容往返、重复合并幂等性（修订号自增且不重复记录）。
+- **控制器 v2**：非极端反转、稳定局部闭合回环及正积分、边界/端点、Python逐步对照、旧状态归档、锚点恢复、次月首日收盘后激活、含费用合成盈利与亏损案例。
