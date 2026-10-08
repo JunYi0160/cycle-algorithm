@@ -4,7 +4,7 @@
 
 ## 本地运行
 
-需要 Node.js 22 或以上，无须安装应用依赖。在 `C:\strategy-directus\browser-app` 打开终端：
+需要 Node.js 22 或以上，无须安装应用依赖。在克隆的仓库根目录打开终端（本机为 `D:\Documents\GitHub\cycle-algorithm`）：
 
 ```powershell
 node --test tests/*.test.mjs

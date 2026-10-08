@@ -2,19 +2,17 @@
 
 此应用无生产依赖，GitHub Actions 只运行测试、复制白名单静态文件并发布 `dist/`。完整仓库应以 **browser-app 文件夹为根目录**，不能把含数据库和凭据的旧项目根目录当作发布仓库。
 
-## 新建仓库并发布
+## 从本地克隆发布
 
-1. 在 GitHub 创建一个空仓库，确定仓库链接与所有者。以 GitHub Free 账号使用时，Pages 通常需要公开仓库；以账号当前套餐和官方说明为准。
-2. 在本机 `C:\strategy-directus\browser-app` 初始化专用仓库，并确认忽略规则生效：
+1. 目标仓库为 `JunYi0160/cycle-algorithm`，本机克隆目录为 `D:\Documents\GitHub\cycle-algorithm`。
+2. 在克隆目录提交并推送更新，确认忽略规则生效：
 
    ```powershell
-   cd C:\strategy-directus\browser-app
-   git init -b main
+   cd D:\Documents\GitHub\cycle-algorithm
    git status --short
    git add .gitignore package.json README.md DEPLOYMENT.md .github public src scripts tests
    git diff --cached --name-only
    git commit -m "Add browser-based Cycle Algorithm"
-   git remote add origin https://github.com/JunYi0160/cycle-algorithm.git
    git push -u origin main
    ```
 
@@ -37,6 +35,6 @@ node scripts/serve.mjs --base /any-repository-name/
 
 ## 当前交付状态
 
-部署目标为 `JunYi0160/cycle-algorithm`，本机已在 browser-app 中建立独立仓库并设置 origin。应用构建、数值和浏览器验证已完成；发布状态以仓库 Actions / Pages 部署记录为准。真实迁移备份始终留在被忽略的 private-exports 目录，不上传仓库。
+部署目标为 `JunYi0160/cycle-algorithm`，本机工作目录为 `D:\Documents\GitHub\cycle-algorithm`，origin 指向该仓库。应用构建、数值和浏览器验证已完成；发布状态以仓库 Actions / Pages 部署记录为准。真实迁移备份留在旧项目的 `C:\strategy-directus\browser-app\private-exports`，不上传仓库。
 
 旧服务、数据库和旧网页均未改动；本地静态预览只为开发检查。发布后无需在本机维持预览服务。
