@@ -11,16 +11,16 @@ const browser=await chromium.launch({headless:true,channel:process.env.PLAYWRIGH
 const context=await browser.newContext({viewport:{width:1440,height:960},acceptDownloads:true});
 const page=await context.newPage(),errors=[],requests=[];
 page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>requests.push(r.url()));
-const read=()=>page.evaluate(()=>JSON.parse(localStorage.getItem(Object.keys(localStorage).find(k=>k.startsWith('cycle-algorithm-v1:')))));
+const read=()=>page.evaluate(()=>JSON.parse(localStorage.getItem(Object.keys(localStorage).find(k=>k.startsWith('cycle-algorithm-v2:')||k.startsWith('cycle-algorithm-v1:')))));
 const click=name=>page.getByRole('button',{name,exact:true}).click();
 const assertText=async(id,text)=>assert.match(await page.locator('#'+id).innerText(),text);
 try{
   await page.goto(process.env.PREVIEW_URL||'http://127.0.0.1:8788/cycle-algorithm/',{waitUntil:'networkidle'});
   await assertText('target-lev',/—/);assert.doesNotMatch(await page.locator('body').innerText(),/IBKR|Directus|正在连接/);
   await click('体验虚构示例');await assertText('target-lev',/×/);let data=await read();assert.equal(data.valuations.length,72);assert.equal(data.formalEvents.length,0);
-  await page.locator('#holding-editor [data-field="market_value"]').fill('18000');await page.locator('#financing-input').fill('-2000');await click('保存账户与持仓');await assertText('equity',/20,000/);await assertText('actual-lev',/0.90/);
-  await click('＋ 添加持仓');const last=page.locator('#holding-editor tr').last();await last.locator('[data-field="symbol"]').fill('UNKNOWN');await last.locator('[data-field="quantity"]').fill('1');await last.locator('[data-field="market_value"]').fill('1000');await last.locator('select').selectOption('OPT');await click('保存账户与持仓');await assertText('target-lev',/—/);await assertText('health-list',/不支持 OPT/);
-  await page.locator('#holding-editor tr').last().getByRole('button',{name:'删除持仓'}).click();await click('保存账户与持仓');await assertText('target-lev',/×/);
+  await page.locator('#holding-editor [data-field="value"]').fill('18000');await click('保存持仓并更新');await assertText('target-lev',/×/);
+  await click('＋ 添加持仓');const last=page.locator('#holding-editor tr').last();await last.locator('[data-field="symbol"]').fill('UNKNOWN');await last.locator('[data-field="value"]').fill('1000');await click('保存持仓并更新');await assertText('target-lev',/—/);await assertText('health-list',/历史不足/);
+  await page.locator('#holding-editor tr').last().getByRole('button',{name:'删除'}).click();await click('保存持仓并更新');await assertText('target-lev',/×/);
   const records=Array.from({length:63},(_,i)=>{const y=2020+Math.floor(i/12),m=i%12+1,day=new Date(Date.UTC(y,m,0)).getUTCDate();return {symbol:'TEST',valuation_date:`${y}-${String(m).padStart(2,'0')}-${day}`,s_tech:i+1,source_code:'synthetic-test',interpolated:i===0};}).filter((_,i)=>i!==20);
   records.push({symbol:'TEST',valuation_date:'2027-01-31',s_tech:999,source_code:'synthetic-test'});
   await page.locator('#valuation-file').setInputFiles({name:'test.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(records))});await assertText('asset-grid',/来源插值 1 月/);await assertText('asset-grid',/缺失：2021-09/);
@@ -37,14 +37,14 @@ try{
   for(const [name,value] of Object.entries(inputs))await page.locator(`#formula-form [name="${name}"]`).fill(String(value));
   await click('计算并保存评分');assert.deepEqual((await read()).valuations.find(r=>r.symbol==='FUND').raw_inputs,inputs);
   const downloadPromise=page.waitForEvent('download');await click('下载完整 JSON 备份');const downloaded=await downloadPromise;await downloaded.saveAs(resolve(artifacts,'synthetic-backup.json'));const backup=JSON.parse(readFileSync(resolve(artifacts,'synthetic-backup.json'),'utf8'));
-  await page.reload({waitUntil:'networkidle'});assert.deepEqual((await read()).formalEvents,backup.formalEvents);await assertText('equity',/20,000/);
+  await page.reload({waitUntil:'networkidle'});assert.deepEqual((await read()).formalEvents,backup.formalEvents);await assertText('target-lev',/×/);
   await page.evaluate(()=>{localStorage.clear();});await page.reload({waitUntil:'networkidle'});
   await page.locator('#restore-file').setInputFiles(resolve(artifacts,'synthetic-backup.json'));await page.locator('#restore-dialog').waitFor({state:'visible'});await click('恢复这份备份');assert.deepEqual((await read()).valuations,backup.valuations);assert.deepEqual((await read()).holdings,backup.holdings);assert.deepEqual((await read()).formalEvents,backup.formalEvents);
-  await page.evaluate(()=>{const k=Object.keys(localStorage).find(k=>k.startsWith('cycle-algorithm-v1:'));localStorage.setItem(k,'{broken');});await page.reload({waitUntil:'networkidle'});await assertText('error',/不会覆盖原数据/);await click('体验虚构示例');await assertText('error',/读取失败/);assert.equal(await page.evaluate(()=>localStorage.getItem(Object.keys(localStorage)[0])),'{broken');
+  await page.evaluate(()=>{const k=Object.keys(localStorage).find(k=>k.startsWith('cycle-algorithm-v2:')||k.startsWith('cycle-algorithm-v1:'));localStorage.setItem(k,'{broken');});await page.reload({waitUntil:'networkidle'});await assertText('error',/不会覆盖原数据/);await click('体验虚构示例');await assertText('error',/读取失败/);assert.equal(await page.evaluate(()=>localStorage.getItem(Object.keys(localStorage)[0])),'{broken');
   await page.locator('#restore-file').setInputFiles(resolve(artifacts,'synthetic-backup.json'));await click('恢复这份备份');await assertText('target-lev',/×/);
   await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:resolve(artifacts,'desktop.png')});
   await page.setViewportSize({width:390,height:844});await page.evaluate(()=>window.scrollTo(0,0));assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'mobile page overflow');await page.screenshot({path:resolve(artifacts,'mobile.png')});
-  await page.locator('#currency').fill('USD');await click('保存账户与持仓');await assertText('actual-mv',/USD/);await page.reload({waitUntil:'networkidle'});await assertText('actual-mv',/USD/);
+  await page.locator('#currency').fill('USD');await click('保存持仓并更新');await assertText('summary-currency',/USD/);await page.reload({waitUntil:'networkidle'});await assertText('summary-currency',/USD/);
   assert.equal(errors.length,0,errors.join('\n'));
   assert.ok(requests.every(url=>url.startsWith(process.env.PREVIEW_URL||'http://127.0.0.1:8788/cycle-algorithm/')),requests.join('\n'));
   writeFileSync(resolve(artifacts,'browser-results.json'),JSON.stringify({status:'passed',requests:requests.length,pageErrors:errors,checks:['subpath','manual-account','unsupported-holding-block','JSON-import','CSV-validation','score-update','formula','formal-activation','preview-separation','reload','export-restore','corrupt-storage-recovery','mobile-layout','currency'],screenshots:['desktop.png','mobile.png']},null,2));

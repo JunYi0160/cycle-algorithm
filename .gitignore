@@ -7,3 +7,6 @@ node_modules/
 __pycache__/
 *.pyc
 /cycle-algorithm-static.zip
+scripts/.cache/
+*.token
+helper-token.txt

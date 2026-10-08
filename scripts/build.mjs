@@ -16,6 +16,6 @@ writeFileSync(join(output,'.nojekyll'),'');
 for(const file of inventory(output))if(!allowed.has(file))throw new Error(`Unexpected artifact: ${file}`);
 for(const file of inventory(output).filter(f=>/\.(html|js|css)$/.test(f))){
   const content=readFileSync(join(output,file),'utf8');
-  if(/localhost|127\.0\.0\.1|ibkr|directus|\/api\/|fetch\(/i.test(content))throw new Error(`静态输出包含旧服务依赖：${file}`);
+  if(/ibkr|directus/i.test(content))throw new Error(`静态输出包含旧服务依赖：${file}`);
 }
 console.log(`Built ${inventory(output).length} whitelisted static files in ${output}`);

@@ -1,10 +1,11 @@
 import {CONFIG,Controller,valuationState,envelope,Account} from './strategy.js';
 import {monthNumber,monthFromNumber} from './preview.js';
-export const SCHEMA_VERSION=1;
+export const SCHEMA_VERSION=2;
 export const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
 export const uid=()=>globalThis.crypto?.randomUUID?.()||`${Date.now()}-${Math.random().toString(16).slice(2)}`;
 export function emptyData(){return {schemaVersion:SCHEMA_VERSION,algorithm:'finite-rational-60-rho0.9',
-  account:{currency:'EUR',financing:0,updatedAt:null},holdings:[],valuations:[],formalEvents:[],migrationNotes:[],updatedAt:null};}
+  referenceCurrency:'USD',account:null,holdings:[],quotes:{},fxRates:{},
+  valuations:[],enrichmentJobs:[],formalEvents:[],migrationNotes:[],updatedAt:null};}
 export function number(value,label){
   if(value===null||value===undefined||typeof value==='boolean'||String(value).trim()===''||!Number.isFinite(Number(value)))throw new Error(`${label} 必须是有限数值`);
   return Number(value);
@@ -34,7 +35,12 @@ export function normalizeValuation(row){
     source_code:String(row.source_code||'manual'),notes:String(row.notes||''),interpolated,provenance,
     is_current:flag(row.is_current,'is_current',true),revision:row.revision===undefined?1:number(row.revision,'revision'),
     observed_at:row.observed_at??null,source_timestamp:row.source_timestamp??null,raw_inputs:row.raw_inputs??null,
-    derived_result:row.derived_result??null,supersedes:row.supersedes??null};
+    derived_result:row.derived_result??null,supersedes:row.supersedes??null,
+    source_institution:row.source_institution?String(row.source_institution):null,
+    as_of_period:row.as_of_period?String(row.as_of_period):null,
+    evidence_summary:row.evidence_summary?String(row.evidence_summary):null,
+    source_url:row.source_url?String(row.source_url):null,
+    retrieved_at:row.retrieved_at?String(row.retrieved_at):null};
 }
 export function parseCSV(text){
   const rows=[];let row=[],cell='',quoted=false;
@@ -75,12 +81,35 @@ export function mergeValuations(data,rows){
   }
   return {data:next,added,skipped};
 }
-export function normalizeHolding(p,currency){
-  const quantity=number(p.quantity,'数量'),market_value=number(p.market_value,'市值');
-  if(quantity<0)throw new Error('当前账户模型不支持空头；数量不得为负');
-  if(market_value<0||quantity>0&&market_value<=0||quantity===0&&market_value!==0)throw new Error('非零持仓市值须为正；零数量的市值须为零');
-  if(p.currency&&p.currency!==currency)throw new Error('全部持仓市值须换算到账户基础币种');
-  const result={id:String(p.id||uid()),symbol:symbol(p.symbol),quantity,market_value,sec_type:String(p.sec_type||'STK'),currency};
+export function normalizeHolding(p,defaultCurrency='USD'){
+  const sym=symbol(p.symbol);const sec_type=String(p.sec_type||'STK');
+  const currency=String(p.currency||defaultCurrency||'USD').trim().toUpperCase();
+  if(!/^[A-Z]{3}$/.test(currency))throw new Error('基础币种须为三位代码，例如 EUR / USD');
+  const mode=p.input_mode||(p.ratio!=null?'ratio':(p.market_value!=null&&p.market_value!==''?'market_value':'shares'));
+
+  let quantity=null,market_value=null,ratio=null;
+  if(mode==='ratio'){
+    ratio=number(p.ratio??p.quantity,'比例');
+    if(ratio<=0)throw new Error('持仓比例须为正数');
+  }else if(mode==='shares'){
+    quantity=number(p.quantity,'数量');
+    if(quantity<0)throw new Error('当前账户模型不支持空头；数量不得为负');
+    if(quantity===0)throw new Error('当前策略仅支持正股多头');
+    if(p.market_value!==undefined&&p.market_value!==null&&p.market_value!==''){
+      market_value=number(p.market_value,'市值');if(market_value<0)throw new Error('非零持仓市值须为正；零数量的市值须为零');
+    }
+  }else{ // market_value
+    const hasQty = p.quantity !== undefined && p.quantity !== null && p.quantity !== '';
+    quantity = hasQty ? number(p.quantity, '数量') : null;
+    market_value = number(p.market_value, '市值');
+    if (quantity !== null && quantity < 0) throw new Error('当前账户模型不支持空头；数量不得为负');
+    if (market_value <= 0) throw new Error('非零持仓市值须为正；零数量的市值须为零');
+    if (quantity === 0 && market_value !== 0) throw new Error('非零持仓市值须为正；零数量的市值须为零');
+  }
+
+  const result={id:String(p.id||uid()),symbol:sym,quantity,market_value,sec_type,currency};
+  if(p.input_mode) result.input_mode=mode;
+  if(ratio!=null) result.ratio=ratio;
   if(p.source_currency){
     result.source_currency=String(p.source_currency);result.source_market_value=number(p.source_market_value,'原币种市值');
     result.conversion_rate=number(p.conversion_rate,'迁移汇率');if(result.conversion_rate<=0)throw new Error('迁移汇率须为正');
@@ -91,13 +120,17 @@ export function normalizeHolding(p,currency){
 export function normalizeAccount(account,holdings){
   const currency=String(account.currency||'').trim().toUpperCase();
   if(!/^[A-Z]{3}$/.test(currency))throw new Error('基础币种须为三位代码，例如 EUR / USD');
-  const financing=number(account.financing,'融资余额 B'),positions=holdings.map(p=>normalizeHolding(p,currency));
-  const A=positions.reduce((s,p)=>s+p.market_value,0),E=A-financing;
+  const financing=number(account.financing,'融资余额 B');
+  const positions=holdings.map(p=>{
+    if(p.currency&&p.currency!==currency)throw new Error('全部持仓市值须换算到账户基础币种');
+    return normalizeHolding(p,currency);
+  });
+  const A=positions.reduce((s,p)=>s+(p.market_value||0),0),E=A-financing;
   if(!Number.isFinite(A)||!Number.isFinite(E)||E<=0)throw new Error('净值 E=A−B 必须为正；请检查市值、融资余额或负值现金');
   return {account:{currency,financing,updatedAt:account.updatedAt||new Date().toISOString()},holdings:positions};
 }
 export function accountSummary(data,portfolio){
-  const A=data.holdings.reduce((s,p)=>s+p.market_value,0),B=data.account.financing,E=A-B;
+  const A=data.holdings.reduce((s,p)=>s+(p.market_value||0),0),B=data.account?.financing??0,E=A-B;
   const valid=Number.isFinite(E)&&E>0;
   const target=valid&&portfolio.status==='ready'?portfolio.target_leverage:null;
   const targetMarketValue=target===null?null:E*target,adjustment=targetMarketValue===null?null:targetMarketValue-A;
@@ -125,15 +158,50 @@ export function validateControllerState(st){
   if(st.entry_pending&&st.pending_target===null||st.entered&&st.current_target===null)throw new Error('正式控制器缺少目标');
   return structuredClone(st);
 }
+export function normalizeQuote(q){
+  if(!q||typeof q!=='object')throw new Error('无效报价');
+  const sym=symbol(q.symbol),pr=number(q.price,'价格');
+  if(pr<=0)throw new Error('价格必须为正数');
+  const curr=String(q.currency||'USD').trim().toUpperCase();
+  if(!/^[A-Z]{3}$/.test(curr))throw new Error('报价币种须为三位代码');
+  return {symbol:sym,price:pr,currency:curr,as_of:q.as_of?validDate(q.as_of):today(),
+    source_url:String(q.source_url||''),source_name:String(q.source_name||''),retrieved_at:q.retrieved_at||new Date().toISOString()};
+}
+export function normalizeFxRate(pair,r){
+  const p=String(pair||'').trim().toUpperCase();
+  if(!/^[A-Z]{3}[\/_][A-Z]{3}$/.test(p))throw new Error('汇率对格式须为 EUR/USD');
+  const normalizedPair=p.replace('_','/');
+  const val=typeof r==='object'&&r!==null?r.rate:r;
+  const rate=number(val,'汇率');if(rate<=0)throw new Error('汇率必须为正数');
+  return {pair:normalizedPair,rate,as_of:(typeof r==='object'&&r?.as_of)?validDate(r.as_of):today(),
+    source_url:String(typeof r==='object'&&r?.source_url||''),retrieved_at:(typeof r==='object'&&r?.retrieved_at)||new Date().toISOString()};
+}
+export function normalizeJob(job){
+  if(!job||typeof job!=='object')throw new Error('无效任务');
+  return {id:String(job.id||uid()),symbol:symbol(job.symbol),status:String(job.status||'pending'),
+    missing_months:Array.isArray(job.missing_months)?job.missing_months.map(String):[],
+    missing_fields:Array.isArray(job.missing_fields)?job.missing_fields.map(String):[],
+    error:job.error?String(job.error):null,details:job.details?String(job.details):'',
+    created_at:job.created_at||new Date().toISOString(),updated_at:job.updated_at||new Date().toISOString()};
+}
 export function validateBackup(input){
-  if(input?.schemaVersion!==SCHEMA_VERSION||input?.algorithm!=='finite-rational-60-rho0.9')throw new Error('备份版本或策略标识不兼容');
+  if(input?.algorithm!=='finite-rational-60-rho0.9'||![1,2].includes(input?.schemaVersion))throw new Error('备份版本或策略标识不兼容');
   if(!['holdings','valuations','formalEvents'].every(k=>Array.isArray(input[k])))throw new Error('备份缺少持仓、估值或正式状态数组');
   const data=emptyData();
-  // An untouched empty account is a valid backup, but cannot yield an account recommendation.
-  if(!input.holdings.length&&Number(input.account?.financing)===0){
-    const currency=String(input.account.currency||'').toUpperCase();if(!/^[A-Z]{3}$/.test(currency))throw new Error('基础币种无效');
-    data.account={currency,financing:0,updatedAt:input.account.updatedAt??null};
-  }else Object.assign(data,normalizeAccount(input.account,input.holdings));
+  data.schemaVersion=2;
+  data.referenceCurrency=String(input.referenceCurrency||input.account?.currency||'USD').toUpperCase();
+  if(input.schemaVersion===1&&input.account){
+    if(!input.holdings.length&&Number(input.account.financing)===0){
+      const currency=String(input.account.currency||data.referenceCurrency).toUpperCase();if(!/^[A-Z]{3}$/.test(currency))throw new Error('基础币种无效');
+      data.account={currency,financing:0,updatedAt:input.account.updatedAt??null};
+    }else{
+      Object.assign(data,normalizeAccount(input.account,input.holdings));
+    }
+    data.holdings=data.holdings.map(h=>({...h,input_mode:h.input_mode||(h.market_value!=null?'market_value':'shares')}));
+  }else{
+    data.holdings=input.holdings.map(p=>normalizeHolding(p,data.referenceCurrency));
+    data.account=input.account?structuredClone(input.account):null;
+  }
   data.valuations=input.valuations.map(normalizeValuation);
   const ids=new Set(),currents=new Set();
   for(const row of data.valuations){if(ids.has(row.id))throw new Error('估值记录 ID 重复');ids.add(row.id);
@@ -144,6 +212,9 @@ export function validateBackup(input){
     validDate(event.signal_date);if(event.effective_date)validDate(event.effective_date);
     return {...event,symbol:symbol(event.symbol),state:validateControllerState(event.state)};
   });
+  data.quotes=(input.quotes&&typeof input.quotes==='object')?structuredClone(input.quotes):{};
+  data.fxRates=(input.fxRates&&typeof input.fxRates==='object')?structuredClone(input.fxRates):{};
+  data.enrichmentJobs=Array.isArray(input.enrichmentJobs)?structuredClone(input.enrichmentJobs):[];
   data.migrationNotes=Array.isArray(input.migrationNotes)?input.migrationNotes:[];
   data.updatedAt=input.updatedAt??null;return data;
 }
