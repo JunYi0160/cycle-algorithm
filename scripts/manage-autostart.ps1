@@ -11,7 +11,7 @@ $icoPath = Join-Path $root "public\icon.ico"
 $wscriptExe = Join-Path $env:SystemRoot "System32\wscript.exe"
 
 $startupDir = [Environment]::GetFolderPath("Startup")
-$startupLnk = Join-Path $startupDir "Cycle Algorithm Daemon.lnk"
+$startupLnk = Join-Path $startupDir "Cycle Algorithm 守护进程.lnk"
 
 # Detect desktop paths
 $desktopDirs = @(

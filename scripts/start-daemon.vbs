@@ -24,22 +24,29 @@ http.open "GET", "http://127.0.0.1:8789/api/status", False
 http.setTimeouts 500, 500, 500, 500
 http.send
 
-If Err.Number = 0 And http.status = 200 Then
+Dim serverIsRunning
+serverIsRunning = False
+If Err.Number = 0 Then
+    If http.status = 200 Then
+        serverIsRunning = True
+    End If
+End If
+Err.Clear
+On Error GoTo 0
+
+If serverIsRunning Then
     If Not isAutoStart Then
         ws.Run "http://127.0.0.1:8789/cycle-algorithm/", 1, False
     End If
     WScript.Quit 0
 End If
-Err.Clear
-On Error GoTo 0
 
 ' Start helper.cmd directly with hidden window (0)
 On Error Resume Next
 If isAutoStart Then
-    ws.Run """" & helperCmd & """ autostart", 0, False
+    ws.Run "cmd.exe /c """ & helperCmd & """ autostart", 0, False
 Else
-    ws.Run """" & helperCmd & """", 0, False
+    ws.Run "cmd.exe /c """ & helperCmd & """", 0, False
 End If
-If Err.Number <> 0 Then
-    WScript.Echo "Error launching helperCmd: " & Err.Number & " " & Err.Description
-End If
+Err.Clear
+On Error GoTo 0
