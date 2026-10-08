@@ -6,7 +6,7 @@ const root=resolve(dirname(fileURLToPath(import.meta.url)),'../dist');
 const args=process.argv.slice(2),value=(key,fallback)=>{const i=args.indexOf(key);return i>=0?args[i+1]:fallback;};
 const base=value('--base','/cycle-algorithm/'),port=Number(value('--port','8788'));
 if(!/^\/(?:[\w-]+\/)*$/.test(base))throw new Error('--base 必须是以 / 开始和结束的路径');
-const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.png':'image/png','.csv':'text/csv; charset=utf-8'};
+const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.png':'image/png','.csv':'text/csv; charset=utf-8','.json':'application/json; charset=utf-8'};
 createServer((req,res)=>{
   try{
     const path=decodeURIComponent(new URL(req.url,'http://127.0.0.1').pathname);

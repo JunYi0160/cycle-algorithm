@@ -1,159 +1,65 @@
-# Cycle Algorithm · 持仓比例与 Antigravity 自动补数
+# Cycle Algorithm · 手动数据与组合计算
 
-静态网页在浏览器中计算策略与组合目标杠杆。用户日常仅维护当前持仓比例；系统通过本机 Google Antigravity CLI 自动联网补足公开报价与历史估值数据，由项目原有确定性估值与控制器算法推演各标的杠杆，按持仓相对权重加权输出组合目标杠杆。
+公开估值、价格、汇率和逐标的策略状态保存在仓库的 [data/](data/README.md)。网页读取这些项目文件，在浏览器计算策略。没有生产运行依赖，也没有自动采集、账户连接或自动交易。
 
-严格遵循**零 API 额外费用**原则：强制锁定 `useG1Credits: false`，仅消耗用户 Antigravity 套餐内基础额度（含周额度池），不启用任何付费 Gemini API、Vertex AI 或外部收费接口。
+每次打开网页手动输入标的市值或比例；这些输入只留在当前页面的内存中，刷新后清空，不进入公开数据、导出文件或网络请求。
 
----
+## 日常使用
 
-## 1. 核心架构与工作流程
+1. 打开网页，在“本次组合输入”添加标的，选择市值或比例，点击“计算本次组合”。比例自动归一化；市值须采用同一参考币种，或先手动维护汇率。
+2. 在“数据查阅与维护”按标的、日期、来源筛选估值、价格、汇率。点击“查看 / 编辑”查看完整原始输入，修改评分或用 11 项基本面重新算分。
+3. 页面修改暂留在内存。下载“项目数据包 ZIP”，解压后用其中的文件覆盖仓库 data/，检查差异并提交；也可直接在 GitHub 或本地编辑 CSV。
+4. 提交到 main 后，GitHub Actions 校验数据、运行测试并发布页面。下一次打开网页会读取仓库中已发布的版本。
+
+GitHub Pages 是静态网站。网页不保存 GitHub 凭据，也不直接写入仓库；导出本身不会替你提交。刷新前应导出尚未提交的数据修改。本次组合输入始终需要重填。
+
+## 数据布局
 
 ```text
-用户输入/更新持仓（市值模式 / 股数模式 / 直接比例模式）并保存
-  │
-  ▼
-前端本地检查：缓存有效性、最新报价、各标的 60 个月历史连续性
-  │
-  ├─ 数据已齐备 ──► 原有确定性算法回放各标的控制器 ──► 组合加权目标杠杆
-  │
-  └─ 有缺失（新标的 / 缺最新报价 / 历史缺月）
-       │
-       ▼
-     自动向本机助手 (http://127.0.0.1:8789) 提交补数任务
-       │
-       ▼
-     本机助手预检费用保护 (useG1Credits: false) 并调用 agy CLI
-       │
-       ▼
-     获取公开财务披露 (SEC/IR) 与分析师一致预期，附带来源与证据
-       │
-       ▼
-     前端通过 computeTechValuation 校验并计算 S_Tech 评分
-       │
-       ▼
-     幂等合并估值修订、更新权重、重新推演组合目标杠杆
+data/
+  manifest.json              # 标的清单和文件路径
+  valuations/NVDA.csv         # 月度评分、11 项原始输入、来源及修订
+  prices/NVDA.csv             # 带日期和币种的公开价格
+  valuations/AVGO.csv
+  prices/AVGO.csv
+  fx-rates.csv               # 手动维护的换汇汇率
+  formal-events.json         # 逐标的月末信号和控制器状态
+  README.md                  # 字段说明与新增步骤
 ```
 
----
+CSV 每条记录一行，缺失数据留空；只有 N/A 状态可留空评分。不用 0 代替未知值。相同估值日期更新保留旧修订；价格以 symbol + as_of 唯一，汇率以 pair 唯一。Git 历史也保留每次文件修改。
 
-## 2. 快速开始（Windows 本机一键启动）
+当前迁入 2026-10-08 13:08 的旧系统导出：130 条估值修订、128 条当前日期价格，标的为 NVDA 和 AVGO。价格沿用旧导入器的 USD 口径，是对应估值的 price 输入，包含旧数据的调整口径，并非实时行情。来源插值及来源待核实标记保留。旧数据库当时未运行，迁入的是已有导出，不代表更晚数据库或旧浏览器中的修改。
 
-### 2.1 环境准备
-1. **Google Antigravity CLI (`agy`)**：
-   - 官方 Windows 原生 CLI 已安装（如 `%LOCALAPPDATA%\agy\bin\agy.exe` 或用户 PATH）。
-   - 首次登录：在命令行执行 `agy auth login` 完成 Google 账号登录。
-   - 费用保护设置：`%USERPROFILE%\.gemini\antigravity-cli\settings.json` 中已配置：
-     ```json
-     {
-       "useG1Credits": false,
-       "permissions": {
-         "allow": [
-           "read_url(*)"
-         ]
-       }
-     }
-     ```
-   - 本机助手在每次调用前均会**强制重写并核验** `useG1Credits: false`，杜绝任何意外扣费。
+导入旧 JSON 只提取公开估值、价格、汇率和兼容的逐标的状态。账户、持仓、数量、市值、比例、融资、自动任务和旧审计原始载荷不保存。旧控制器事件仅保留标的提示，以便首次新版正式信号从历史重放；旧 pending target 不可直接激活。
 
-2. **Node.js**：Node.js 22+（本项目自带 Node 环境脚本，无需安装额外 npm 运行时依赖）。
+## 策略规则
 
-### 2.2 一键启动助手与本地应用
-在项目根目录下双击运行：
-```cmd
-scripts\start-helper.cmd
-```
-或在 PowerShell 中执行：
+计算模块仍为原有 pivot-hysteresis-v2：固定 60 个月、rho=0.9、目标杠杆 1.00–1.75 倍；各标的独立回放后按本次输入加权。任一标的不可计算时阻塞整个组合。比例与市值不能混用。
+
+历史预览只对内部缺月临时插值，不外推，也不把插值写成原始记录；没有合格入场点时会提示预览强制入场。正式入场仍严格要求 x<30%，月末生成 pending，下一月手动激活。正式状态也需要随公开数据提交。
+
+数学与合成验证见 [控制器 v2](docs/hysteresis-v2.md)。研究目录保留独立、冻结的研究材料，不参与网页数据加载。
+
+## 开发与验证
+
+Node.js 22 或以上，无需安装生产依赖：
+
 ```powershell
-.\scripts\start-helper.ps1
+npm run validate:data
+npm test
+npm run build
+npm run preview
 ```
-启动脚本将自动检测端口、核验费用设置，启动本地助手守护进程并自动打开浏览器访问：
-- **本地完整入口**：`http://127.0.0.1:8789/cycle-algorithm/`
-- **助手 API 状态**：`http://127.0.0.1:8789/api/status`
 
-也可在 GitHub Pages 线上地址（`https://junyi0160.github.io/cycle-algorithm/`）运行，现代浏览器在授权 Private Network Access 后即可直接与本机助手通信。
+本地预览：`http://127.0.0.1:8788/cycle-algorithm/`。部署见 [DEPLOYMENT.md](DEPLOYMENT.md)。浏览器集成检查使用开发用 Playwright：`node tests/browser-smoke.mjs`。
 
----
+一次性数据库导出器只读取 assets 和 valuation_history；不是日常运行依赖：
 
-## 3. 持仓模式与策略行为
-
-### 3.1 三种持仓输入模式
-- **市值模式**（推荐）：输入标的 + 市值 + 币种（如 `NVDA`, `15000`, `USD`）。无需填股数，无需抓取当天价格；异币种持仓按公开汇率自动折算。
-- **股数模式**：输入标的 + 股数（如 `AAPL`, `100`）。系统自动通过 Antigravity 获取最新公开收盘报价并换算为参考币种市值。
-- **直接比例模式**：输入无单位数值（如 `75`, `25`），系统自动归一化为 75% 与 25%。直接比例模式禁止与货币金额混用。
-
-### 3.2 权重与加权杠杆计算
-$$w_i = \frac{v_i}{\sum_j v_j}, \quad L_{\text{portfolio}} = \sum_i (w_i \times L_i)$$
-- **比例不变性**：将所有持仓市值等比例缩放（如全部乘以 2），持仓权重和组合目标杠杆严格保持不变。
-- **逐标的独立回放**：每个标的根据各自 60 个月历史评分完整回放独立控制器路径（$\rho=0.9$, 目标杠杆区间 $1.00–1.75\times$），再行加权汇总。严禁将各标的评分或百分位平均后输入单一控制器。
-- **严格阻塞**：任何持仓缺少有效报价、汇率或连续 60 个月估值时，整个组合目标杠杆显示为阻塞状态（`—`），绝不静默剔除问题持仓。
-- **解耦旧账户指标**：默认界面彻底移除旧版股票总市值 A、借款/现金 B、净值 E、实际杠杆以及虚构交易金额等不必要字段。
-
----
-
-## 4. 自动估值与真实数据保证
-
-权威算分函数位于 [`src/valuation.js`](src/valuation.js)，输入必须包含完整的 11 项原始数据：
-- `price`（月末收盘价）
-- `eps_ttm` / `eps_ntm` / `eps_ntm_90d`（一致预期及 90 天前一致预期）
-- `revenue_ttm` / `revenue_ntm`
-- `g_revenue_2` / `g_eps_2`（下一阶段预期增长率，小数形式）
-- `fcf_ttm` / `sbc_ttm` / `ni_ttm`（现金流与利润质量项）
-
-### 真实性与缺失处理
-- **杜绝数据幻觉**：大模型仅负责检索与提取公开披露数据，所有最终评分必须由程序调用 `computeTechValuation` 严格复核，不采信 AI 自行生成的评分数字。
-- **充分证据保留**：每条补齐的估值记录完整保存 `source_url`、`source_institution`、`as_of_period`、`evidence_summary` 与 `retrieved_at`。
-- **公开数据不足报告**：若公开网络无法免费检索到标的历史一致预期（例如 5 年前的逐月 90 天预期），系统返回结构化 `insufficient_data` 并精确列出缺数月份，不进行无根据的数值猜测、不平铺复制当前值、不使用后来披露冒充历史当时数据。
-- **临时插值标记**：内部月份临时插值仅用于预览展示，并与数据源自带的插值严格区分。
-
----
-
-## 5. 数据存储与迁移
-
-- **存储隔离与升级**：数据保存在浏览器 localStorage 的 `cycle-algorithm-v2:` 命名空间下。
-- **算法与数据升级**：控制器为 `pivot-hysteresis-v2`，备份为 schema 3，沿用原存储键。读取原算法 schema 1/2 数据时，保留持仓、报价、汇率、估值修订、来源证据和补数任务，旧正式事件完整归档到 `legacyFormalEvents`。
-- **旧正式状态处理**：旧 pending target 不能直接激活；首次新版正式信号从截至该月的估值历史重建锚点。兼容 pivot v2 schema 2 备份的导入，新正式状态恢复后沿原路径继续。
-- **完整 JSON 备份**：支持一键导出和导入持仓、最新报价缓存、汇率缓存、估值历史、正式事件、旧版审计事件和补数任务。
-
-2026-10-08 修复非极端折返沿下边界原路返回的数学问题，支持区域内部局部回环。公式、升级规则、验收和含费用合成结果见 [控制器 v2 数学与升级](docs/hysteresis-v2.md)。小幅震荡可能不足以覆盖费用，修复不保证所有震荡盈利。
-
----
-
-## 6. 代码结构与验证
-
-| 文件 | 职责说明 |
-| --- | --- |
-| `src/valuation.js` | 权威 11 项基本面输入计算 `S_Tech` 固定公式及 N/A 判定 |
-| `src/strategy.js` | 百分位、曲线、包络、控制器有状态路径回放、账户利息与费用 |
-| `src/preview.js` | 多币种汇率换算、持仓权重归一化、各标的回放与组合加权 |
-| `src/model.js` | Schema 3 数据归一化、旧控制器审计归档、正式状态重建、备份及历史修订 |
-| `src/storage.js` | 保留现有 v2 存储命名空间、读取旧 v1 数据 |
-| `src/app.js` | 响应式前端交互、持仓编辑器、补数任务调度与可视化图表 |
-| `scripts/helper.mjs` | 本机轻量级 HTTP 守护进程（端口 8789），负责 agy CLI 调度与费用锁定 |
-| `scripts/build.mjs` | 严格白名单静态资源打包至 `dist/` |
-| `tests/` | 完整的自动化测试套件（数值基准、策略行为、补数工作流） |
-
-### 运行测试与构建
 ```powershell
-# 运行全部 48 项测试（包含 Python 数值基准、内部回环、状态迁移、补数与缓存更新）
-node --test tests/*.test.mjs
-
-# 重现固定的含融资/交易费用合成场景；不调用真实账户或市场接口
-node scripts/validate-oscillation.mjs
-
-# 构建静态产物至 dist/ 目录（13 个白名单文件）
-node scripts/build.mjs
+python -B scripts/export_legacy.py --engine C:\strategy-directus\engine --env C:\strategy-directus\.env
+node scripts/import-project-json.mjs private-exports/public-market-data.json
+npm run validate:data
 ```
 
-### 页面更新与浏览器缓存
-
-构建会根据前端源码生成内容版本号，并为样式、入口脚本及所有模块依赖附加同一个版本参数。`release.json` 用于绕过缓存检查新版本；启动时发现旧页面会转到新版本链接，已经打开的页面会提示“刷新到最新版”，让用户先保存编辑。
-
-如果 Chrome 仍停留在没有新版检测功能的旧页面，首次迁移时使用 `https://junyi0160.github.io/cycle-algorithm/?v=<release.json 中的版本号>` 重新打开。无需删除网站数据；持仓和估值仍保存在原浏览器的存储中。网页内的缓存 meta 标签不能替代静态托管服务的 HTTP 响应头。
-
-缓存机制参考：[MDN HTTP caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching)、[Request.cache](https://developer.mozilla.org/en-US/docs/Web/API/Request/cache)。
-
-测试覆盖：
-- **Acceptance 12.A**：市值模式权重（75%/25% 对应 1.3× 组合杠杆）、股数模式报价推导、比例缩放不变性、多币种折算与阻塞、逐标的独立路径控制器加权。
-- **Acceptance 12.B**：11 项公式严谨性与 N/A 拦截、来源证据保留与往返还原、部分补齐与公开数据不足报告。
-- **Acceptance 12.C**：`useG1Credits: false` 费用保护拦截、本地助手 `/api/status` 与 `/api/protect-cost` 接口、旧版至 schema 3 兼容往返、重复合并幂等性（修订号自增且不重复记录）。
-- **控制器 v2**：非极端反转、稳定局部闭合回环及正积分、边界/端点、Python逐步对照、旧状态归档、锚点恢复、次月首日收盘后激活、含费用合成盈利与亏损案例。
+导入脚本合并文件前会检查已有 manifest；新增或整批替换后仍应检查差异和数据校验结果。

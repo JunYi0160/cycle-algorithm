@@ -15,8 +15,10 @@ test('build versions the full import graph and changes release when a dependency
   try{
     cpSync(join(root,'src'),join(workspace,'src'),{recursive:true});
     cpSync(join(root,'public'),join(workspace,'public'),{recursive:true});
+    cpSync(join(root,'data'),join(workspace,'data'),{recursive:true});
     mkdirSync(join(workspace,'scripts'));
     copyFileSync(join(root,'scripts/build.mjs'),join(workspace,'scripts/build.mjs'));
+    copyFileSync(join(root,'scripts/project-files.mjs'),join(workspace,'scripts/project-files.mjs'));
     const build=()=>{
       const result=spawnSync(process.execPath,[join(workspace,'scripts/build.mjs')],{encoding:'utf8'});
       assert.equal(result.status,0,result.stderr);
@@ -43,6 +45,9 @@ test('build versions the full import graph and changes release when a dependency
     }
     appendFileSync(join(workspace,'src/strategy.js'),'\n// changed dependency\n');
     assert.notEqual(build(),version,'changes below app.js must invalidate the whole graph');
+    const changedCode=build();
+    appendFileSync(join(workspace,'data/prices/NVDA.csv'),'\n');
+    assert.notEqual(build(),changedCode,'market data changes must also publish a new release');
   }finally{
     assert.ok(resolve(workspace).startsWith(prefix));
     assert.equal(resolve(workspace,'..'),resolve(tmpdir()));

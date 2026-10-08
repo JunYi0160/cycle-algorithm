@@ -1,15 +1,16 @@
-import {ALGORITHM_ID,CONFIG,Controller,valuationState,envelope,Account} from './strategy.js';
+import {ALGORITHM_ID,CONFIG,Controller,valuationState,envelope} from './strategy.js';
 import {monthNumber,monthFromNumber} from './preview.js';
-export const SCHEMA_VERSION=3;
+import {INPUT_FIELDS} from './valuation.js';
+export const SCHEMA_VERSION=4;
 export const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
 export const uid=()=>globalThis.crypto?.randomUUID?.()||`${Date.now()}-${Math.random().toString(16).slice(2)}`;
 export function emptyData(){return {schemaVersion:SCHEMA_VERSION,algorithm:ALGORITHM_ID,
-  referenceCurrency:'USD',account:null,holdings:[],quotes:{},fxRates:{},
-  valuations:[],enrichmentJobs:[],formalEvents:[],legacyFormalEvents:[],migrationNotes:[],updatedAt:null};}
+  valuations:[],prices:[],fxRates:{},formalEvents:[],legacyFormalEvents:[],migrationNotes:[],updatedAt:null};}
 export function number(value,label){
   if(value===null||value===undefined||typeof value==='boolean'||String(value).trim()===''||!Number.isFinite(Number(value)))throw new Error(`${label} 必须是有限数值`);
   return Number(value);
 }
+function optionalText(value){if(value==null)return null;if(typeof value==='object')throw new Error('来源时间和记录引用须为文本');return String(value);}
 export function symbol(value){const s=String(value??'').trim().toUpperCase();if(!/^[A-Z0-9.\-]{1,20}$/.test(s))throw new Error('Symbol 须为 1–20 位字母、数字、点或连字符');return s;}
 export function validDate(value){
   const s=String(value??'');const d=new Date(s+'T12:00:00Z');
@@ -30,19 +31,23 @@ export function normalizeValuation(row){
   const interpolated=flag(row.interpolated,'interpolated',false);
   const provenance=row.provenance||(interpolated?'source-interpolated':'observation');
   if(!['observation','source-interpolated','legacy-unknown'].includes(provenance))throw new Error('来源标记无效');
-  // Whitelist keeps the public/local schema small while retaining source evidence.
+  const scoreMethod=row.score_method||'manual';
+  if(!['manual','formula'].includes(scoreMethod))throw new Error('score_method 须为 manual 或 formula');
+  const raw=row.raw_inputs?Object.fromEntries(INPUT_FIELDS.filter(k=>row.raw_inputs[k]!==undefined&&row.raw_inputs[k]!==null&&row.raw_inputs[k]!=='').map(k=>[k,number(row.raw_inputs[k],k)])):null;
+  // Only public market data and source evidence belong in the project dataset.
   return {id:String(row.id||uid()),symbol:symbol(row.symbol),valuation_date:date,s_tech:score,status,
     source_code:String(row.source_code||'manual'),notes:String(row.notes||''),interpolated,provenance,
     is_current:flag(row.is_current,'is_current',true),revision:row.revision===undefined?1:number(row.revision,'revision'),
-    observed_at:row.observed_at??null,source_timestamp:row.source_timestamp??null,raw_inputs:row.raw_inputs??null,
-    derived_result:row.derived_result??null,supersedes:row.supersedes??null,
+    observed_at:optionalText(row.observed_at),source_timestamp:optionalText(row.source_timestamp),raw_inputs:raw,
+    supersedes:optionalText(row.supersedes),
     source_institution:row.source_institution?String(row.source_institution):null,
     as_of_period:row.as_of_period?String(row.as_of_period):null,
     evidence_summary:row.evidence_summary?String(row.evidence_summary):null,
     source_url:row.source_url?String(row.source_url):null,
-    retrieved_at:row.retrieved_at?String(row.retrieved_at):null};
+    retrieved_at:row.retrieved_at?String(row.retrieved_at):null,
+    score_method:scoreMethod};
 }
-export function parseCSV(text){
+export function parseTable(text){
   const rows=[];let row=[],cell='',quoted=false;
   const src=String(text).replace(/^\uFEFF/,'');
   for(let i=0;i<src.length;i++){
@@ -58,8 +63,12 @@ export function parseCSV(text){
   if(!rows.length)throw new Error('CSV 文件为空');
   const header=rows.shift().map(x=>x.trim());
   if(new Set(header).size!==header.length)throw new Error('CSV 表头重复');
-  if(!header.includes('symbol')||!header.includes('s_tech')||!(header.includes('valuation_date')||header.includes('month')))throw new Error('CSV 需要 symbol、valuation_date（或 month）、s_tech 列');
   return rows.map((r,i)=>{if(r.length!==header.length)throw new Error(`CSV 第 ${i+2} 行列数不一致`);return Object.fromEntries(header.map((k,j)=>[k,r[j]]));});
+}
+export function parseCSV(text){
+  const rows=parseTable(text);
+  if(rows.length&&!('symbol' in rows[0]&&'s_tech' in rows[0]&&('valuation_date' in rows[0]||'month' in rows[0])))throw new Error('CSV 需要 symbol、valuation_date（或 month）、s_tech 列');
+  return rows;
 }
 export function parseValuations(text,filename){
   let rows;if(/\.csv$/i.test(filename))rows=parseCSV(text);
@@ -75,69 +84,23 @@ export function mergeValuations(data,rows){
   for(const input of rows){const row=normalizeValuation(input);
     if(!row.is_current){if(!next.valuations.some(r=>r.id===row.id))next.valuations.push(row);else skipped++;continue;}
     const current=next.valuations.filter(r=>r.symbol===row.symbol&&r.valuation_date===row.valuation_date&&r.is_current);
-    if(current.some(r=>r.s_tech===row.s_tech&&r.status===row.status&&r.source_code===row.source_code&&r.interpolated===row.interpolated&&r.provenance===row.provenance&&r.notes===row.notes&&JSON.stringify(r.raw_inputs)===JSON.stringify(row.raw_inputs))){skipped++;continue;}
+    const comparable=r=>JSON.stringify(Object.fromEntries(Object.entries(r).filter(([k])=>!['id','revision','supersedes'].includes(k))));
+    if(current.some(r=>comparable(r)===comparable(row))){skipped++;continue;}
     for(const old of current)old.is_current=false;
     next.valuations.push({...row,id:uid(),revision:current.length?Math.max(...current.map(r=>r.revision))+1:row.revision,supersedes:current.at(-1)?.id??row.supersedes});added++;
   }
   return {data:next,added,skipped};
 }
-export function normalizeHolding(p,defaultCurrency='USD'){
-  const sym=symbol(p.symbol);const sec_type=String(p.sec_type||'STK');
-  const currency=String(p.currency||defaultCurrency||'USD').trim().toUpperCase();
-  if(!/^[A-Z]{3}$/.test(currency))throw new Error('基础币种须为三位代码，例如 EUR / USD');
-  const mode=p.input_mode||(p.ratio!=null?'ratio':(p.market_value!=null&&p.market_value!==''?'market_value':'shares'));
-
-  let quantity=null,market_value=null,ratio=null;
-  if(mode==='ratio'){
-    ratio=number(p.ratio??p.quantity,'比例');
-    if(ratio<=0)throw new Error('持仓比例须为正数');
-  }else if(mode==='shares'){
-    quantity=number(p.quantity,'数量');
-    if(quantity<0)throw new Error('当前账户模型不支持空头；数量不得为负');
-    if(quantity===0)throw new Error('当前策略仅支持正股多头');
-    if(p.market_value!==undefined&&p.market_value!==null&&p.market_value!==''){
-      market_value=number(p.market_value,'市值');if(market_value<0)throw new Error('非零持仓市值须为正；零数量的市值须为零');
-    }
-  }else{ // market_value
-    const hasQty = p.quantity !== undefined && p.quantity !== null && p.quantity !== '';
-    quantity = hasQty ? number(p.quantity, '数量') : null;
-    market_value = number(p.market_value, '市值');
-    if (quantity !== null && quantity < 0) throw new Error('当前账户模型不支持空头；数量不得为负');
-    if (market_value <= 0) throw new Error('非零持仓市值须为正；零数量的市值须为零');
-    if (quantity === 0 && market_value !== 0) throw new Error('非零持仓市值须为正；零数量的市值须为零');
-  }
-
-  const result={id:String(p.id||uid()),symbol:sym,quantity,market_value,sec_type,currency};
-  if(p.input_mode) result.input_mode=mode;
-  if(ratio!=null) result.ratio=ratio;
-  if(p.source_currency){
-    result.source_currency=String(p.source_currency);result.source_market_value=number(p.source_market_value,'原币种市值');
-    result.conversion_rate=number(p.conversion_rate,'迁移汇率');if(result.conversion_rate<=0)throw new Error('迁移汇率须为正');
-    result.conversion_snapshot_time=p.conversion_snapshot_time??null;
-  }
-  return result;
-}
-export function normalizeAccount(account,holdings){
-  const currency=String(account.currency||'').trim().toUpperCase();
-  if(!/^[A-Z]{3}$/.test(currency))throw new Error('基础币种须为三位代码，例如 EUR / USD');
-  const financing=number(account.financing,'融资余额 B');
-  const positions=holdings.map(p=>{
-    if(p.currency&&p.currency!==currency)throw new Error('全部持仓市值须换算到账户基础币种');
-    return normalizeHolding(p,currency);
-  });
-  const A=positions.reduce((s,p)=>s+(p.market_value||0),0),E=A-financing;
-  if(!Number.isFinite(A)||!Number.isFinite(E)||E<=0)throw new Error('净值 E=A−B 必须为正；请检查市值、融资余额或负值现金');
-  return {account:{currency,financing,updatedAt:account.updatedAt||new Date().toISOString()},holdings:positions};
-}
-export function accountSummary(data,portfolio){
-  const A=data.holdings.reduce((s,p)=>s+(p.market_value||0),0),B=data.account?.financing??0,E=A-B;
-  const valid=Number.isFinite(E)&&E>0;
-  const target=valid&&portfolio.status==='ready'?portfolio.target_leverage:null;
-  const targetMarketValue=target===null?null:E*target,adjustment=targetMarketValue===null?null:targetMarketValue-A;
-  let exact=null;
-  if(target!==null){const account=new Account(A,B);const [trade,fee]=account.rebalanceTo(target);exact={trade,fee};}
-  return {A,B,E,valid,actualLeverage:valid?(A>0?A/E:0):null,target,targetMarketValue,adjustment,exact,
-    hardCapBreached:valid&&A>0&&A/E>CONFIG.hard_cap};
+// Calculation inputs live only in memory. Never include these in a dataset export.
+export function normalizeSessionHolding(p,defaultCurrency='USD'){
+  const mode=p.input_mode||'ratio';
+  if(!['ratio','market_value'].includes(mode))throw new Error('请选择市值或比例');
+  const value=number(mode==='ratio'?p.ratio:p.market_value,mode==='ratio'?'比例':'市值');
+  if(value<=0)throw new Error('市值或比例须为正数');
+  const currency=String(p.currency||defaultCurrency).trim().toUpperCase();
+  if(!/^[A-Z]{3}$/.test(currency))throw new Error('币种须为三位代码');
+  return {id:String(p.id||uid()),symbol:symbol(p.symbol),input_mode:mode,sec_type:'STK',currency,
+    ...(mode==='ratio'?{ratio:value}:{market_value:value})};
 }
 export function controllerFromLegacyRun(run){
   let cfg=run.strategy_config;if(typeof cfg==='string'){try{cfg=JSON.parse(cfg);}catch{cfg=null;}}
@@ -160,7 +123,8 @@ export function validateControllerState(st){
   if((st.entered||st.entry_pending)&&(st.z===null||st.previous_x===null))throw new Error('正式控制器缺少 z / previous_x');
   if(st.initialized&&(st.pivot_x===null||st.pivot_z===null))throw new Error('正式控制器缺少反转锚点');
   if(st.entry_pending&&st.pending_target===null||st.entered&&st.current_target===null)throw new Error('正式控制器缺少目标');
-  return structuredClone(st);
+  const keys=['initialized','entered','entry_pending','z','previous_x','direction','alpha','beta','pivot_x','pivot_z','pending_target','current_target'];
+  return Object.fromEntries(keys.map(k=>[k,st[k]]));
 }
 export function normalizeQuote(q){
   if(!q||typeof q!=='object')throw new Error('无效报价');
@@ -169,7 +133,7 @@ export function normalizeQuote(q){
   const curr=String(q.currency||'USD').trim().toUpperCase();
   if(!/^[A-Z]{3}$/.test(curr))throw new Error('报价币种须为三位代码');
   return {symbol:sym,price:pr,currency:curr,as_of:q.as_of?validDate(q.as_of):today(),
-    source_url:String(q.source_url||''),source_name:String(q.source_name||''),retrieved_at:q.retrieved_at||new Date().toISOString()};
+    source_url:String(q.source_url||''),source_name:String(q.source_name||''),notes:String(q.notes||''),retrieved_at:optionalText(q.retrieved_at)};
 }
 export function normalizeFxRate(pair,r){
   const p=String(pair||'').trim().toUpperCase();
@@ -178,55 +142,41 @@ export function normalizeFxRate(pair,r){
   const val=typeof r==='object'&&r!==null?r.rate:r;
   const rate=number(val,'汇率');if(rate<=0)throw new Error('汇率必须为正数');
   return {pair:normalizedPair,rate,as_of:(typeof r==='object'&&r?.as_of)?validDate(r.as_of):today(),
-    source_url:String(typeof r==='object'&&r?.source_url||''),retrieved_at:(typeof r==='object'&&r?.retrieved_at)||new Date().toISOString()};
-}
-export function normalizeJob(job){
-  if(!job||typeof job!=='object')throw new Error('无效任务');
-  return {id:String(job.id||uid()),symbol:symbol(job.symbol),status:String(job.status||'pending'),
-    missing_months:Array.isArray(job.missing_months)?job.missing_months.map(String):[],
-    missing_fields:Array.isArray(job.missing_fields)?job.missing_fields.map(String):[],
-    error:job.error?String(job.error):null,details:job.details?String(job.details):'',
-    created_at:job.created_at||new Date().toISOString(),updated_at:job.updated_at||new Date().toISOString()};
+    source_url:String(typeof r==='object'&&r?.source_url||''),notes:String(typeof r==='object'&&r?.notes||''),retrieved_at:optionalText(typeof r==='object'?r?.retrieved_at:null)};
 }
 export function validateBackup(input){
   const legacy=input?.algorithm==='finite-rational-60-rho0.9'&&[1,2].includes(input?.schemaVersion);
-  const current=input?.algorithm===ALGORITHM_ID&&[2,SCHEMA_VERSION].includes(input?.schemaVersion);
-  if(!legacy&&!current)throw new Error('备份版本或策略标识不兼容');
-  if(!['holdings','valuations','formalEvents'].every(k=>Array.isArray(input[k])))throw new Error('备份缺少持仓、估值或正式状态数组');
+  const current=input?.algorithm===ALGORITHM_ID&&[2,3,SCHEMA_VERSION].includes(input?.schemaVersion);
+  if(!legacy&&!current)throw new Error('数据版本或策略标识不兼容');
+  if(!Array.isArray(input.valuations))throw new Error('数据缺少估值数组');
   const data=emptyData();
-  data.referenceCurrency=String(input.referenceCurrency||input.account?.currency||'USD').toUpperCase();
-  if(input.schemaVersion===1&&input.account){
-    if(!input.holdings.length&&Number(input.account.financing)===0){
-      const currency=String(input.account.currency||data.referenceCurrency).toUpperCase();if(!/^[A-Z]{3}$/.test(currency))throw new Error('基础币种无效');
-      data.account={currency,financing:0,updatedAt:input.account.updatedAt??null};
-    }else{
-      Object.assign(data,normalizeAccount(input.account,input.holdings));
-    }
-    data.holdings=data.holdings.map(h=>({...h,input_mode:h.input_mode||(h.market_value!=null?'market_value':'shares')}));
-  }else{
-    data.holdings=input.holdings.map(p=>normalizeHolding(p,data.referenceCurrency));
-    data.account=input.account?structuredClone(input.account):null;
-  }
   data.valuations=input.valuations.map(normalizeValuation);
   const ids=new Set(),currents=new Set();
-  for(const row of data.valuations){if(ids.has(row.id))throw new Error('估值记录 ID 重复');ids.add(row.id);
-    if(row.is_current){const key=`${row.symbol}/${row.valuation_date}`;if(currents.has(key))throw new Error('同日当前估值记录重复');currents.add(key);}}
-  data.formalEvents=(legacy?[]:input.formalEvents).map(event=>{
-    if(!event.config||JSON.stringify(Object.keys(CONFIG).map(k=>event.config[k]))!==JSON.stringify(Object.values(CONFIG)))throw new Error('正式事件参数与当前策略不一致');
-    if(!['month_end','activate','migration'].includes(event.event_type))throw new Error('正式事件类型无效');
-    validDate(event.signal_date);if(event.effective_date)validDate(event.effective_date);
-    return {...event,symbol:symbol(event.symbol),state:validateControllerState(event.state)};
-  });
-  data.quotes=(input.quotes&&typeof input.quotes==='object')?structuredClone(input.quotes):{};
-  data.fxRates=(input.fxRates&&typeof input.fxRates==='object')?structuredClone(input.fxRates):{};
-  data.enrichmentJobs=Array.isArray(input.enrichmentJobs)?structuredClone(input.enrichmentJobs):[];
-  data.migrationNotes=Array.isArray(input.migrationNotes)?structuredClone(input.migrationNotes):[];
-  data.legacyFormalEvents=Array.isArray(input.legacyFormalEvents)?structuredClone(input.legacyFormalEvents):[];
-  if(legacy){
-    data.legacyFormalEvents.push(...structuredClone(input.formalEvents));
-    data.migrationNotes.push('控制器已升级至反转锚点 v2。旧正式事件完整保存在 legacyFormalEvents 供审计；旧 pending target 不可激活，首次新版正式信号从截至该月的估值历史重建状态。');
+  for(const row of data.valuations){
+    if(ids.has(row.id))throw new Error('估值记录 ID 重复');ids.add(row.id);
+    if(!Number.isInteger(row.revision)||row.revision<1)throw new Error('revision 须为正整数');
+    if(row.is_current){const key=row.symbol+'/'+row.valuation_date;
+      if(currents.has(key))throw new Error('同日当前估值记录重复');currents.add(key);}
   }
-  data.updatedAt=input.updatedAt??null;return data;
+  data.formalEvents=(legacy?[]:(input.formalEvents||[])).map(event=>{
+    if(!event.config||Object.entries(CONFIG).some(([k,v])=>event.config[k]!==v))throw new Error('正式事件参数与当前策略不一致');
+    if(!['month_end','activate','migration'].includes(event.event_type))throw new Error('正式事件类型无效');
+    const x=event.x==null?null:number(event.x,'x');if(x!==null&&(x<0||x>1))throw new Error('正式事件 x 须在 0–1 之间');
+    return {id:String(event.id||uid()),symbol:symbol(event.symbol),event_type:event.event_type,
+      signal_date:validDate(event.signal_date),effective_date:event.effective_date?validDate(event.effective_date):null,
+      createdAt:optionalText(event.createdAt),valuation_id:optionalText(event.valuation_id),x,boundaries:x===null?null:envelope(x),
+      config:{...CONFIG},state:validateControllerState(event.state),history_replayed:!!event.history_replayed};
+  });
+  const legacySymbols=[...(input.legacyFormalEvents||[]),...(legacy?(input.formalEvents||[]):[])];
+  data.legacyFormalEvents=[...new Set(legacySymbols.map(event=>symbol(event.symbol)))].map(sym=>({symbol:sym}));
+  data.prices=(input.prices||Object.entries(input.quotes||{}).map(([sym,q])=>({...q,symbol:sym}))).map(normalizeQuote);
+  const priceKeys=new Set();for(const row of data.prices){const key=row.symbol+'/'+row.as_of;
+    if(priceKeys.has(key))throw new Error('同日价格记录重复');priceKeys.add(key);}
+  for(const [pair,row] of Object.entries(input.fxRates||{})){
+    const normalized=normalizeFxRate(pair,row);data.fxRates[normalized.pair]=normalized;
+  }
+  // Old account, position and job fields are deliberately never copied.
+  data.updatedAt=optionalText(input.updatedAt);return data;
 }
 export function formalMonthEnd(data,sym,date,asOf=today()){
   symbol(sym);validDate(date);if(date>asOf)throw new Error('不能生成未来日期的月末信号');

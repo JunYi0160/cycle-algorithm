@@ -131,7 +131,7 @@ export function calculatePortfolio(holdings, valuations, asOf, { quotes = {}, fx
           const q = Number(p.quantity);
           const quote = quotes[p.symbol];
           if (!quote || !Number.isFinite(quote.price) || quote.price <= 0) {
-            reason = `缺少 ${p.symbol} 的有效最新报价（需联网补齐或手动输入）`;
+            reason = `缺少 ${p.symbol} 的有效价格（需手动输入）`;
           } else {
             quoteUsed = quote;
             const quoteCurr = String(quote.currency || p.currency || refCurr).toUpperCase();
@@ -160,6 +160,7 @@ export function calculatePortfolio(holdings, valuations, asOf, { quotes = {}, fx
 
   const validVals = parsed.filter(i => i.status !== 'blocked' && Number.isFinite(i.calc_value) && i.calc_value > 0);
   const totalVal = validVals.reduce((s, i) => s + i.calc_value, 0);
+  if(!Number.isFinite(totalVal))return {status:'blocked',message:'组合输入合计超出有限数值范围',percentile:null,target_leverage:null,positions:parsed.map(p=>({...p,status:'blocked',reason:'输入合计过大'})),expected_month:expected};
 
   // Group by symbol
   const grouped = new Map();

@@ -1,194 +1,51 @@
 import {CONFIG} from './strategy.js';
 import {INPUT_FIELDS,computeTechValuation} from './valuation.js';
-import {buildMonthlyScores,computePreview,calculatePortfolio,monthFromNumber,monthNumber,getFxRate} from './preview.js';
-import {emptyData,uid,today,monthEnd,normalizeHolding,normalizeValuation,parseValuations,mergeValuations,validateBackup,formalMonthEnd,activateFormal,normalizeQuote,normalizeFxRate,normalizeJob} from './model.js';
-import {load,save,exportBackup,STORAGE_KEY} from './storage.js';
+import {buildMonthlyScores,computePreview,calculatePortfolio,monthFromNumber,monthNumber} from './preview.js';
+import {emptyData,uid,today,monthEnd,normalizeSessionHolding,normalizeValuation,parseValuations,mergeValuations,validateBackup,formalMonthEnd,activateFormal,normalizeQuote,normalizeFxRate} from './model.js';
+import {load,exportBackup} from './storage.js';
+import {latestQuotes,projectFiles,projectZIP,readValuationsCSV,readPricesCSV,readFxCSV} from './project-data.js';
 
 const $=id=>document.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const dec=(v,d=2)=>v==null||!Number.isFinite(v)?'—':Number(v).toLocaleString('zh-CN',{minimumFractionDigits:d,maximumFractionDigits:d});
 const pct=v=>v==null?'—':dec(v*100,1)+'%';
-const money=(v,curr='USD')=>v==null?'—':dec(v,2)+' '+(curr||data.referenceCurrency||'USD');
 
-let data=emptyData(),restoreCandidate=null,currentPreviewSymbol=null,storageAvailable=true;
-let helperConnected=false,helperInfo=null,activeTaskCount=0;
-const HELPER_BASE='http://127.0.0.1:8789';
+let data=emptyData(),restoreCandidate=null,currentPreviewSymbol=null,storageAvailable=false,dirty=false;
+let session={referenceCurrency:'USD',holdings:[]},assetNames={},editingValuation=null;
 
 function error(e){$('error').hidden=false;$('error').textContent=e.message||String(e);$('error').scrollIntoView({behavior:'smooth',block:'center'});}
 function toast(message){$('toast').textContent=message;$('toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').classList.remove('show'),4500);}
 function action(fn){return (...args)=>{try{$('error').hidden=true;fn(...args);}catch(e){error(e);}};}
-function asyncAction(fn){return async(...args)=>{try{$('error').hidden=true;await fn(...args);}catch(e){error(e);}};}
 
 function commit(next){
-  if(!storageAvailable)throw new Error('本地数据读取失败。请先下载故障恢复文件，再选择有效备份恢复；当前原始数据没有被覆盖。');
-  const stamped=save(next);data=stamped;render();toast('已保存到当前浏览器');
+  if(!storageAvailable)throw new Error('项目数据尚未成功读取，请重新加载后再编辑。');
+  data=validateBackup(next);dirty=true;render();toast('已更新本页；请导出数据文件并提交到仓库');
 }
-
-function symbols(){return [...new Set([...data.valuations.map(r=>r.symbol),...data.holdings.map(p=>p.symbol)])].sort();}
-
-let helperToken=localStorage.getItem('cycle-algorithm-helper-token')||'';
-
-async function ensureHelperToken(){
-  if(helperToken)return helperToken;
-  try{
-    const res=await fetch(`${HELPER_BASE}/api/session-token`,{mode:'cors',signal:AbortSignal.timeout(2000)});
-    if(res.ok){
-      const json=await res.json();
-      if(json.ok&&json.token){
-        helperToken=json.token;
-        localStorage.setItem('cycle-algorithm-helper-token',helperToken);
-        return helperToken;
-      }
-    }
-  }catch{}
-  return '';
-}
-
-// Helper API communication
-async function pingHelper(){
-  try{
-    await ensureHelperToken();
-    const res=await fetch(`${HELPER_BASE}/api/status`,{method:'GET',mode:'cors',signal:AbortSignal.timeout(2500)});
-    if(res.ok){
-      helperInfo=await res.json();
-      helperConnected=true;
-      updateHelperUI();
-      return true;
-    }
-  }catch{
-    helperConnected=false;
-    updateHelperUI();
-    return false;
-  }
-}
-
-function updateHelperUI(){
-  const dot=$('helper-dot'),statusText=$('helper-status');
-  const costOk=helperConnected&&helperInfo?.costProtection===true;
-  const autostartActive=helperConnected&&helperInfo?.autostart===true;
-  const autostartHtml=helperConnected ? `
-    <div style="margin-top:10px;padding-top:8px;border-top:1px dashed rgba(0,0,0,0.12);font-size:13px;display:flex;align-items:center;gap:8px;">
-      <span>守护进程开机自启：</span>
-      <b style="color:${autostartActive ? '#2e7d32' : '#666'}">${autostartActive ? '已开启（开机静默运行）' : '未开启'}</b>
-      <button id="btn-toggle-autostart" class="btn secondary" style="padding:2px 8px;font-size:12px;margin-left:auto;">${autostartActive ? '关闭自启' : '开启开机自启'}</button>
-    </div>` : '';
-
-  if(helperConnected&&costOk){
-    dot.className='dot ok';
-    statusText.textContent=`Antigravity 已连接 · 套餐额度已保护`;
-    $('action-word').textContent='Antigravity 助手运行中';
-    $('action-amount').textContent='已连接 · 基础额度已保护';
-    $('helper-note').innerHTML=`已连接本机助手（端口 ${helperInfo?.port||8789}），useG1Credits: false 已锁定。<br>保存持仓后将自动调用官方 CLI 联网检索数据并严格复核。${autostartHtml}`;
-    if($('btn-auto-enrich'))$('btn-auto-enrich').disabled=false;
-  }else if(helperConnected&&!costOk){
-    dot.className='dot warning';
-    statusText.textContent=`Antigravity 已连接 · ⚠️ 费用保护未激活`;
-    $('action-word').textContent='费用保护检查未通过';
-    $('action-amount').textContent='暂停自动补数';
-    $('helper-note').innerHTML=`检测到 CLI 配置可能启用了外部 API 或 credits 超额回退。为防止产生费用，自动补数已暂停。<br><button id="btn-fix-cost" class="btn primary" style="margin-top:8px;">立即锁定套餐基础额度</button>${autostartHtml}`;
-    if($('btn-auto-enrich'))$('btn-auto-enrich').disabled=true;
-    setTimeout(()=>{
-      const btn=document.getElementById('btn-fix-cost');
-      if(btn)btn.onclick=asyncAction(async()=>{
-        await fetch(`${HELPER_BASE}/api/protect-cost`,{method:'POST',mode:'cors',headers:{'X-Helper-Token':helperToken}});
-        await pingHelper();
-      });
-    },50);
-  }else{
-    dot.className='dot';
-    statusText.textContent='本机助手未连接（离线模式）';
-    $('action-word').textContent='本机助手未启动';
-    $('action-amount').textContent='可离线使用已有数据';
-    $('helper-note').innerHTML=`可正常使用已有数据与回放。如需自动联网补数，请双击桌面的“Cycle Algorithm 守护进程”快捷方式或运行 <code>npm run helper</code>。`;
-    if($('btn-auto-enrich'))$('btn-auto-enrich').disabled=false;
-  }
-
-  if(helperConnected){
-    setTimeout(()=>{
-      const autoBtn=document.getElementById('btn-toggle-autostart');
-      if(autoBtn)autoBtn.onclick=asyncAction(async()=>{
-        await ensureHelperToken();
-        const res=await fetch(`${HELPER_BASE}/api/autostart`,{
-          method:'POST',
-          mode:'cors',
-          headers:{'Content-Type':'application/json','X-Helper-Token':helperToken},
-          body:JSON.stringify({enabled:!autostartActive})
-        });
-        const data=await res.json();
-        await pingHelper();
-        toast(data.enabled ? '已开启开机自启动（已加入 Windows 启动项）' : '已关闭开机自启动（已移除启动项）');
-      });
-    },50);
-  }
-}
-
-async function requestLiveQuote(sym){
-  if(!helperConnected)throw new Error('本机助手未连接，无法联网获取最新报价');
-  await ensureHelperToken();
-  const res=await fetch(`${HELPER_BASE}/api/quote`,{
-    method:'POST',
-    mode:'cors',
-    headers:{'Content-Type':'application/json','X-Helper-Token':helperToken},
-    body:JSON.stringify({symbol:sym})
-  });
-  const json=await res.json();
-  if(!json.ok)throw new Error(json.error||`获取 ${sym} 报价失败`);
-  return normalizeQuote(json.quote);
-}
-
-async function requestLiveFx(base,target){
-  if(!helperConnected)throw new Error('本机助手未连接，无法联网获取汇率');
-  await ensureHelperToken();
-  const res=await fetch(`${HELPER_BASE}/api/fx`,{
-    method:'POST',
-    mode:'cors',
-    headers:{'Content-Type':'application/json','X-Helper-Token':helperToken},
-    body:JSON.stringify({base,target})
-  });
-  const json=await res.json();
-  if(!json.ok)throw new Error(json.error||`获取 ${base}/${target} 汇率失败`);
-  return normalizeFxRate(json.fx.pair,json.fx);
-}
-
-async function requestEnrich(sym,missingMonths){
-  if(!helperConnected)throw new Error('本机助手未连接，无法自动补数');
-  await ensureHelperToken();
-  const res=await fetch(`${HELPER_BASE}/api/enrich`,{
-    method:'POST',
-    mode:'cors',
-    headers:{'Content-Type':'application/json','X-Helper-Token':helperToken},
-    body:JSON.stringify({symbol:sym,missing_months:missingMonths})
-  });
-  const json=await res.json();
-  if(!json.ok)throw new Error(json.error||`补数任务失败：${sym}`);
-  return json;
-}
-
+function symbols(){return [...new Set([...Object.keys(assetNames),...data.valuations.map(r=>r.symbol),...data.prices.map(r=>r.symbol),...session.holdings.map(p=>p.symbol)])].sort();}
 // Holdings editor rendering
 function renderHoldingEditor(){
-  $('currency').value=data.referenceCurrency||'USD';
+  $('currency').value=session.referenceCurrency||'USD';
   $('holding-editor').innerHTML='';
-  data.holdings.forEach(addHoldingRow);
+  session.holdings.forEach(addHoldingRow);
   updateHoldingCalculations();
 }
 
-function addHoldingRow(p={id:uid(),symbol:'',input_mode:'market_value',quantity:'',market_value:'',ratio:'',sec_type:'STK',currency:''}){
+function addHoldingRow(p={id:uid(),symbol:'',input_mode:'ratio',market_value:'',ratio:'',currency:''}){
   const row=document.createElement('tr');
   row.dataset.id=p.id;
-  const mode=p.input_mode||(p.ratio!=null?'ratio':(p.market_value!=null&&p.market_value!==''?'market_value':'shares'));
-  const curr=p.currency||data.referenceCurrency||'USD';
-  const val=mode==='ratio'?(p.ratio??p.quantity??''):mode==='shares'?(p.quantity??''):(p.market_value??'');
+  const mode=p.input_mode||'ratio';
+  const curr=p.currency||session.referenceCurrency||'USD';
+  const val=mode==='ratio'?(p.ratio??''):(p.market_value??'');
 
   row.innerHTML=`
     <td><input data-field="symbol" value="${esc(p.symbol)}" aria-label="持仓 Symbol" required maxlength="20" placeholder="NVDA"></td>
     <td>
       <select data-field="input_mode" aria-label="输入模式">
         <option value="market_value" ${mode==='market_value'?'selected':''}>市值模式</option>
-        <option value="shares" ${mode==='shares'?'selected':''}>股数模式</option>
         <option value="ratio" ${mode==='ratio'?'selected':''}>直接比例</option>
       </select>
     </td>
-    <td><input data-field="value" type="number" step="any" value="${esc(val)}" aria-label="持仓数值" required placeholder="${mode==='shares'?'股数 (如 10)':mode==='ratio'?'比例 (如 75)':'市值 (如 15000)'}"></td>
+    <td><input data-field="value" type="number" step="any" value="${esc(val)}" aria-label="持仓数值" required placeholder="${mode==='ratio'?'比例 (如 75)':'市值 (如 15000)'}"></td>
     <td><input data-field="currency" maxlength="3" value="${esc(curr)}" aria-label="币种" ${mode==='ratio'?'disabled':''}></td>
     <td class="holding-derived" data-derived>—</td>
     <td class="holding-weight" data-weight>—</td>
@@ -203,7 +60,7 @@ function addHoldingRow(p={id:uid(),symbol:'',input_mode:'market_value',quantity:
   modeSelect.onchange=()=>{
     const m=modeSelect.value;
     currInput.disabled=m==='ratio';
-    valInput.placeholder=m==='shares'?'股数 (如 10)':m==='ratio'?'比例 (如 75)':'市值 (如 15000)';
+    valInput.placeholder=m==='ratio'?'比例 (如 75)':'市值 (如 15000)';
     updateHoldingCalculations();
   };
 
@@ -221,9 +78,7 @@ function readHoldingEditor(){
     const curr=(row.querySelector('[data-field="currency"]').value||refCurr).trim().toUpperCase();
     const item={id:row.dataset.id,symbol:sym,input_mode:mode,sec_type:'STK',currency:curr};
     const n=rawVal===''?null:Number(rawVal);
-    if(mode==='ratio'){item.ratio=n;item.quantity=n;item.market_value=null;}
-    else if(mode==='shares'){item.quantity=n;item.market_value=null;item.ratio=null;}
-    else{item.market_value=n;item.quantity=null;item.ratio=null;}
+    if(mode==='ratio')item.ratio=n;else item.market_value=n;
     return item;
   });
 }
@@ -231,7 +86,7 @@ function readHoldingEditor(){
 function updateHoldingCalculations(){
   const holdings=readHoldingEditor();
   const asOf=today();
-  const portfolio=calculatePortfolio(holdings,data.valuations,asOf,{quotes:data.quotes,fxRates:data.fxRates,referenceCurrency:$('currency').value});
+  const portfolio=calculatePortfolio(holdings,data.valuations,asOf,{quotes:latestQuotes(data.prices,today()),fxRates:data.fxRates,referenceCurrency:$('currency').value});
   
   [...$('holding-editor').children].forEach(row=>{
     const sym=row.querySelector('[data-field="symbol"]').value.trim().toUpperCase();
@@ -243,15 +98,7 @@ function updateHoldingCalculations(){
     const weightCell=row.querySelector('[data-weight]');
     const targetCell=row.querySelector('[data-target]');
 
-    const quote=data.quotes[sym];
-    if(mode==='shares'){
-      if(quote&&Number.isFinite(quote.price)){
-        const calcVal=Number.isFinite(valInput)?valInput*quote.price:null;
-        derivedCell.innerHTML=`${quote.price} ${quote.currency}<br><span class="muted">${calcVal!=null?dec(calcVal,2)+' '+quote.currency:''}</span>`;
-      }else{
-        derivedCell.innerHTML='<span class="muted">待获取报价</span>';
-      }
-    }else if(mode==='market_value'){
+    if(mode==='market_value'){
       derivedCell.textContent=Number.isFinite(valInput)?dec(valInput,2)+' '+curr:'—';
     }else{
       derivedCell.textContent='比例 '+valInput;
@@ -275,18 +122,18 @@ function healthRow(label,text,severity=''){return `<div class="health-row"><i cl
 
 function render(){
   const asOf=today();
-  const refCurr=data.referenceCurrency||'USD';
-  const portfolio=calculatePortfolio(data.holdings,data.valuations,asOf,{quotes:data.quotes,fxRates:data.fxRates,referenceCurrency:refCurr});
+  const refCurr=session.referenceCurrency||'USD';
+  const portfolio=calculatePortfolio(session.holdings,data.valuations,asOf,{quotes:latestQuotes(data.prices,today()),fxRates:data.fxRates,referenceCurrency:refCurr});
 
-  $('storage-status').textContent=storageAvailable?'数据保存在此浏览器':'本地数据需要恢复';
+  $('storage-status').textContent=storageAvailable?(dirty?'有修改待提交到仓库':'已读取项目数据'):'项目数据未加载';
   $('storage-dot').className='dot '+(storageAvailable?'ok':'bad');
-  $('updated-at').textContent=data.updatedAt?'已保存更新 '+new Date(data.updatedAt).toLocaleString('zh-CN'):'尚未录入持仓';
+  $('updated-at').textContent=session.holdings.length?'本次手动输入 · 刷新后清空':'请填写本次市值或比例';
 
   // Leverage and percentiles
   const tLev=portfolio.target_leverage;
   $('target-lev').textContent=tLev==null?'—':dec(tLev,2)+'×';
   $('summary-target-lev').textContent=tLev==null?'—':dec(tLev,2)+'×';
-  $('holding-count').textContent=`${data.holdings.length} 笔持仓`;
+  $('holding-count').textContent=`${session.holdings.length} 笔持仓`;
   $('summary-currency').textContent=refCurr;
 
   // Target bar (1.0 to 1.75)
@@ -312,12 +159,12 @@ function render(){
 
   // Legend weights summary
   const legendHtml=portfolio.positions.map(p=>{
-    const q=data.quotes[p.symbol];
+    const q=latestQuotes(data.prices,today())[p.symbol];
     const qStr=q?`· 报价 ${q.price} ${q.currency}`:'';
     const levStr=p.target_leverage!=null?`· 目标 ${dec(p.target_leverage,2)}×`:`· ${p.reason||'未就绪'}`;
     return `<div class="legend-row"><span class="legend-name">${esc(p.symbol)} (${esc(p.input_mode||'市值')}) ${qStr}</span><span>${pct(p.holding_weight)} ${levStr}</span></div>`;
   }).join('');
-  $('holding-weights').innerHTML=legendHtml||'<p class="muted">保存持仓后在这里显示相对权重与逐标的目标杠杆。</p>';
+  $('holding-weights').innerHTML=legendHtml||'<p class="muted">本次计算后在这里显示相对权重与逐标的目标杠杆。</p>';
 
   // Health and data quality
   $('as-of').textContent='检查日期 '+asOf;
@@ -350,6 +197,7 @@ function render(){
 
   renderAssets(asOf);
   renderFormal();
+  renderDataTable();
   $('record-count').textContent=`${data.valuations.filter(r=>r.is_current).length} 条当前记录 · ${data.valuations.length} 条含修订记录`;
   $('migration-notes').innerHTML=data.migrationNotes.length?`<details class="small-detail"><summary>查看算法升级与数据迁移说明</summary>${data.migrationNotes.map(n=>'<p class="muted">'+esc(n)+'</p>').join('')}</details>`:'';
 
@@ -364,7 +212,7 @@ function renderAssets(asOf){
       <div class="asset-stats">有效记录 ${c.valid_month_count} 月 · 临时插值 ${c.interpolated_months.length} 月 · 来源插值 ${c.source_interpolated_months.length} 月${c.source_unknown_months.length?' · 待核实 '+c.source_unknown_months.length+' 月':''}<br>范围 ${esc(c.start_month||'—')} 至 ${esc(c.end_month||'—')}<br>${esc(c.reason)}${c.missing_months.length?'<br>缺失：'+esc(c.missing_months.join('、')):''}${c.excluded_future_records?'<br>已排除未来记录 '+c.excluded_future_records+' 条':''}</div>
       <button class="btn ${c.ready?'primary':'soft'}" ${c.ready?'':'disabled'} data-preview="${esc(sym)}">临时计算并可视化</button>
     </div>`;
-  }).join('')||'<div class="empty">录入持仓或导入历史估值，或点击“体验虚构示例”。</div>';
+  }).join('')||'<div class="empty">请添加标的历史估值或价格数据。</div>';
   document.querySelectorAll('[data-preview]').forEach(b=>b.onclick=action(()=>showPreview(b.dataset.preview)));
 }
 
@@ -401,257 +249,117 @@ function download(text,filename,mime='application/json'){
 }
 async function fileAction(input,fn){const file=input.files[0];if(!file)return;try{$('error').hidden=true;await fn(await file.text(),file.name);}catch(e){error(e);}finally{input.value='';}}
 
-// Auto-enrichment & Quote refresh runner
-async function runAutoEnrichment({forceQuotes=false}={}){
-  if(!helperConnected){
-    await pingHelper();
-    if(!helperConnected){
-      toast('本地助手未连接，无法联网补数。请启动 scripts/start-helper.cmd');
-      return;
-    }
-  }
-
-  $('btn-cancel-job').hidden=false;
-  activeTaskCount++;
-  toast('开始通过 Antigravity 检查补全持仓数据...');
-
-  try{
-    const asOf=today();
-    const expectedMonth=monthFromNumber(monthNumber(asOf)-1);
-    let updatedQuotes=0,addedValuations=0,updatedFx=0;
-
-    // 1. Fetch missing/expired FX rates for multi-currency holdings
-    const refCurr=(data.referenceCurrency||'USD').toUpperCase();
-    const neededCurrs=new Set();
-    for(const p of data.holdings){
-      if(p.input_mode!=='ratio'&&p.currency&&p.currency.toUpperCase()!==refCurr){
-        neededCurrs.add(p.currency.toUpperCase());
-      }
-    }
-    for(const curr of neededCurrs){
-      const pair=`${curr}/${refCurr}`;
-      const existing=data.fxRates[pair];
-      const isExpired=!existing||(Date.now()-new Date(existing.retrieved_at).getTime()>24*3600*1000);
-      if(isExpired){
-        try{
-          toast(`正在获取 ${pair} 最新汇率...`);
-          const fx=await requestLiveFx(curr,refCurr);
-          data.fxRates[pair]=fx;
-          commit(data);
-          updatedFx++;
-        }catch(e){
-          console.warn(`FX fetch failed for ${pair}:`,e);
-        }
-      }
-    }
-
-    // 2. Refresh quotes for shares mode
-    for(const p of data.holdings){
-      if(!p.symbol)continue;
-      const isShares=p.input_mode==='shares';
-      const existing=data.quotes[p.symbol];
-      const isExpired=!existing||!Number.isFinite(existing.price)||(Date.now()-new Date(existing.retrieved_at).getTime()>12*3600*1000);
-      const needsQuote=forceQuotes||(isShares&&isExpired);
-      if(needsQuote){
-        try{
-          toast(`正在获取 ${p.symbol} 最新收盘价...`);
-          const q=await requestLiveQuote(p.symbol);
-          data.quotes[p.symbol]=q;
-          commit(data);
-          updatedQuotes++;
-        }catch(e){
-          console.warn(`Quote fetch failed for ${p.symbol}:`,e);
-        }
-      }
-    }
-
-    // 3. Check and sequentially batch missing valuation months (full 60 months)
-    for(const p of data.holdings){
-      if(!p.symbol)continue;
-      const sym=p.symbol;
-      const {coverage}=buildMonthlyScores(data.valuations.filter(r=>r.symbol===sym),{symbol:sym,asOf});
-      
-      let missingToEnrich=[];
-      if(!coverage.ready){
-        const end=coverage.end_month||expectedMonth;
-        const startNum=monthNumber(end)-59;
-        for(let i=0;i<60;i++){
-          const m=monthFromNumber(startNum+i);
-          if(!data.valuations.some(r=>r.symbol===sym&&r.is_current&&r.status==='valid'&&r.valuation_date.startsWith(m))){
-            missingToEnrich.push(m);
-          }
-        }
-      }else if(coverage.missing_months.length>0){
-        missingToEnrich.push(...coverage.missing_months);
-      }
-      if(coverage.end_month&&coverage.end_month<expectedMonth){
-        for(let i=monthNumber(coverage.end_month)+1;i<=monthNumber(expectedMonth);i++){
-          const m=monthFromNumber(i);
-          if(!missingToEnrich.includes(m))missingToEnrich.push(m);
-        }
-      }
-
-      // Process in sequential batches of up to 12 months until finished or no further data found
-      while(missingToEnrich.length>0){
-        const batch=missingToEnrich.slice(0,12);
-        toast(`正在为 ${sym} 检索 ${batch.length} 个月份的数据（剩余 ${missingToEnrich.length} 月）...`);
-        try{
-          const enrichRes=await requestEnrich(sym,batch);
-          if(enrichRes.results&&enrichRes.results.length>0){
-            const merged=mergeValuations(data,enrichRes.results);
-            data=merged.data;
-            addedValuations+=merged.added;
-            commit(data);
-          }
-          const foundSet=new Set((enrichRes.results||[]).map(r=>r.valuation_date.slice(0,7)));
-          data.enrichmentJobs.push(normalizeJob({
-            symbol:sym,
-            status:enrichRes.status,
-            missing_months:enrichRes.missing,
-            details:enrichRes.message
-          }));
-          commit(data);
-
-          if(foundSet.size===0){
-            // Public sources returned no data for this batch; stop loop for this symbol
-            break;
-          }
-          missingToEnrich=missingToEnrich.filter(m=>!foundSet.has(m));
-        }catch(e){
-          console.warn(`Enrichment failed for ${sym}:`,e);
-          break;
-        }
-      }
-    }
-
-    renderHoldingEditor();
-    toast(`补数完成：更新 ${updatedQuotes} 个报价，${updatedFx} 个汇率，补充 ${addedValuations} 条有效估值`);
-  }finally{
-    activeTaskCount--;
-    $('btn-cancel-job').hidden=true;
-  }
-}
-
-// Event Bindings
-$('add-holding').onclick=()=>{
-  addHoldingRow({id:uid(),symbol:'',input_mode:'shares',quantity:'',market_value:'',ratio:'',sec_type:'STK',currency:data.referenceCurrency});
-  updateHoldingCalculations();
-};
-
+// Session inputs never enter data, downloads or URLs.
+$('add-holding').onclick=()=>{addHoldingRow({id:uid(),symbol:'',input_mode:'ratio',ratio:'',currency:$('currency').value});};
+$('currency').oninput=updateHoldingCalculations;
 $('account-form').onsubmit=action(e=>{
   e.preventDefault();
-  const refCurr=($('currency').value||'USD').trim().toUpperCase();
-  const rawPositions=readHoldingEditor();
-  const normalized=rawPositions.map(p=>normalizeHolding(p,refCurr));
-  const next={...data,referenceCurrency:refCurr,holdings:normalized};
-  commit(next);
-  renderHoldingEditor();
-  if(helperConnected){
-    runAutoEnrichment();
-  }
+  const referenceCurrency=$('currency').value.trim().toUpperCase();
+  if(!/^[A-Z]{3}$/.test(referenceCurrency))throw new Error('参考币种须为三位代码');
+  session={referenceCurrency,holdings:readHoldingEditor().map(p=>normalizeSessionHolding(p,referenceCurrency))};
+  render();updateHoldingCalculations();toast('本次输入已计算，刷新后清空');
 });
+$('clear-session').onclick=()=>{session.holdings=[];renderHoldingEditor();render();};
 
-$('btn-auto-enrich').onclick=asyncAction(()=>runAutoEnrichment({forceQuotes:false}));
-$('btn-force-check').onclick=asyncAction(()=>runAutoEnrichment({forceQuotes:false}));
-$('btn-refresh-quotes').onclick=asyncAction(()=>runAutoEnrichment({forceQuotes:true}));
-$('btn-cancel-job').onclick=asyncAction(async()=>{
-  if(!helperConnected)return;
-  await fetch(`${HELPER_BASE}/api/cancel`,{method:'POST'});
-  toast('已发送取消请求');
-});
-
+function renderDataTable(){
+  const selected=$('data-symbol').value,all=symbols();
+  $('data-symbol').innerHTML='<option value="">全部标的</option>'+all.map(sym=>'<option>'+esc(sym)+'</option>').join('');
+  if(all.includes(selected))$('data-symbol').value=selected;
+  const kind=$('data-kind').value,query=$('data-search').value.trim().toLowerCase(),showOld=$('show-revisions').checked;
+  let rows=kind==='valuations'?data.valuations:kind==='prices'?data.prices:Object.values(data.fxRates);
+  $('data-symbol').disabled=kind==='fx';
+  rows=rows.filter(r=>kind==='fx'||!selected||r.symbol===selected);
+  if(kind==='valuations'&&!showOld)rows=rows.filter(r=>r.is_current);
+  rows=rows.filter(r=>!query||JSON.stringify(r).toLowerCase().includes(query)).sort((a,b)=>(b.valuation_date||b.as_of).localeCompare(a.valuation_date||a.as_of));
+  $('data-table-count').textContent=rows.length+' 条记录';
+  $('data-table-head').innerHTML=kind==='valuations'?'<tr><th>标的</th><th>日期</th><th>S_Tech / 状态</th><th>来源 / 修订</th><th>备注</th><th>操作</th></tr>':'<tr><th>标的 / 汇率对</th><th>日期</th><th>价格 / 汇率</th><th>币种 / 来源</th><th>备注</th><th>操作</th></tr>';
+  $('data-table-body').innerHTML=rows.slice(0,250).map(r=>{
+    const key=kind==='valuations'?r.id:kind==='prices'?r.symbol+'/'+r.as_of:r.pair;
+    return '<tr><td>'+esc(r.symbol||r.pair)+'</td><td>'+esc(r.valuation_date||r.as_of)+'</td><td>'+esc(kind==='valuations'?(r.status==='valid'?dec(r.s_tech,6):'N/A'):dec(r.price??r.rate,6))+'</td><td>'+esc(kind==='valuations'?r.source_code+' · r'+r.revision+(r.is_current?' 当前':' 历史'):(r.currency||r.source_url||'手动'))+'</td><td class="record-notes">'+esc(r.notes)+'</td><td><button class="btn soft" type="button" data-edit-kind="'+kind+'" data-edit-key="'+esc(key)+'">查看 / 编辑</button></td></tr>';
+  }).join('')||'<tr><td colspan="6">没有符合筛选条件的记录。</td></tr>';
+  $('table-limit').hidden=rows.length<=250;
+  document.querySelectorAll('[data-edit-key]').forEach(button=>button.onclick=action(()=>editRecord(button.dataset.editKind,button.dataset.editKey)));
+}
+function fillForm(form,row){for(const [key,value] of Object.entries(row)){
+  const field=form.elements.namedItem(key);if(!field)continue;
+  if(field.type==='checkbox')field.checked=!!value;else field.value=value??'';
+}}
+function editRecord(kind,key){
+  if(kind==='valuations'){
+    const row=data.valuations.find(r=>r.id===key);editingValuation=row;
+    $('score-form').reset();$('formula-form').reset();
+    fillForm($('score-form'),row);fillForm($('formula-form'),{...row,...row.raw_inputs});
+    $('record-detail').textContent=JSON.stringify(row,null,2);
+    $('record-dialog').showModal();
+  }else if(kind==='prices'){
+    fillForm($('price-form'),data.prices.find(r=>r.symbol+'/'+r.as_of===key));$('price-form').closest('details').open=true;$('price-form').scrollIntoView({block:'center'});
+  }else{fillForm($('fx-form'),data.fxRates[key]);$('fx-form').closest('details').open=true;$('fx-form').scrollIntoView({block:'center'});}
+}
+$('record-close').onclick=()=>{$('record-dialog').close();$('score-form').scrollIntoView({block:'center'});};
+for(const id of ['data-symbol','data-kind','show-revisions'])$(id).onchange=renderDataTable;
+$('data-search').oninput=renderDataTable;
+$('new-score').onclick=()=>{editingValuation=null;$('score-form').reset();$('formula-form').reset();};
 $('score-form').onsubmit=action(e=>{
-  e.preventDefault();
-  const values=Object.fromEntries(new FormData(e.target));
-  const row=normalizeValuation({...values,valuation_date:monthEnd(values.month),interpolated:e.target.elements.interpolated.checked});
-  commit(mergeValuations(data,[row]).data);
+  e.preventDefault();const values=Object.fromEntries(new FormData(e.target));
+  const same=editingValuation&&editingValuation.symbol===values.symbol.trim().toUpperCase()&&editingValuation.valuation_date===values.valuation_date;
+  const row=normalizeValuation({...(same?editingValuation:{}),...values,
+    interpolated:e.target.elements.interpolated.checked,provenance:e.target.elements.provenance.value,
+    score_method:'manual',is_current:true});
+  commit(mergeValuations(data,[row]).data);editingValuation=null;
 });
-
-$('formula-inputs').innerHTML=INPUT_FIELDS.map(k=>`<label>${esc(k)}<input name="${esc(k)}" type="number" step="any" required aria-label="${esc(k)}"></label>`).join('');
-
+$('formula-inputs').innerHTML=INPUT_FIELDS.map(k=>'<label>'+esc(k)+'<input name="'+esc(k)+'" type="number" step="any" required></label>').join('');
 $('formula-form').onsubmit=action(e=>{
-  e.preventDefault();
-  const values=Object.fromEntries(new FormData(e.target)),result=computeTechValuation(values);
+  e.preventDefault();const values=Object.fromEntries(new FormData(e.target)),result=computeTechValuation(values);
   $('formula-result').textContent=result.status==='valid'?'S_Tech = '+dec(result.s_tech,6):result.reason;
-  if(result.status!=='valid')throw new Error(result.reason);
   const inputs=Object.fromEntries(INPUT_FIELDS.map(k=>[k,Number(values[k])]));
-  const row=normalizeValuation({symbol:values.symbol,valuation_date:monthEnd(values.month),s_tech:result.s_tech,source_code:'manual-fundamentals',raw_inputs:inputs,derived_result:result});
-  commit(mergeValuations(data,[row]).data);
+  const same=editingValuation&&editingValuation.symbol===values.symbol.trim().toUpperCase()&&editingValuation.valuation_date===values.valuation_date;
+  const row=normalizeValuation({...(same?editingValuation:{}),...values,status:result.status,s_tech:result.s_tech,
+    notes:values.notes||result.reason||'',score_method:'formula',raw_inputs:inputs,is_current:true});
+  commit(mergeValuations(data,[row]).data);editingValuation=null;
 });
-
+$('price-form').onsubmit=action(e=>{
+  e.preventDefault();const row=normalizeQuote(Object.fromEntries(new FormData(e.target)));
+  commit({...data,prices:[...data.prices.filter(r=>r.symbol!==row.symbol||r.as_of!==row.as_of),row]});
+});
+$('fx-form').onsubmit=action(e=>{
+  e.preventDefault();const values=Object.fromEntries(new FormData(e.target)),row=normalizeFxRate(values.pair,values);
+  commit({...data,fxRates:{...data.fxRates,[row.pair]:row}});
+});
 $('valuation-file').onchange=()=>fileAction($('valuation-file'),(text,name)=>{
-  const rows=parseValuations(text,name),result=mergeValuations(data,rows);
-  commit(result.data);
-  toast(`导入 ${result.added} 条；跳过 ${result.skipped} 条相同记录。`);
+  const kind=$('import-kind').value;
+  if(kind==='valuations'){
+    const rows=/\.csv$/i.test(name)&&text.split(/\r?\n/,1)[0].includes('score_method')?readValuationsCSV(text):parseValuations(text,name);
+    const result=mergeValuations(data,rows);commit(result.data);toast('已导入 '+result.added+' 条估值，跳过 '+result.skipped+' 条相同记录');
+  }else if(kind==='prices'){
+    const rows=readPricesCSV(text),prices=[...data.prices];
+    for(const row of rows){const i=prices.findIndex(r=>r.symbol===row.symbol&&r.as_of===row.as_of);if(i<0)prices.push(row);else prices[i]=row;}
+    commit({...data,prices});
+  }else{const fxRates={...data.fxRates};for(const row of readFxCSV(text))fxRates[row.pair]=row;commit({...data,fxRates});}
 });
-
-$('export-backup').onclick=action(()=>download(exportBackup(data),`cycle-backup-${today()}.json`));
-$('download-raw').onclick=action(()=>download(localStorage.getItem(STORAGE_KEY)||exportBackup(data),`cycle-recovery-${today()}.json`));
-
+$('export-backup').onclick=action(()=>download(exportBackup(data),'market-data-'+today()+'.json'));
+$('export-project').onclick=action(()=>download(projectZIP(data,assetNames),'cycle-data-'+today()+'.zip','application/zip'));
+$('export-symbol').onclick=action(()=>{
+  const sym=$('data-symbol').value;if(!sym)throw new Error('请先在表格筛选中选择一个标的');
+  const kind=$('data-kind').value;if(kind==='fx')throw new Error('汇率请通过项目数据包导出');
+  const path=kind+'/'+sym+'.csv';download(projectFiles(data,assetNames)[path],sym+'.csv','text/csv');
+});
 $('restore-file').onchange=()=>fileAction($('restore-file'),text=>{
   restoreCandidate=validateBackup(JSON.parse(text));
-  $('restore-summary').textContent=`参考币种 ${restoreCandidate.referenceCurrency} · ${restoreCandidate.holdings.length} 笔持仓 · ${restoreCandidate.valuations.length} 条估值 · ${restoreCandidate.formalEvents.length} 条正式事件 · ${restoreCandidate.legacyFormalEvents.length} 条旧版审计事件。`;
+  $('restore-summary').textContent=restoreCandidate.valuations.length+' 条估值 · '+restoreCandidate.prices.length+' 条价格 · '+restoreCandidate.formalEvents.length+' 条正式状态。账户和持仓不会导入。';
   $('restore-dialog').showModal();
 });
-
 $('restore-confirm').onclick=action(()=>{
-  if(!restoreCandidate)return;
-  const stamped=save(restoreCandidate);
-  storageAvailable=true;
-  data=stamped;
-  restoreCandidate=null;
-  $('restore-dialog').close();
-  currentPreviewSymbol=null;
-  $('preview').classList.remove('show');
-  renderHoldingEditor();
-  render();
-  toast('完整备份已恢复');
+  if(!restoreCandidate)return;storageAvailable=true;commit(restoreCandidate);restoreCandidate=null;$('restore-dialog').close();
 });
-
-$('restore-cancel').onclick=()=>{
-  $('restore-dialog').close();
-  restoreCandidate=null;
-};
-
+$('restore-cancel').onclick=()=>{restoreCandidate=null;$('restore-dialog').close();};
 $('formal-form').onsubmit=action(e=>{
-  e.preventDefault();
-  const values=Object.fromEntries(new FormData(e.target));
+  e.preventDefault();const values=Object.fromEntries(new FormData(e.target));
   commit(e.submitter?.value==='activate'?activateFormal(data,values.symbol,values.effective_date):formalMonthEnd(data,values.symbol,values.signal_date));
 });
-
-$('demo').onclick=action(()=>{
-  const end=monthNumber(today())-1;
-  const rows=Array.from({length:72},(_,i)=>normalizeValuation({symbol:'DEMO',valuation_date:monthEnd(monthFromNumber(end-71+i)),s_tech:5+i*.04+Math.sin(i*.4)*1.5,source_code:'synthetic-example',notes:'虚构示例，不代表真实证券'}));
-  let next=mergeValuations(data,rows).data;
-  if(!data.holdings.length){
-    next={
-      ...next,
-      referenceCurrency:'USD',
-      holdings:[
-        {id:uid(),symbol:'DEMO',input_mode:'shares',quantity:100,currency:'USD',sec_type:'STK'}
-      ],
-      quotes:{
-        'DEMO':{symbol:'DEMO',price:150.0,currency:'USD',as_of:today(),source_name:'示例报价',retrieved_at:new Date().toISOString()}
-      }
-    };
-  }
-  commit(next);
-  renderHoldingEditor();
-  toast('已加入虚构 DEMO 标的与估值');
-});
-
-// Initialization
+window.addEventListener('beforeunload',event=>{if(dirty){event.preventDefault();event.returnValue='';}});
+$('signal-date').value=monthEnd(monthFromNumber(monthNumber(today())-1));$('effective-date').value=today();
+renderHoldingEditor();render();
 try{
-  data=load();
-}catch(e){
-  storageAvailable=false;
-  error(new Error('本地数据暂时无法读取：'+e.message+'。先下载故障恢复文件；不会覆盖原数据。'));
-}
-
-$('signal-date').value=monthEnd(monthFromNumber(monthNumber(today())-1));
-$('effective-date').value=today();
-
-renderHoldingEditor();
-render();
-pingHelper();
-setInterval(pingHelper,10000);
+  const loaded=await load();data=loaded.data;assetNames=Object.fromEntries(loaded.manifest.assets.map(a=>[a.symbol,a.name]));
+  storageAvailable=true;render();
+}catch(e){error(new Error('未能读取项目数据：'+e.message));}

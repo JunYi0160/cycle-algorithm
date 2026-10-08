@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "finite-rational-pivot-v2-60-rho0.9",
+  "assets": [
+    {
+      "symbol": "AVGO",
+      "name": "Broadcom",
+      "valuations": "valuations/AVGO.csv",
+      "prices": "prices/AVGO.csv"
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA",
+      "valuations": "valuations/NVDA.csv",
+      "prices": "prices/NVDA.csv"
+    }
+  ],
+  "fxRates": "fx-rates.csv",
+  "formalEvents": "formal-events.json"
+}

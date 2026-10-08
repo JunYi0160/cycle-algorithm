@@ -3,28 +3,27 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="light"><meta name="theme-color" content="#f3f1eb">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://127.0.0.1:8789 http://localhost:8789; object-src 'none'; base-uri 'self'; form-action 'none'">
-  <title>Cycle Algorithm · 持仓比例与自动补数</title><link rel="icon" href="./icon.png"><link rel="stylesheet" href="./style.css">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>Cycle Algorithm · 手动数据与组合计算</title><link rel="icon" href="./icon.png"><link rel="stylesheet" href="./style.css">
   <script type="module" src="./src/bootstrap.js"></script>
 </head>
 <body>
 <header class="topbar"><div class="shell nav">
   <a class="brand" href="#overview"><span class="mark"><img src="./icon.png" alt=""></span><span>Cycle Algorithm</span></a>
-  <nav class="navlinks"><a href="#account-editor">持仓比例</a><a href="#health">数据健康</a><a href="#research">策略研究</a><a href="#data">数据与备份</a><a href="#formal">正式信号</a></nav>
-  <div class="status" id="helper-pill" title="本机 Antigravity 助手连接状态"><i class="dot" id="helper-dot"></i><span id="helper-status">检测本机助手...</span></div>
-  <div class="status"><i class="dot" id="storage-dot"></i><span id="storage-status">正在读取本地数据</span></div>
-  <a class="btn primary" href="#account-editor">编辑持仓</a>
+  <nav class="navlinks"><a href="#account-editor">持仓比例</a><a href="#health">数据健康</a><a href="#research">策略研究</a><a href="#data">数据查阅与维护</a><a href="#formal">正式信号</a></nav>
+  <div class="status"><i class="dot" id="storage-dot"></i><span id="storage-status">正在读取项目数据</span></div>
+  <a class="btn primary" href="#account-editor">输入市值或比例</a>
 </div></header>
 <main class="shell">
   <div id="error" class="notice error" role="alert" hidden></div>
   <div id="release-update" class="notice" role="status" hidden>
-    发现新版本。请先保存正在编辑的持仓，再刷新更新。
+    发现新版本。请先导出未提交的数据修改；刷新后需重新输入本次组合。
     <button id="release-refresh" class="btn soft" type="button">刷新到最新版</button>
   </div>
   <section id="overview">
-    <div class="eyebrow">Cycle Algorithm · Antigravity AI Bridge</div>
+    <div class="eyebrow">Cycle Algorithm · Manual Market Data</div>
     <h1 class="hero-title">Smarter Positioning, <span class="nowrap">Cycle Weighted</span></h1>
-    <p class="lede">维护当前持仓比例，Antigravity 自动使用套餐内额度补全估值与报价，原有确定性算法输出组合目标杠杆。</p>
+    <p class="lede">估值与价格由你维护在项目中。每次填写市值或比例，按各标的历史路径计算组合目标杠杆。</p>
     <div class="hero-grid">
       <article class="card compare">
         <div class="compare-head">
@@ -53,27 +52,16 @@
       </article>
 
       <article class="card action">
-        <div>
-          <div class="label">Antigravity 自动补数中心</div>
-          <div class="action-word" id="action-word">检查本地助手状态...</div>
-          <div class="action-amount" id="action-amount" style="font-size: 20px; line-height: 1.4; margin: 10px 0;">基础额度已保护</div>
-        </div>
-        <div class="action-note" id="helper-note">
-          已锁定 useG1Credits: false，仅消耗套餐基础额度。<br>
-          保存持仓后，自动寻找公开价格与历史一致预期并复核算分。
-        </div>
-        <div class="toolbar" style="margin-top: 14px;">
-          <button type="button" class="btn primary" id="btn-auto-enrich">检查并自动补数</button>
-          <button type="button" class="btn soft" id="btn-refresh-quotes" style="color: #fff; border-color: rgba(255,255,255,.3);">刷新最新报价</button>
-          <button type="button" class="btn soft" id="btn-cancel-job" style="color: #fff; border-color: rgba(255,255,255,.3);" hidden>取消任务</button>
-        </div>
+        <div class="label">数据维护</div><div class="action-word">查阅 · 修改 · 添加</div>
+        <p class="action-note">公开估值、价格和来源保存在项目文件中。<br>本次市值、比例只用于计算，刷新页面后清空。</p>
+        <div class="toolbar"><a class="btn primary" href="#data">打开数据表</a></div>
       </article>
     </div>
 
     <div class="metrics section" style="grid-template-columns: repeat(3, 1fr);">
       <article class="card metric"><div class="label">组合目标杠杆</div><div class="value" id="summary-target-lev">—</div><div class="sub">范围 1.00–1.75× · 逐标的回放后加权</div></article>
       <article class="card metric"><div class="label">加权估值百分位 x</div><div class="value" id="portfolio-x">—</div><div class="sub">越低越便宜 · 60 个月滚动样本</div></article>
-      <article class="card metric"><div class="label">参考基础币种</div><div class="value" id="summary-currency">USD</div><div class="sub">不同币种按公开汇率自动折算</div></article>
+      <article class="card metric"><div class="label">参考基础币种</div><div class="value" id="summary-currency">USD</div><div class="sub">异币种市值使用手动维护的汇率</div></article>
     </div>
     <div class="notice" id="risk-note">策略核心：反转锚点 v2 · 固定 60 个月 · finite-rational ρ=0.9 · 目标杠杆范围 1.00–1.75× · 硬风控上限 2.25×</div>
   </section>
@@ -82,9 +70,9 @@
     <div class="section-head">
       <div>
         <div class="eyebrow">Holdings & Weights</div>
-        <h2>持仓比例与自动补数</h2>
+        <h2>本次组合输入</h2>
       </div>
-      <p>支持市值模式、股数模式与直接比例模式 · 保存后自动触发补数与加权</p>
+      <p>输入市值或比例 · 刷新后清空 · 不进入导出文件</p>
     </div>
     <article class="card workbench">
       <form id="account-form">
@@ -92,7 +80,7 @@
           <label>组合参考币种
             <input id="currency" name="currency" maxlength="3" value="USD" required aria-label="组合参考币种">
           </label>
-          <p class="muted" style="align-self: center; margin: 0;">股数模式将由 Antigravity 获取最新收盘价；市值模式与异币种持仓将按汇率换算至参考币种。直接比例模式无需价格与汇率。</p>
+          <p class="muted" style="align-self: center; margin: 0;">同一组合请选择市值或比例。比例自动归一化；异币种市值须先维护汇率。</p>
         </div>
         <div class="recent">
           <table class="editor-table">
@@ -102,7 +90,7 @@
                 <th style="width: 14%;">输入模式</th>
                 <th style="width: 16%;">数值</th>
                 <th style="width: 10%;">币种</th>
-                <th style="width: 16%;">最新报价 / 折算</th>
+                <th style="width: 16%;">本次输入</th>
                 <th style="width: 10%;">组合权重</th>
                 <th style="width: 10%;">目标杠杆</th>
                 <th style="width: 10%;">操作</th>
@@ -112,9 +100,9 @@
           </table>
         </div>
         <div class="toolbar">
-          <button type="button" class="btn soft" id="add-holding">＋ 添加持仓</button>
-          <button type="submit" class="btn primary">保存持仓并更新</button>
-          <button type="button" class="btn soft" id="btn-force-check">重新检查并补齐数据</button>
+          <button type="button" class="btn soft" id="add-holding">＋ 添加标的</button>
+          <button type="submit" class="btn primary">计算本次组合</button>
+          <button type="button" class="btn soft" id="clear-session">清空本次输入</button>
         </div>
         <div class="legend" id="holding-weights"></div>
       </form>
@@ -163,46 +151,77 @@
   </section>
 
   <section class="section" id="data">
-    <div class="section-head"><div><div class="eyebrow">Valuations & backup</div><h2>估值数据与备份</h2></div><p id="record-count">尚未录入估值</p></div>
+    <div class="section-head"><div><div class="eyebrow">Project market data</div><h2>数据查阅与维护</h2></div><p id="record-count"></p></div>
     <article class="card workbench">
+      <div class="notice">修改文件后提交到项目即可长期保存。网页编辑暂留在本页；完成后下载数据包，解压覆盖项目中的 data 文件夹，再提交。页面不会直接写入 GitHub。</div>
       <div class="toolbar">
-        <label class="btn primary file-button">导入估值 CSV / JSON<input id="valuation-file" type="file" accept=".csv,.json,text/csv,application/json"></label>
-        <a class="btn soft" href="./templates/valuation-history.csv" download>下载 CSV 模板</a>
-        <button class="btn soft" id="demo" type="button">体验虚构示例</button>
+        <button class="btn primary" id="export-project" type="button">下载项目数据包 ZIP</button>
+        <button class="btn soft" id="export-backup" type="button">导出公开数据 JSON</button>
+        <label class="btn soft file-button">导入旧备份 / 数据 JSON<input id="restore-file" type="file" accept=".json,application/json"></label>
+        <a class="btn soft" href="https://github.com/JunYi0160/cycle-algorithm/tree/main/data" target="_blank" rel="noopener">打开仓库数据目录</a>
       </div>
-      <p class="muted">列：symbol、valuation_date、s_tech、source_code、notes、interpolated。输入全部校验后再导入；同日更新保留旧修订。示例使用虚构 DEMO 数据。</p>
-      <form id="score-form" class="form-grid">
-        <label>Symbol<input name="symbol" placeholder="NVDA" required></label>
-        <label>估值月份<input name="month" type="month" required></label>
-        <label>S_Tech<input name="s_tech" type="number" step="any" required></label>
-        <label>来源<input name="source_code" value="manual" required></label>
-        <label class="check"><input name="interpolated" type="checkbox"> 这是来源中的插值估计</label>
-        <button type="submit" class="btn primary">保存 / 更新该月评分</button>
-      </form>
-      <details class="small-detail">
-        <summary>用基本面原始输入计算 S_Tech</summary>
-        <p class="muted">增长率用普通小数（30% 填 0.30）。输入缺失时不猜测评分；公式验证严格遵循项目权威定义。</p>
-        <form id="formula-form">
-          <div class="form-grid"><label>Symbol<input name="symbol" required></label><label>估值月份<input name="month" type="month" required></label></div>
-          <div id="formula-inputs" class="form-grid"></div>
-          <div class="toolbar"><button class="btn primary" type="submit">计算并保存评分</button><output id="formula-result"></output></div>
+      <div class="form-grid data-filters">
+        <label>数据类型<select id="data-kind"><option value="valuations">估值</option><option value="prices">价格</option><option value="fx">汇率</option></select></label>
+        <label>标的<select id="data-symbol"><option value="">全部标的</option></select></label>
+        <label>查找日期 / 来源 / 备注<input id="data-search" type="search" placeholder="例如 2026-08 或插值"></label>
+        <label class="check"><input id="show-revisions" type="checkbox"> 显示历史修订</label>
+      </div>
+      <div class="toolbar"><span id="data-table-count"></span><button class="btn soft" type="button" id="export-symbol">下载所选标的 CSV</button></div>
+      <div class="recent"><table><thead id="data-table-head"></thead><tbody id="data-table-body"></tbody></table></div>
+      <p class="muted" id="table-limit" hidden>当前显示前 250 条，请用标的和日期筛选缩小范围。</p>
+      <details class="small-detail" open><summary>添加 / 修改估值</summary>
+        <p class="muted">同日修改创建新修订，原记录保留。日期、来源和插值标记可核对；原始基本面输入在“查看 / 编辑”中展开。</p>
+        <form id="score-form" class="form-grid">
+          <label>Symbol<input name="symbol" placeholder="NVDA" required></label>
+          <label>估值日期<input name="valuation_date" type="date" required></label>
+          <label>状态<select name="status"><option value="valid">有效评分</option><option value="na">N/A</option></select></label>
+          <label>S_Tech<input name="s_tech" type="number" step="any"></label>
+          <label>来源代码<input name="source_code" value="manual" required></label>
+          <label>来源链接<input name="source_url" type="url"></label>
+          <label>来源标记<select name="provenance"><option value="observation">原始观测</option><option value="source-interpolated">来源插值</option><option value="legacy-unknown">来源待核实</option></select></label>
+          <label class="check"><input name="interpolated" type="checkbox"> 来源中的插值估计</label>
+          <label>备注<input name="notes"></label>
+          <button type="submit" class="btn primary">更新本页评分</button>
+          <button type="button" class="btn soft" id="new-score">清空表单 / 新增</button>
         </form>
       </details>
-      <div class="backup-block">
-        <h3>完整备份与恢复</h3>
-        <p class="muted">数据保存在当前浏览器中，支持升级旧版 v1/v2 备份。旧正式事件完整归档供审计，新版状态从历史重建。换设备或清理缓存前，请下载完整备份。备份覆盖持仓、报价缓存、全部估值修订、补数记录与正式策略状态。</p>
-        <div class="toolbar">
-          <button class="btn primary" id="export-backup" type="button">下载完整 JSON 备份</button>
-          <label class="btn soft file-button">恢复完整 JSON 备份<input id="restore-file" type="file" accept=".json,application/json"></label>
-          <button class="btn soft" type="button" id="download-raw">下载当前本地数据（故障恢复）</button>
+      <details class="small-detail"><summary>编辑基本面输入并计算 S_Tech</summary>
+        <p class="muted">增长率用小数（30% 填 0.30）。全部 11 项输入必须填写；计算结果连同输入写入估值修订。</p>
+        <form id="formula-form">
+          <div class="form-grid"><label>Symbol<input name="symbol" required></label><label>估值日期<input name="valuation_date" type="date" required></label><label>来源代码<input name="source_code" value="manual-fundamentals" required></label><label>来源链接<input name="source_url" type="url"></label><label>备注<input name="notes"></label></div>
+          <div id="formula-inputs" class="form-grid"></div>
+          <div class="toolbar"><button class="btn primary" type="submit">计算并更新本页</button><output id="formula-result"></output></div>
+        </form>
+      </details>
+      <details class="small-detail"><summary>添加 / 修改价格</summary>
+        <p class="muted">每个标的每个日期一条价格。价格是公开行情记录，与本次组合市值分开维护。</p>
+        <form id="price-form" class="form-grid">
+          <label>Symbol<input name="symbol" required></label><label>价格日期<input name="as_of" type="date" required></label><label>价格<input name="price" type="number" step="any" min="0" required></label>
+          <label>币种<input name="currency" value="USD" maxlength="3" required></label><label>来源名称<input name="source_name" value="manual"></label><label>来源链接<input name="source_url" type="url"></label><label>备注<input name="notes"></label>
+          <button class="btn primary" type="submit">更新本页价格</button>
+        </form>
+      </details>
+      <details class="small-detail"><summary>添加 / 修改汇率</summary>
+        <form id="fx-form" class="form-grid">
+          <label>汇率对<input name="pair" placeholder="EUR/USD" required></label><label>日期<input name="as_of" type="date" required></label><label>汇率<input name="rate" type="number" step="any" min="0" required></label>
+          <label>来源链接<input name="source_url" type="url"></label><label>备注<input name="notes"></label><button class="btn primary" type="submit">更新本页汇率</button>
+        </form>
+      </details>
+      <details class="small-detail"><summary>批量导入 CSV / JSON</summary>
+        <div class="toolbar"><select id="import-kind" aria-label="导入数据类型"><option value="valuations">估值</option><option value="prices">价格</option><option value="fx">汇率</option></select>
+          <label class="btn primary file-button">选择文件<input id="valuation-file" type="file" accept=".csv,.json,text/csv,application/json"></label>
+          <a class="btn soft" href="./templates/valuation-history.csv" download>估值模板</a>
+          <a class="btn soft" href="./templates/prices.csv" download>价格模板</a>
+          <a class="btn soft" href="./templates/fx-rates.csv" download>汇率模板</a>
         </div>
-        <div id="migration-notes"></div>
-      </div>
+        <p class="muted">校验全部记录后才更新本页。JSON 导入只提取公开数据，账户、持仓、市值和自动任务不会导入。</p>
+      </details>
+      <div id="migration-notes"></div>
     </article>
   </section>
 
   <section class="section" id="formal">
-    <div class="section-head"><div><div class="eyebrow">Month-end state</div><h2>正式月末信号与激活</h2></div><p>与上方历史预览分开保存</p></div>
+    <div class="section-head"><div><div class="eyebrow">Month-end state</div><h2>正式月末信号与激活</h2></div><p>公开的逐标的控制器状态 · 随项目数据包导出</p></div>
     <article class="card workbench">
       <p class="muted">正式入场严格要求 x &lt; 30%，不强制入场、不临时补月。月末信号生成 pending target；到下一月首个交易日收盘后，手动激活为 current target。交易日由你核实。</p>
       <form id="formal-form" class="form-grid">
@@ -215,17 +234,18 @@
       <div class="recent"><table><thead><tr><th>标的</th><th>信号月</th><th>x</th><th>Pending</th><th>Current</th><th>事件</th></tr></thead><tbody id="formal-list"></tbody></table></div>
     </article>
   </section>
-  <p class="footer-note">反转锚点 v2 · 固定 60 个月 · finite-rational ρ=0.9 · 本地计算与保存 · 不自动交易</p>
+  <p class="footer-note">反转锚点 v2 · 固定 60 个月 · finite-rational ρ=0.9 · 浏览器计算 · 项目文件保存 · 不自动交易</p>
 </main>
 <dialog id="restore-dialog">
-  <h2>恢复完整备份</h2>
+  <h2>导入公开数据</h2>
   <p id="restore-summary"></p>
-  <p class="muted">恢复将替换当前浏览器中的数据。建议先下载当前备份。</p>
+  <p class="muted">导入将替换本页的公开数据。本次组合输入独立保留。</p>
   <div class="toolbar">
-    <button id="restore-confirm" class="btn primary">恢复这份备份</button>
+    <button id="restore-confirm" class="btn primary">使用这份数据</button>
     <button id="restore-cancel" class="btn soft">取消</button>
   </div>
 </dialog>
+<dialog id="record-dialog"><h2>估值记录详情</h2><pre id="record-detail"></pre><button class="btn primary" type="button" id="record-close">关闭并编辑</button></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
