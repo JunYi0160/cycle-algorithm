@@ -14,6 +14,10 @@ let data=emptyData(),restoreCandidate=null,currentPreviewSymbol=null,storageAvai
 let helperConnected=false,helperInfo=null,activeTaskCount=0;
 const HELPER_BASE='http://127.0.0.1:8789';
 
+if(typeof navigator!=='undefined'&&'serviceWorker' in navigator){
+  navigator.serviceWorker.getRegistrations().then(regs=>{for(const r of regs)r.unregister();}).catch(()=>{});
+}
+
 function error(e){$('error').hidden=false;$('error').textContent=e.message||String(e);$('error').scrollIntoView({behavior:'smooth',block:'center'});}
 function toast(message){$('toast').textContent=message;$('toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').classList.remove('show'),4500);}
 function action(fn){return (...args)=>{try{$('error').hidden=true;fn(...args);}catch(e){error(e);}};}
