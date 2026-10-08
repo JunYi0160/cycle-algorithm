@@ -1,0 +1,9 @@
+dist/
+private-exports/
+tests/artifacts/
+node_modules/
+*.log
+.env*
+__pycache__/
+*.pyc
+/cycle-algorithm-static.zip

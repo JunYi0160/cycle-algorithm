@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light"><meta name="theme-color" content="#f3f1eb">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>Cycle Algorithm · 手动账户</title><link rel="icon" href="./icon.png"><link rel="stylesheet" href="./style.css">
+  <script type="module" src="./src/app.js"></script>
+</head>
+<body>
+<header class="topbar"><div class="shell nav">
+  <a class="brand" href="#overview"><span class="mark"><img src="./icon.png" alt=""></span><span>Cycle Algorithm</span></a>
+  <nav class="navlinks"><a href="#account-editor">账户</a><a href="#health">数据健康</a><a href="#research">策略研究</a><a href="#data">数据与备份</a></nav>
+  <div class="status"><i class="dot" id="storage-dot"></i><span id="storage-status">正在读取本地数据</span></div>
+  <a class="btn primary" href="#account-editor">编辑账户</a>
+</div></header>
+<main class="shell">
+  <div id="error" class="notice error" role="alert" hidden></div>
+  <section id="overview">
+    <div class="eyebrow">Your portfolio, your data</div>
+    <h1 class="hero-title">Smarter Positioning, <span class="nowrap">Better Returns</span></h1>
+    <p class="lede">买大A后反诈中心经常给我打电话。</p>
+    <div class="hero-grid">
+      <article class="card compare"><div class="compare-head"><div class="label">实际与历史回放目标杠杆</div><div class="asof" id="updated-at">尚未录入账户</div></div>
+        <div class="leverage-pair"><div class="lev-block"><b id="actual-lev">—</b><span>实际杠杆 · <strong id="actual-mv">—</strong></span></div><div class="arrow">→</div><div class="lev-block"><b id="target-lev">—</b><span>目标杠杆 · <strong id="target-mv">—</strong></span></div></div>
+        <div class="bars"><div class="bar-row"><span>实际</span><div class="track"><div class="fill" id="actual-bar"></div></div><b id="actual-bar-label">—</b></div><div class="bar-row"><span>目标</span><div class="track"><div class="fill target" id="target-bar"></div></div><b id="target-bar-label">—</b></div></div>
+      </article>
+      <article class="card action"><div><div class="label">达到回放目标的市值差额</div><div class="action-word" id="action-word">先录入账户与估值历史</div><div class="action-amount" id="action-amount">—</div></div>
+        <div class="action-note">目标组合市值 = 净值 × 组合目标杠杆<br>差额 = 目标组合市值 − 实际市值；不含交易费用。<br>用于核对敞口，成交由你决定。</div>
+      </article>
+    </div>
+    <div class="metrics section"><article class="card metric"><div class="label">账户净值 E</div><div class="value" id="equity">—</div><div class="sub">E = A − B</div></article><article class="card metric"><div class="label">股票总市值 A</div><div class="value" id="stock-value">—</div><div class="sub">持仓市值合计</div></article><article class="card metric"><div class="label">融资余额 B</div><div class="value" id="financing">—</div><div class="sub">正数为借款，负数为现金</div></article><article class="card metric"><div class="label">组合估值百分位</div><div class="value" id="portfolio-x">—</div><div class="sub">越低越便宜；逐持仓计算后加权</div></article></div>
+    <div class="notice" id="risk-note">目标范围 1.00–1.75× · 实际杠杆硬上限 2.25×</div>
+    <details class="small-detail"><summary>查看含交易费用的精确再平衡金额</summary><p id="exact-trade">账户与组合目标可用后显示。</p><p class="muted">使用核心单边费率 0.05%，使交易后的实际杠杆等于目标；与上方不含费用的市值差额分开。</p></details>
+  </section>
+
+  <section class="section" id="account-editor"><div class="section-head"><div><div class="eyebrow">Manual account</div><h2>账户与持仓</h2></div><p>保存后自动重算 · 市值统一使用基础币种</p></div>
+    <article class="card workbench"><form id="account-form">
+      <div class="form-grid"><label>基础币种<input id="currency" name="currency" maxlength="3" required aria-label="基础币种"></label><label>融资余额 B<input id="financing-input" name="financing" type="number" step="any" required aria-label="融资余额 B"></label><label>股票总市值 A（自动合计）<output id="draft-a">0</output></label></div>
+      <p class="muted">借款 5,000 填 5000；现金 5,000 填 −5000。A 来自下方持仓合计，不再另设独立输入。更改基础币种时，须同时把每笔市值重新换算。</p>
+      <div class="recent"><table class="editor-table"><thead><tr><th>Symbol</th><th>数量</th><th>基础币种市值</th><th>类型</th><th>操作</th></tr></thead><tbody id="holding-editor"></tbody></table></div>
+      <div class="toolbar"><button type="button" class="btn soft" id="add-holding">＋ 添加持仓</button><button type="submit" class="btn primary">保存账户与持仓</button></div>
+      <div class="legend" id="holding-weights"></div>
+    </form></article>
+  </section>
+
+  <section class="section" id="health"><div class="section-head"><div><div class="eyebrow">Signal & integrity</div><h2>策略与数据健康</h2></div><p id="as-of"></p></div>
+    <div class="insight-grid"><article class="card percentile"><div class="ring" id="percentile-ring"><strong id="ring-value">—</strong></div><div class="ring-copy"><h3 id="valuation-state">等待策略结果</h3><p id="strategy-message">全部非零持仓都可计算时，才生成组合目标。</p></div></article>
+      <article class="card health"><div class="health-top"><div class="health-title">数据质量中心</div><span class="quality" id="quality">尚未录入</span></div><div class="health-list" id="health-list"></div></article></div>
+  </section>
+
+  <section class="section" id="research"><div class="section-head"><div><div class="eyebrow">Historical preview</div><h2>策略临时计算</h2></div><p>不改变正式状态；内部缺月仅临时插值</p></div>
+    <article class="card workbench"><div id="asset-grid" class="asset-grid"></div><div class="preview" id="preview">
+      <div class="section-head"><h2 id="preview-title">策略结果</h2><p>x 越低越便宜</p></div><div class="notice" id="entry-note"></div>
+      <div class="preview-cards"><div class="preview-mini"><span>入场月份</span><b id="entry-month">—</b></div><div class="preview-mini"><span>入场百分位</span><b id="entry-x">—</b></div><div class="preview-mini"><span>最新百分位</span><b id="latest-x">—</b></div><div class="preview-mini"><span>最新目标杠杆</span><b id="latest-target">—</b></div><div class="preview-mini"><span>临时插值月数</span><b id="interp-count">—</b></div></div>
+      <div class="chart" id="strategy-chart"></div><div class="chart-legend"><span class="blue">● 估值百分位 x</span><span class="positive">● 目标杠杆</span><span>虚线：预览入场</span></div>
+      <div class="recent"><table><thead><tr><th>月份 / 来源</th><th>S_Tech</th><th>x</th><th>z</th><th>目标杠杆</th></tr></thead><tbody id="recent"></tbody></table></div>
+    </div></article>
+  </section>
+
+  <section class="section" id="data"><div class="section-head"><div><div class="eyebrow">Valuations & backup</div><h2>估值数据与备份</h2></div><p id="record-count">尚未录入估值</p></div>
+    <article class="card workbench">
+      <div class="toolbar"><label class="btn primary file-button">导入估值 CSV / JSON<input id="valuation-file" type="file" accept=".csv,.json,text/csv,application/json"></label><a class="btn soft" href="./templates/valuation-history.csv" download>下载 CSV 模板</a><button class="btn soft" id="demo" type="button">体验虚构示例</button></div>
+      <p class="muted">列：symbol、valuation_date、s_tech、source_code、notes、interpolated。输入全部校验后再导入；同日更新保留旧修订。示例使用虚构 DEMO 数据。</p>
+      <form id="score-form" class="form-grid"><label>Symbol<input name="symbol" placeholder="NVDA" required></label><label>估值月份<input name="month" type="month" required></label><label>S_Tech<input name="s_tech" type="number" step="any" required></label><label>来源<input name="source_code" value="manual" required></label><label class="check"><input name="interpolated" type="checkbox"> 这是来源中的插值估计</label><button type="submit" class="btn primary">保存 / 更新该月评分</button></form>
+      <details class="small-detail"><summary>用基本面原始输入计算 S_Tech</summary><p class="muted">增长率用普通小数（30% 填 0.30）。输入缺失时不猜测评分。</p><form id="formula-form"><div class="form-grid"><label>Symbol<input name="symbol" required></label><label>估值月份<input name="month" type="month" required></label></div><div id="formula-inputs" class="form-grid"></div><div class="toolbar"><button class="btn primary" type="submit">计算并保存评分</button><output id="formula-result"></output></div></form></details>
+      <div class="backup-block"><h3>完整备份与恢复</h3><p class="muted">数据只保存在当前浏览器、当前网站中。换设备、换网址或清理浏览器前，请下载备份；没有默认跨设备同步。备份包含账户、持仓、全部估值修订与正式策略状态。</p><div class="toolbar"><button class="btn primary" id="export-backup" type="button">下载完整 JSON 备份</button><label class="btn soft file-button">恢复完整 JSON 备份<input id="restore-file" type="file" accept=".json,application/json"></label><button class="btn soft" type="button" id="download-raw">下载当前本地数据（故障恢复）</button></div><div id="migration-notes"></div></div>
+    </article>
+  </section>
+
+  <section class="section" id="formal"><div class="section-head"><div><div class="eyebrow">Month-end state</div><h2>正式月末信号与激活</h2></div><p>与上方历史预览分开保存</p></div>
+    <article class="card workbench"><p class="muted">正式入场严格要求 x &lt; 30%，不强制入场、不临时补月。月末信号生成 pending target；到下一月首个交易日收盘后，手动激活为 current target。交易日由你核实。</p>
+      <form id="formal-form" class="form-grid"><label>Symbol<select name="symbol" id="formal-symbol" required></select></label><label>信号月末<input name="signal_date" id="signal-date" type="date" required></label><label>激活日期<input name="effective_date" id="effective-date" type="date"></label><button name="action" value="observe" class="btn primary" type="submit">生成月末信号</button><button name="action" value="activate" class="btn soft" type="submit" formnovalidate>激活 pending target</button></form>
+      <div class="recent"><table><thead><tr><th>标的</th><th>信号月</th><th>x</th><th>Pending</th><th>Current</th><th>事件</th></tr></thead><tbody id="formal-list"></tbody></table></div>
+    </article>
+  </section>
+  <p class="footer-note">固定 60 个月 · finite-rational ρ=0.9 · 本地计算与保存 · 不自动交易</p>
+</main>
+<dialog id="restore-dialog"><h2>恢复完整备份</h2><p id="restore-summary"></p><p class="muted">恢复将替换当前浏览器中的数据。建议先下载当前备份。</p><div class="toolbar"><button id="restore-confirm" class="btn primary">恢复这份备份</button><button id="restore-cancel" class="btn soft">取消</button></div></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body></html>

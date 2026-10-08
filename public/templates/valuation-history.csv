@@ -1,0 +1,4 @@
+symbol,valuation_date,s_tech,source_code,notes,interpolated
+DEMO,2020-01-31,5.1,manual,虚构示例 请替换为你的真实记录,false
+DEMO,2020-02-29,5.3,manual,虚构示例 请替换为你的真实记录,false
+DEMO,2020-03-31,5.2,manual,来源中已有的插值估计,true
