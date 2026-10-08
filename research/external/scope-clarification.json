@@ -1,0 +1,7 @@
+{
+  "asset_holdout":"18 newly tested tickers and four predeclared baskets; cross-asset holdout relative to prior construction in this conversation.",
+  "temporal_extension":"Dates after the previous 2026-09-04 cutoff were downloaded only after candidate and universe freezing, but those market dates precede the 2026-10-08 freeze. This is a short retrospectively held-back time extension, not prospective live performance.",
+  "protocol_term_clarification":"The frozen protocol's field named prospective_probe refers to this retrospective extension. Its dates, continuous-state replay and decision rule remain unchanged; no forward-test claim is permitted.",
+  "audit_only_symbol":"QQQ; the description attached to this field is metadata, not part of the ticker.",
+  "parameters_and_universe_changed":false
+}

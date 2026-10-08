@@ -1,0 +1,289 @@
+{
+  "universal_candidates": [],
+  "research_candidates_passing_required_segments": [],
+  "per_asset_results": [
+    {
+      "strategy": "AY-50",
+      "per_asset_robustness": [
+        {
+          "suite": "QQQ",
+          "required_passed": 13,
+          "checks": 15,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "SMH",
+          "required_passed": 14,
+          "checks": 15,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "NVDA",
+          "required_passed": 14,
+          "checks": 15,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "GOOG",
+          "required_passed": 14,
+          "checks": 15,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "MSFT",
+          "required_passed": 8,
+          "checks": 15,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "TECH3",
+          "required_passed": 15,
+          "checks": 15,
+          "all_checks_passed": true
+        },
+        {
+          "suite": "ETF2",
+          "required_passed": 14,
+          "checks": 15,
+          "all_checks_passed": false
+        }
+      ]
+    },
+    {
+      "strategy": "AY-75",
+      "per_asset_robustness": [
+        {
+          "suite": "QQQ",
+          "required_passed": 13,
+          "checks": 15,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "SMH",
+          "required_passed": 14,
+          "checks": 15,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "NVDA",
+          "required_passed": 14,
+          "checks": 15,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "GOOG",
+          "required_passed": 14,
+          "checks": 15,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "MSFT",
+          "required_passed": 8,
+          "checks": 15,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "TECH3",
+          "required_passed": 15,
+          "checks": 15,
+          "all_checks_passed": true
+        },
+        {
+          "suite": "ETF2",
+          "required_passed": 14,
+          "checks": 15,
+          "all_checks_passed": false
+        }
+      ]
+    },
+    {
+      "strategy": "RV-10",
+      "per_asset_robustness": [
+        {
+          "suite": "QQQ",
+          "required_passed": 17,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "SMH",
+          "required_passed": 16,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "NVDA",
+          "required_passed": 13,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "GOOG",
+          "required_passed": 18,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "MSFT",
+          "required_passed": 10,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "TECH3",
+          "required_passed": 19,
+          "checks": 19,
+          "all_checks_passed": true
+        },
+        {
+          "suite": "ETF2",
+          "required_passed": 17,
+          "checks": 19,
+          "all_checks_passed": false
+        }
+      ]
+    },
+    {
+      "strategy": "RV-20",
+      "per_asset_robustness": [
+        {
+          "suite": "QQQ",
+          "required_passed": 11,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "SMH",
+          "required_passed": 16,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "NVDA",
+          "required_passed": 14,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "GOOG",
+          "required_passed": 17,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "MSFT",
+          "required_passed": 8,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "TECH3",
+          "required_passed": 19,
+          "checks": 19,
+          "all_checks_passed": true
+        },
+        {
+          "suite": "ETF2",
+          "required_passed": 15,
+          "checks": 19,
+          "all_checks_passed": false
+        }
+      ]
+    },
+    {
+      "strategy": "RVAR-10",
+      "per_asset_robustness": [
+        {
+          "suite": "QQQ",
+          "required_passed": 18,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "SMH",
+          "required_passed": 15,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "NVDA",
+          "required_passed": 10,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "GOOG",
+          "required_passed": 16,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "MSFT",
+          "required_passed": 8,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "TECH3",
+          "required_passed": 12,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "ETF2",
+          "required_passed": 17,
+          "checks": 19,
+          "all_checks_passed": false
+        }
+      ]
+    },
+    {
+      "strategy": "RVAR-20",
+      "per_asset_robustness": [
+        {
+          "suite": "QQQ",
+          "required_passed": 11,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "SMH",
+          "required_passed": 15,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "NVDA",
+          "required_passed": 10,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "GOOG",
+          "required_passed": 13,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "MSFT",
+          "required_passed": 8,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "TECH3",
+          "required_passed": 12,
+          "checks": 19,
+          "all_checks_passed": false
+        },
+        {
+          "suite": "ETF2",
+          "required_passed": 13,
+          "checks": 19,
+          "all_checks_passed": false
+        }
+      ]
+    }
+  ],
+  "do_not_select_parameter_neighbors": true
+}

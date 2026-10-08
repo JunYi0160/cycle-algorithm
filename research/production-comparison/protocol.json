@@ -1,0 +1,39 @@
+{
+  "comparison": "Same entry/exit dates, costs, execution quote and price index; equal-return drawdown",
+  "scope": "Three previously examined technology stocks; diagnostic proxy, not production S_Tech performance or held-out test",
+  "synthetic_scope": "All four existing fixed-fundamental sinusoidal scenarios reused without tuning. S_Tech=C/P, no market-data claim.",
+  "production_parameters_changed": false,
+  "source_sha256": {
+    "src\\strategy.js": "69654e6620a1a7e9343fc6378c85e72af06038dae185caea2ed945af0046dfd4",
+    "src\\valuation.js": "4d97ce6dc8ba77088378d226d7563303f058883e795745c7eee5b87862ec1b26",
+    "research\\v2\\engine.py": "c29f8f516320adfb468447caf67e8ef17e5efdd8b4628d8771a5944b896efe7f",
+    "research\\v2\\fixed_leverage.py": "32b754a18dda6190ec3f3271cdb8fdf29aec2ae5a6a259235f5f61af40535921",
+    "research\\historical\\prices.json": "0ef1cef15afd69ff5cdd34c0cadfd013ec2d981512c18d8bd35cb0dd6f0ab06c",
+    "research\\external\\retained-candidates.json": "0ad682073646af2d89f17d9d85ccd3a5ba55fd78ea2e25750f23fec38b14f5a1",
+    "docs\\oscillation-v2-report.json": "01fd74336c01f296812565c773391f2b384bb874a0b7b61c558b1ea34ef6704f"
+  },
+  "signals": {
+    "NVDA": {
+      "signal_path": "C:\\Users\\jun\\Documents\\Codex\\2026-09-09\\referenced-chatgpt-conversation-this-is-an\\outputs\\nvda-goog-msft-validation\\NVDA_valuation_signals.csv",
+      "sha256": "24191a7dff212ee3a81ad4a29fef0d74ee138fd00e01ce57dee378b932abc5ab",
+      "rows": 131,
+      "warning": "Legacy PE, not verified consecutive-quarter TTM, not S_Tech"
+    },
+    "GOOG": {
+      "signal_path": "C:\\Users\\jun\\Documents\\Codex\\2026-09-09\\referenced-chatgpt-conversation-this-is-an\\outputs\\nvda-goog-msft-validation\\GOOG_valuation_signals.csv",
+      "sha256": "f5f88e5d9c759291053aa4cdb0c6efa74b6eafb5a630b445d9f049b9024317fc",
+      "rows": 144,
+      "warning": "Legacy PE, not verified consecutive-quarter TTM, not S_Tech"
+    },
+    "MSFT": {
+      "signal_path": "C:\\Users\\jun\\Documents\\Codex\\2026-09-09\\referenced-chatgpt-conversation-this-is-an\\outputs\\nvda-goog-msft-validation\\MSFT_valuation_signals.csv",
+      "sha256": "639438c3840cbae01099667c9a82044eb8ed1c456fdc5b2bf79158e893602c11",
+      "rows": 142,
+      "warning": "Legacy PE, not verified consecutive-quarter TTM, not S_Tech"
+    }
+  },
+  "execution": "Primary previous month-end signal to next trading-day open. Native-close sensitivity explicitly separate.",
+  "forced_resets": "2020 and 2022 reset all portfolios, force production entry from latest previously known monthly proxy. Not default entry-gate performance.",
+  "hard_cap": "Production 2.25x cap kept, tested at close and reduced to current target at close. Fixed leverage has no cap.",
+  "benchmark": "Same monthly fixed leverage 0x-3x, 5.3% annual borrow, minimum solvent matching root"
+}

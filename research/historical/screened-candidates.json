@@ -1,0 +1,32 @@
+{
+  "screening_rule": {
+    "criterion": "Match net terminal wealth (equivalently CAGR on identical dates), reject if candidate maximum drawdown magnitude exceeds comparator.",
+    "screening_scope": "All applicable primary and full-history assets; any strictly worse drawdown removes the candidate from the research shortlist. Unmatched comparisons are unresolved, not automatic failures. Overlapping cohorts, legacy PE proxies and frequency/cost sensitivity are not additional rejection gates.",
+    "comparator": "Monthly fixed target leverage to the same fixed-share buy-and-hold asset/basket; multi-asset relative shares are never equal-weight rebalanced.",
+    "cash_rate": 0,
+    "borrowing_rate": 0.053,
+    "one_way_cost": 0.0005,
+    "initial_capital": 10000.0,
+    "execution_and_drawdown": "Same opening quotes and daily closing drawdown as prior main replay; no forced terminal sale.",
+    "root_search": "0x–3x scanned at 0.01x, sign changes bisected 65 times; lowest solvent root retained; no root is unresolved, not an automatic pass. Tangent roots without sign changes could be missed.",
+    "drawdown_numerical_tolerance": 1e-10,
+    "interpretation": "Ex-post equal-return diagnostic; not a leverage recommendation or an out-of-sample test."
+  },
+  "retained_candidate_ids": [],
+  "rejected_candidate_ids": [
+    "P-R1",
+    "P-R2",
+    "P-MIX",
+    "G-05",
+    "G-10",
+    "G-20",
+    "E-025",
+    "E-1",
+    "E-4",
+    "M-SINGLE",
+    "M-MULTI"
+  ],
+  "candidates": [],
+  "original_definition_file": "../candidates.json",
+  "historical_definitions_preserved": true
+}

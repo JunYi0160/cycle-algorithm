@@ -1,0 +1,31 @@
+{
+  "retained_research_candidates": [
+    {
+      "id": "AY-50",
+      "family": "peak_power",
+      "alpha": 0.5
+    },
+    {
+      "id": "AY-75",
+      "family": "peak_power",
+      "alpha": 0.75
+    },
+    {
+      "id": "RV-10",
+      "family": "risk_budget",
+      "risk_measure": "standard_deviation",
+      "target": 0.1,
+      "half_life": 63
+    },
+    {
+      "id": "RV-20",
+      "family": "risk_budget",
+      "risk_measure": "standard_deviation",
+      "target": 0.2,
+      "half_life": 63
+    }
+  ],
+  "accepted_universal_candidates": [],
+  "all_failures_kept": true,
+  "winning_assets_not_selected_as_deployment_universe": true
+}

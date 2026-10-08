@@ -1,0 +1,88 @@
+{
+  "kind": "synthetic price paths for implementation checks; not historical market data",
+  "single_strategy_ids": ["P-R1", "P-R2", "P-MIX", "G-05", "G-10", "G-20", "M-SINGLE", "B-CASH", "B-STOCK", "B-50"],
+  "multi_strategy_ids": ["E-025", "E-1", "E-4", "M-MULTI", "B-CASH", "B-EQUAL-HOLD", "B-EQUAL-MIX"],
+  "scenarios": [
+    {"id": "single-up-roundtrip", "assets": ["SYNTH"], "rows": [
+      {"date": "2020-01-02", "prices": [100]},
+      {"date": "2020-02-03", "prices": [120]},
+      {"date": "2020-03-02", "prices": [100]}
+    ]},
+    {"id": "single-down-roundtrip", "assets": ["SYNTH"], "rows": [
+      {"date": "2020-01-02", "prices": [100]},
+      {"date": "2020-02-03", "prices": [80]},
+      {"date": "2020-03-02", "prices": [100]}
+    ]},
+    {"id": "single-tiny-roundtrip", "assets": ["SYNTH"], "rows": [
+      {"date": "2020-01-02", "prices": [100]},
+      {"date": "2020-02-03", "prices": [100.1]},
+      {"date": "2020-03-02", "prices": [100]}
+    ]},
+    {"id": "single-flat", "assets": ["SYNTH"], "rows": [
+      {"date": "2020-01-02", "prices": [100]},
+      {"date": "2020-02-03", "prices": [100]},
+      {"date": "2020-03-02", "prices": [100]}
+    ]},
+    {"id": "single-persistent-up", "assets": ["SYNTH"], "rows": [
+      {"date": "2020-01-02", "prices": [100]},
+      {"date": "2020-02-03", "prices": [120]},
+      {"date": "2020-03-02", "prices": [150]},
+      {"date": "2020-04-01", "prices": [200]}
+    ]},
+    {"id": "single-persistent-down", "assets": ["SYNTH"], "rows": [
+      {"date": "2020-01-02", "prices": [100]},
+      {"date": "2020-02-03", "prices": [90]},
+      {"date": "2020-03-02", "prices": [70]},
+      {"date": "2020-04-01", "prices": [50]},
+      {"date": "2020-05-01", "prices": [20]}
+    ]},
+    {"id": "single-gap-and-recovery", "assets": ["SYNTH"], "rows": [
+      {"date": "2020-01-02", "prices": [100]},
+      {"date": "2020-02-03", "prices": [55]},
+      {"date": "2020-03-02", "prices": [20]},
+      {"date": "2020-04-01", "prices": [100]}
+    ]},
+    {"id": "single-repeated-range", "assets": ["SYNTH"], "rows": [
+      {"date": "2020-01-02", "prices": [100]},
+      {"date": "2020-02-03", "prices": [90]},
+      {"date": "2020-03-02", "prices": [110]},
+      {"date": "2020-04-01", "prices": [100]},
+      {"date": "2020-05-01", "prices": [90]},
+      {"date": "2020-06-01", "prices": [110]},
+      {"date": "2020-07-01", "prices": [100]}
+    ]},
+    {"id": "single-mark-only-between-trades", "assets": ["SYNTH"], "rows": [
+      {"date": "2020-01-02", "prices": [100]},
+      {"date": "2020-01-03", "prices": [110], "rebalance": false},
+      {"date": "2020-01-06", "prices": [120]},
+      {"date": "2020-01-07", "prices": [105], "rebalance": false},
+      {"date": "2020-02-03", "prices": [100]}
+    ]},
+    {"id": "multi-relative-roundtrip", "assets": ["SYNTH-A", "SYNTH-B"], "rows": [
+      {"date": "2020-01-02", "prices": [100, 100]},
+      {"date": "2020-02-03", "prices": [120, 80]},
+      {"date": "2020-03-02", "prices": [100, 100]}
+    ]},
+    {"id": "multi-common-down", "assets": ["SYNTH-A", "SYNTH-B"], "rows": [
+      {"date": "2020-01-02", "prices": [100, 100]},
+      {"date": "2020-02-03", "prices": [80, 80]},
+      {"date": "2020-03-02", "prices": [60, 60]}
+    ]},
+    {"id": "multi-common-up", "assets": ["SYNTH-A", "SYNTH-B"], "rows": [
+      {"date": "2020-01-02", "prices": [100, 100]},
+      {"date": "2020-02-03", "prices": [120, 120]},
+      {"date": "2020-03-02", "prices": [144, 144]}
+    ]},
+    {"id": "multi-relative-trend", "assets": ["SYNTH-A", "SYNTH-B"], "rows": [
+      {"date": "2020-01-02", "prices": [100, 100]},
+      {"date": "2020-02-03", "prices": [130, 90]},
+      {"date": "2020-03-02", "prices": [300, 80]},
+      {"date": "2020-04-01", "prices": [1500, 70]}
+    ]},
+    {"id": "multi-three-assets-roundtrip", "assets": ["SYNTH-A", "SYNTH-B", "SYNTH-C"], "rows": [
+      {"date": "2020-01-02", "prices": [100, 50, 200]},
+      {"date": "2020-02-03", "prices": [120, 40, 220]},
+      {"date": "2020-03-02", "prices": [100, 50, 200]}
+    ]}
+  ]
+}

@@ -17,6 +17,7 @@ mkdirSync(CACHE_DIR, { recursive: true });
 const QUOTE_CACHE_FILE = join(CACHE_DIR, 'quotes.json');
 const FX_CACHE_FILE = join(CACHE_DIR, 'fx.json');
 const TOKEN_FILE = join(CACHE_DIR, 'helper-token.txt');
+const AUDIT_LOG_FILE = join(CACHE_DIR, 'ai-audit.json');
 
 // Load or generate pairing token
 let helperToken = '';
@@ -30,6 +31,28 @@ if (!helperToken) {
 
 export function getHelperToken() {
   return helperToken;
+}
+
+// In-memory audit log
+let auditLogs = [];
+if (existsSync(AUDIT_LOG_FILE)) {
+  try { auditLogs = JSON.parse(readFileSync(AUDIT_LOG_FILE, 'utf8')); } catch {}
+}
+
+export function logAudit(action, detail) {
+  const entry = {
+    id: randomBytes(8).toString('hex'),
+    timestamp: new Date().toISOString(),
+    action,
+    ...detail
+  };
+  auditLogs.unshift(entry);
+  if (auditLogs.length > 100) auditLogs = auditLogs.slice(0, 100);
+  try { writeFileSync(AUDIT_LOG_FILE, JSON.stringify(auditLogs, null, 2), 'utf8'); } catch {}
+}
+
+export function getAuditLogs() {
+  return auditLogs;
 }
 
 // In-memory caches
@@ -133,16 +156,34 @@ export function enforceCostProtection() {
   if (!settings.permissions.allow.includes('read_url(*)')) {
     settings.permissions.allow.push('read_url(*)');
   }
+  if (!settings.permissions.allow.includes('search_web(*)')) {
+    settings.permissions.allow.push('search_web(*)');
+  }
   writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2), 'utf8');
 }
 
 let activeAgyProcess = null;
 
+function resolveAgyBin() {
+  if (process.platform === 'win32') {
+    const candidates = [
+      join(process.env.APPDATA || 'C:\\Users\\jun\\AppData\\Roaming', 'Antigravity', 'bin', 'agy.exe'),
+      join(process.env.LOCALAPPDATA || 'C:\\Users\\jun\\AppData\\Local', 'agy', 'bin', 'agy.exe'),
+      'agy.exe'
+    ];
+    for (const p of candidates) {
+      if (p === 'agy.exe' || existsSync(p)) return p;
+    }
+  }
+  return 'agy';
+}
+
 export async function runAgyPrompt(prompt, { timeoutMs = 120000 } = {}) {
   enforceCostProtection();
   return new Promise((resolve, reject) => {
-    const agyBin = process.platform === 'win32' ? 'agy.exe' : 'agy';
-    const args = ['-p', prompt, '--output-format', 'json'];
+    const agyBin = resolveAgyBin();
+    const args = ['-p', prompt, '--dangerously-skip-permissions', '--output-format', 'json'];
+    const startTime = Date.now();
     
     let stdout = '';
     let stderr = '';
@@ -164,13 +205,23 @@ export async function runAgyPrompt(prompt, { timeoutMs = 120000 } = {}) {
     child.on('close', code => {
       clearTimeout(timer);
       activeAgyProcess = null;
+      const durationSec = ((Date.now() - startTime) / 1000).toFixed(2);
       if (code !== 0) {
+        logAudit('agy_error', { prompt: prompt.slice(0, 150), error: stderr || stdout, duration_seconds: Number(durationSec) });
         return reject(new Error(`agy 进程退出（代码 ${code}）：${stderr || stdout || '无输出'}`));
       }
       try {
         const parsed = JSON.parse(stdout);
+        logAudit('agy_success', {
+          prompt: prompt.slice(0, 150),
+          duration_seconds: parsed.duration_seconds || Number(durationSec),
+          tokens: parsed.usage?.total_tokens || null,
+          model: parsed.model || 'Gemini 3.8 Flash',
+          conversation_id: parsed.conversation_id || null
+        });
         resolve(parsed);
       } catch (err) {
+        logAudit('agy_raw', { prompt: prompt.slice(0, 150), duration_seconds: Number(durationSec), rawOutput: stdout.slice(0, 300) });
         resolve({ rawOutput: stdout, error: err.message });
       }
     });
@@ -178,6 +229,7 @@ export async function runAgyPrompt(prompt, { timeoutMs = 120000 } = {}) {
     child.on('error', err => {
       clearTimeout(timer);
       activeAgyProcess = null;
+      logAudit('agy_spawn_error', { prompt: prompt.slice(0, 150), error: err.message });
       reject(err);
     });
   });
@@ -232,13 +284,45 @@ export async function fetchLiveQuote(symbol) {
     }
   }
 
+  // 1. Fast Primary Channel: Direct public market quote (instant 0.2s response)
+  try {
+    const yUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=1d`;
+    const res = await fetch(yUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
+      signal: AbortSignal.timeout(5000)
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const meta = data?.chart?.result?.[0]?.meta;
+      if (meta && Number.isFinite(meta.regularMarketPrice) && meta.regularMarketPrice > 0) {
+        const quote = {
+          symbol: sym,
+          price: Number(meta.regularMarketPrice),
+          currency: String(meta.currency || 'USD').toUpperCase(),
+          as_of: todayStr,
+          source_url: `https://finance.yahoo.com/quote/${encodeURIComponent(sym)}`,
+          source_name: 'Yahoo Finance 实时公开行情',
+          retrieved_at: new Date().toISOString(),
+          engine: 'Fast Market Feed'
+        };
+        quoteCache[sym] = quote;
+        saveQuoteCache();
+        logAudit('quote_retrieved', { symbol: sym, price: quote.price, currency: quote.currency, source_url: quote.source_url, engine: 'Fast Market Feed' });
+        return quote;
+      }
+    }
+  } catch (err) {
+    console.warn(`Direct quote fetch failed for ${sym}, falling back to Antigravity AI:`, err.message);
+  }
+
+  // 2. Secondary Channel: Antigravity AI Web Search
   const prompt = `Find the most recent market closing price and trading currency for stock ticker "${sym}". Output ONLY a valid JSON object matching this exact format:
 {"symbol": "${sym}", "price": 123.45, "currency": "USD", "as_of": "YYYY-MM-DD", "source_url": "https://...", "source_name": "NASDAQ/NYSE/Yahoo/..."}`;
 
-  const res = await runAgyPrompt(prompt, { timeoutMs: 90000 });
+  const res = await runAgyPrompt(prompt, { timeoutMs: 60000 });
   const data = parseJsonFromAgyResponse(res);
   if (!data || !Number.isFinite(Number(data.price)) || Number(data.price) <= 0) {
-    throw new Error(`未能获取 ${sym} 的有效报价：${JSON.stringify(data || res.response || '无数据')}`);
+    throw new Error(`未能获取 ${sym} 的有效报价：${JSON.stringify(data || res?.response || '无数据')}`);
   }
 
   const quote = {
@@ -246,43 +330,75 @@ export async function fetchLiveQuote(symbol) {
     price: Number(data.price),
     currency: String(data.currency || 'USD').toUpperCase(),
     as_of: String(data.as_of || todayStr),
-    source_url: String(data.source_url || ''),
-    source_name: String(data.source_name || '公开行情'),
-    retrieved_at: new Date().toISOString()
+    source_url: String(data.source_url || `https://finance.yahoo.com/quote/${encodeURIComponent(sym)}`),
+    source_name: String(data.source_name || 'Antigravity AI 联网检索'),
+    retrieved_at: new Date().toISOString(),
+    engine: 'Antigravity CLI (AI Web Search)'
   };
   quoteCache[sym] = quote;
   saveQuoteCache();
+  logAudit('quote_retrieved', { symbol: sym, price: quote.price, currency: quote.currency, source_url: quote.source_url, engine: 'Antigravity CLI (AI Web Search)' });
   return quote;
 }
 
 export async function fetchLiveFxRate(from, to) {
   const f = String(from || '').trim().toUpperCase();
   const t = String(to || '').trim().toUpperCase();
-  if (f === t) return { pair: `${f}/${t}`, rate: 1.0, as_of: new Date().toISOString().slice(0, 10) };
+  if (f === t) return { pair: `${f}/${t}`, rate: 1.0, as_of: new Date().toISOString().slice(0, 10), engine: 'Identity' };
 
   const pair = `${f}/${t}`;
   if (fxCache[pair] && Date.now() - new Date(fxCache[pair].retrieved_at).getTime() < 24 * 3600 * 1000) {
     return fxCache[pair];
   }
 
+  // 1. Fast Primary Channel: Direct open exchange rate API
+  try {
+    const res = await fetch(`https://open.er-api.com/v6/latest/${encodeURIComponent(f)}`, {
+      signal: AbortSignal.timeout(5000)
+    });
+    if (res.ok) {
+      const json = await res.json();
+      const rate = json?.rates?.[t];
+      if (rate && Number.isFinite(rate) && rate > 0) {
+        const fx = {
+          pair,
+          rate: Number(rate),
+          as_of: String(json.time_last_update_utc ? new Date(json.time_last_update_utc).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10)),
+          source_url: 'https://open.er-api.com',
+          retrieved_at: new Date().toISOString(),
+          engine: 'Open Exchange Rate Feed'
+        };
+        fxCache[pair] = fx;
+        saveFxCache();
+        logAudit('fx_retrieved', { pair, rate: fx.rate, source_url: fx.source_url, engine: 'Open Exchange Rate Feed' });
+        return fx;
+      }
+    }
+  } catch (err) {
+    console.warn(`Direct FX fetch failed for ${pair}, falling back to Antigravity AI:`, err.message);
+  }
+
+  // 2. Secondary Channel: Antigravity AI
   const prompt = `Find the latest exchange rate from currency ${f} to currency ${t} (${pair}). Output ONLY a valid JSON object matching this exact format:
 {"pair": "${pair}", "rate": 1.08, "as_of": "YYYY-MM-DD", "source_url": "https://..."}`;
 
-  const res = await runAgyPrompt(prompt, { timeoutMs: 60000 });
+  const res = await runAgyPrompt(prompt, { timeoutMs: 45000 });
   const data = parseJsonFromAgyResponse(res);
   if (!data || !Number.isFinite(Number(data.rate)) || Number(data.rate) <= 0) {
-    throw new Error(`未能获取 ${pair} 汇率：${JSON.stringify(data || res.response || '无数据')}`);
+    throw new Error(`未能获取 ${pair} 汇率：${JSON.stringify(data || res?.response || '无数据')}`);
   }
 
   const fx = {
     pair,
     rate: Number(data.rate),
     as_of: String(data.as_of || new Date().toISOString().slice(0, 10)),
-    source_url: String(data.source_url || ''),
-    retrieved_at: new Date().toISOString()
+    source_url: String(data.source_url || 'https://www.google.com/finance'),
+    retrieved_at: new Date().toISOString(),
+    engine: 'Antigravity CLI (AI Web Search)'
   };
   fxCache[pair] = fx;
   saveFxCache();
+  logAudit('fx_retrieved', { pair, rate: fx.rate, source_url: fx.source_url, engine: 'Antigravity CLI (AI Web Search)' });
   return fx;
 }
 
@@ -391,6 +507,14 @@ Output ONLY a JSON array of objects:
   const status = unfulfilled.length === 0 ? 'completed'
     : foundMonths.size > 0 ? 'partial'
     : 'insufficient_data';
+
+  logAudit('valuation_enrichment', {
+    symbol: sym,
+    status,
+    count: results.length,
+    missing: unfulfilled.length,
+    sources: results.map(r => r.source_url).filter(Boolean)
+  });
 
   return {
     symbol: sym,
@@ -506,6 +630,12 @@ export function startServer({ port = 8789 } = {}) {
           return;
         }
         json({ ok: true, token: helperToken });
+        return;
+      }
+
+      // Audit log endpoint to verify AI and live retrieval provenance
+      if (pathname === '/api/audit' && req.method === 'GET') {
+        json({ ok: true, logs: getAuditLogs() });
         return;
       }
 

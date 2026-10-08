@@ -1,0 +1,59 @@
+{
+  "universal_status": "No candidate retained",
+  "examples": [
+    {
+      "definition": {
+        "id": "AY-50",
+        "family": "peak_power",
+        "alpha": 0.5
+      },
+      "scope": "TECH3",
+      "status": "Conditional research example only",
+      "specified_checks_passed": 15,
+      "five_year_cohorts_passed": 12,
+      "five_year_cohort_count": 17
+    },
+    {
+      "definition": {
+        "id": "AY-75",
+        "family": "peak_power",
+        "alpha": 0.75
+      },
+      "scope": "TECH3",
+      "status": "Conditional research example only",
+      "specified_checks_passed": 15,
+      "five_year_cohorts_passed": 14,
+      "five_year_cohort_count": 17
+    },
+    {
+      "definition": {
+        "id": "RV-10",
+        "family": "risk_budget",
+        "risk_measure": "standard_deviation",
+        "target": 0.1,
+        "half_life": 63
+      },
+      "scope": "TECH3",
+      "status": "Conditional research example only",
+      "specified_checks_passed": 19,
+      "five_year_cohorts_passed": 14,
+      "five_year_cohort_count": 17
+    },
+    {
+      "definition": {
+        "id": "RV-20",
+        "family": "risk_budget",
+        "risk_measure": "standard_deviation",
+        "target": 0.2,
+        "half_life": 63
+      },
+      "scope": "TECH3",
+      "status": "Conditional research example only",
+      "specified_checks_passed": 19,
+      "five_year_cohorts_passed": 12,
+      "five_year_cohort_count": 17
+    }
+  ],
+  "scope_highlighting_is_posthoc": true,
+  "parameter_neighbors_were_not_selected": true
+}

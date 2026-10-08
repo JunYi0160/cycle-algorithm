@@ -1,0 +1,27 @@
+{
+  "sha256": {
+    "../candidates.json": "662b9e21d2db3ff7d21f519f4b17434eef537f21d7910110ef3bc6281251101f",
+    "../strategies.mjs": "ebc6b5c5fe7573d3414e71249a005aa8f20aa30dca0fda81a6e04bbde67dda08",
+    "protocol.json": "ccc5815bee18096217df3c9ba4ce9c5a9b30418978f34166dd29f26967c74237",
+    "prepare.py": "fed550013207afcebc6d45a9dfcdb07948461a4e1cb65daddf77f957d0c5b43c",
+    "run.mjs": "50a90ec9346c4150ea7bdd3a50b10dbdc8a3f6f21ae106bfadc0bd475286ed4c",
+    "report.py": "ddc96602bacaf05cd2609cad448f6151f3155258dbb00857a74175adb4e0900f",
+    "reproduce.ps1": "9af4c539134cd1ac7c9dd2e743d4f20a4442c0b8478c34c95f5a2bff28c6ae2b",
+    "prices.json": "0ef1cef15afd69ff5cdd34c0cadfd013ec2d981512c18d8bd35cb0dd6f0ab06c",
+    "data-audit.json": "c17aeb0b34c7738d1dc2244af3c827885d00390ed7af390c01130c88dfbe200a",
+    "summary.json": "58ae1e3bb67b1c894d2af160751b46b75ac31303ac828434365ab6ecb0647e77",
+    "cohorts.json": "8957485dffb643f56f3d47bb38a9919ff23d3730fca02a354c217b66fa048792",
+    "verification.json": "d316eee606e27d963039c426e96a33d49d61c21a80478cd170e36e239a44f830",
+    "daily-primary.csv.gz": "06c42a750296116b588e8643f7cd809e1576504e31d9e64cde93d773ec304136",
+    "summary-table.csv": "ae7abacff8c22ce5df1043ebe07ea1f46f1d8d91b88665af2812ba4aaaf7a4fa",
+    "初步回测分析.md": "761f28038020aa2132e5cf512fce002a33dc303ff061ef38d6c1f083714845be",
+    "historical-overview.png": "3c2b6c2338e2a07e508b65f4cf0536e649660e290f365fdcf76c5c7750264951",
+    "cohort-excess.png": "84e93697e0933d852ba3f078286e334176f97948ec138a51bed8238cfdb2d8ca",
+    "screen-equal-return.py": "2c884404b7c442f1328918b3e1ec7b9c2040ec5cb6f92fe5ac4e14c3ce6d2a4c",
+    "equal-return-screen.json": "188e03e24b09f16eaece0ab8ce4f2965ef4a20217f216f55c766bd80537c3e07",
+    "equal-return-screen.csv": "ca8bc7a668897d4559024714817ee135a8e2a99a48da75ae552f33a613fa41a1",
+    "screened-candidates.json": "467a1a9e7b48415a2382c810d82a910607ae4d939d7b0aae0ddc8136523105a8",
+    "等收益回撤筛选.md": "d6eba2d8cddd4d5ee86805c5aad5a0122f88c7d8e6c1cd65488d567b115a260c"
+  },
+  "source_price_files_unchanged_after_replay": true
+}

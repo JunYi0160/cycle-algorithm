@@ -1,0 +1,11 @@
+{
+  "spec_sha256": "9aa73546a50917627974db9cc3164ed8f0eec3672a8fdcc2f3353755e5355a04",
+  "price_input_sha256": "0ef1cef15afd69ff5cdd34c0cadfd013ec2d981512c18d8bd35cb0dd6f0ab06c",
+  "source_sha256": {
+    "engine.py": "c29f8f516320adfb468447caf67e8ef17e5efdd8b4628d8771a5944b896efe7f",
+    "fixed_leverage.py": "32b754a18dda6190ec3f3271cdb8fdf29aec2ae5a6a259235f5f61af40535921",
+    "run.py": "fcc48493c7f83d497d62612bce17f52a03e8b442f7378ed1630f184b37da985d"
+  },
+  "parameter_search_performed": false,
+  "all_market_histories_seen_in_prior_runs": true
+}

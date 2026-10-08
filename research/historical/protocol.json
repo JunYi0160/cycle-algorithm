@@ -1,0 +1,22 @@
+{
+  "version": "historical-research-v1",
+  "frozen_before_first_strategy_run": true,
+  "candidate_spec": "../candidates.json",
+  "initial_capital": 10000,
+  "primary_start": "2010-01-01",
+  "common_end": "2026-09-04",
+  "primary_frequency": "monthly",
+  "primary_one_way_cost": 0.0005,
+  "sensitivity_frequencies": ["daily"],
+  "sensitivity_costs": [0.002],
+  "single_assets": ["QQQ", "SMH", "NVDA", "GOOG", "MSFT"],
+  "baskets": {"TECH3": ["NVDA", "GOOG", "MSFT"], "ETF2": ["QQQ", "SMH"]},
+  "secondary_starts": "Full available history; legacy cached PE proxy entry for three stocks",
+  "rolling_cohorts": "Every eligible January from 2000 through 2021, five calendar years, monthly, 5bp; no start-date selection",
+  "exposure_control": "Constant stock weight set to each potential strategy's measured average daily closing exposure; ex-post risk diagnostic, not a deployable prespecified strategy",
+  "execution": "Observe first available trading-day adjusted opening quote each month, recompute and trade at that quote. Daily variant trades each opening quote. No intrabar or threshold-price fills. Zero observation/execution latency assumed; 20bp stress includes larger aggregate costs but does not reproduce latency.",
+  "accounting": "Fractional units in adjusted total-return price indices; adjusted open = raw open * adjusted close / raw close. Cash yield zero, no borrowing, no shorts, taxes zero. Fees charged on each subaccount's gross trades. Terminal mark-to-market, no forced liquidation.",
+  "drawdown": "Daily adjusted close marked equity including initial capital as first peak; intraday drawdown not measured",
+  "fundamentals": "Cached PE series are not accepted as clean TTM: missing quarters in prior EPS extraction. Entry dates are legacy-proxy sensitivity only; no S_Tech or production algorithm performance claims.",
+  "scope": "Retrospective exploratory replay of previously examined, survivor-biased technology assets. Not an untouched out-of-sample test. No parameter fitting. Cached data only; sources remain unchanged."
+}

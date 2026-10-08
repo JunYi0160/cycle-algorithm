@@ -1,0 +1,246 @@
+{
+  "price_sources": {
+    "QQQ": {
+      "source_path": "C:\\Users\\jun\\Documents\\Codex\\2026-09-10\\new-chat\\outputs\\qqq-candidates\\qqq_prices.csv",
+      "source_sha256": "f90b0c2fc0d21a8cb649df182c89e3bd1d5293310f9c92212c9982deaac133a8",
+      "rows": 6916,
+      "start": "1999-03-10",
+      "end": "2026-09-04",
+      "duplicate_dates": 0,
+      "missing_or_nonpositive_prices": 0,
+      "ohlc_errors": [],
+      "largest_close_return": 0.16842070484295357,
+      "smallest_close_return": -0.11978780887594587,
+      "abs_close_returns_above_50pct": 0
+    },
+    "SMH": {
+      "source_path": "C:\\Users\\jun\\Documents\\Codex\\2026-09-09\\referenced-chatgpt-conversation-this-is-an\\work\\smh_chart_yahoo.json",
+      "source_sha256": "e80bace908add24ba99990dbbddff2a48cd11578a137d9b883973e1c61f45167",
+      "rows": 6604,
+      "start": "2000-06-05",
+      "end": "2026-09-08",
+      "duplicate_dates": 0,
+      "missing_or_nonpositive_prices": 0,
+      "ohlc_errors": [],
+      "largest_close_return": 0.17160330336412133,
+      "smallest_close_return": -0.14411609171469297,
+      "abs_close_returns_above_50pct": 0
+    },
+    "NVDA": {
+      "source_path": "C:\\Users\\jun\\Documents\\Codex\\2026-09-09\\referenced-chatgpt-conversation-this-is-an\\work\\nvda-goog-msft-validation\\raw\\NVDA_prices.json",
+      "source_sha256": "919819d00ff7c61f6e203791496c604588ec43ca0153fb96f223e0f278fdd761",
+      "rows": 6711,
+      "start": "2000-01-03",
+      "end": "2026-09-09",
+      "duplicate_dates": 0,
+      "missing_or_nonpositive_prices": 0,
+      "ohlc_errors": [],
+      "largest_close_return": 0.4241475163350783,
+      "smallest_close_return": -0.35233576241457076,
+      "abs_close_returns_above_50pct": 0
+    },
+    "GOOG": {
+      "source_path": "C:\\Users\\jun\\Documents\\Codex\\2026-09-09\\referenced-chatgpt-conversation-this-is-an\\work\\nvda-goog-msft-validation\\raw\\GOOG_prices.json",
+      "source_sha256": "527e2e25147a726ec45ae5854203932e69f0106a06e2c49497b55855d7bd4113",
+      "rows": 5549,
+      "start": "2004-08-19",
+      "end": "2026-09-09",
+      "duplicate_dates": 0,
+      "missing_or_nonpositive_prices": 0,
+      "ohlc_errors": [],
+      "largest_close_return": 0.1999155306714202,
+      "smallest_close_return": -0.11609130714094329,
+      "abs_close_returns_above_50pct": 0
+    },
+    "MSFT": {
+      "source_path": "C:\\Users\\jun\\Documents\\Codex\\2026-09-09\\referenced-chatgpt-conversation-this-is-an\\work\\nvda-goog-msft-validation\\raw\\MSFT_prices.json",
+      "source_sha256": "f6397545cfbaa63c9a40eae2f4cea3e03561a6d6b1faf975cfbb5ea77e4edea3",
+      "rows": 6711,
+      "start": "2000-01-03",
+      "end": "2026-09-09",
+      "duplicate_dates": 0,
+      "missing_or_nonpositive_prices": 0,
+      "ohlc_errors": [],
+      "largest_close_return": 0.19565161687858335,
+      "smallest_close_return": -0.15597808156709092,
+      "abs_close_returns_above_50pct": 0
+    }
+  },
+  "fundamental_cache_audit": {
+    "NVDA": {
+      "quarter_file_sha256": "0365e200f72e1aa8d193da65ccbddbc044b894fd0d7e2150dc6561a760cdcd74",
+      "signal_file_sha256": "24191a7dff212ee3a81ad4a29fef0d74ee138fd00e01ce57dee378b932abc5ab",
+      "quarter_records": 67,
+      "quarter_gaps_over_125_days": [
+        {
+          "period_end": "2009-04-26",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2021-05-02",
+          "days_since_previous_record": 189
+        },
+        {
+          "period_end": "2022-05-01",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2023-04-30",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2024-04-28",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2025-04-27",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2026-04-26",
+          "days_since_previous_record": 182
+        }
+      ],
+      "maximum_report_period_age_days": 187,
+      "future_filing_signal_count": 0,
+      "cached_x_convention": "cheapness percentile; expensive percentile = 1 - x"
+    },
+    "GOOG": {
+      "quarter_file_sha256": "d136bce9a93b9e64f46fb850fb730b637f44b612d0e29b42a0ca8bed5e3299ef",
+      "signal_file_sha256": "f5f88e5d9c759291053aa4cdb0c6efa74b6eafb5a630b445d9f049b9024317fc",
+      "quarter_records": 53,
+      "quarter_gaps_over_125_days": [
+        {
+          "period_end": "2009-03-31",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2010-03-31",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2011-03-31",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2012-03-31",
+          "days_since_previous_record": 183
+        },
+        {
+          "period_end": "2013-03-31",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2014-03-31",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2015-03-31",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2016-03-31",
+          "days_since_previous_record": 366
+        },
+        {
+          "period_end": "2017-03-31",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2018-03-31",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2019-03-31",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2020-03-31",
+          "days_since_previous_record": 183
+        },
+        {
+          "period_end": "2021-03-31",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2022-03-31",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2023-03-31",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2024-03-31",
+          "days_since_previous_record": 183
+        },
+        {
+          "period_end": "2025-03-31",
+          "days_since_previous_record": 182
+        },
+        {
+          "period_end": "2026-03-31",
+          "days_since_previous_record": 182
+        }
+      ],
+      "maximum_report_period_age_days": 759,
+      "future_filing_signal_count": 0,
+      "cached_x_convention": "cheapness percentile; expensive percentile = 1 - x"
+    },
+    "MSFT": {
+      "quarter_file_sha256": "255b9499d753e57439b1a9b18547f4571c912c83ee536d047a2051120a071679",
+      "signal_file_sha256": "639438c3840cbae01099667c9a82044eb8ed1c456fdc5b2bf79158e893602c11",
+      "quarter_records": 70,
+      "quarter_gaps_over_125_days": [
+        {
+          "period_end": "2021-09-30",
+          "days_since_previous_record": 183
+        },
+        {
+          "period_end": "2022-09-30",
+          "days_since_previous_record": 183
+        },
+        {
+          "period_end": "2023-09-30",
+          "days_since_previous_record": 183
+        },
+        {
+          "period_end": "2024-09-30",
+          "days_since_previous_record": 183
+        },
+        {
+          "period_end": "2025-09-30",
+          "days_since_previous_record": 183
+        }
+      ],
+      "maximum_report_period_age_days": 183,
+      "future_filing_signal_count": 0,
+      "cached_x_convention": "cheapness percentile; expensive percentile = 1 - x"
+    }
+  },
+  "legacy_proxy_entries": {
+    "NVDA": {
+      "signal_date": "2018-11-30",
+      "execution_date": "2018-12-03",
+      "expensive_percentile_proxy": 0.27118644067796616,
+      "status": "legacy PE proxy, not verified consecutive-quarter TTM"
+    },
+    "GOOG": {
+      "signal_date": "2018-04-30",
+      "execution_date": "2018-05-01",
+      "expensive_percentile_proxy": 0.1694915254237288,
+      "status": "legacy PE proxy, not verified consecutive-quarter TTM"
+    },
+    "MSFT": {
+      "signal_date": "2019-01-31",
+      "execution_date": "2019-02-01",
+      "expensive_percentile_proxy": 0.288135593220339,
+      "status": "legacy PE proxy, not verified consecutive-quarter TTM"
+    }
+  },
+  "normalized_prices_sha256": "0ef1cef15afd69ff5cdd34c0cadfd013ec2d981512c18d8bd35cb0dd6f0ab06c",
+  "candidate_spec_sha256": "662b9e21d2db3ff7d21f519f4b17434eef537f21d7910110ef3bc6281251101f",
+  "protocol_sha256": "ccc5815bee18096217df3c9ba4ce9c5a9b30418978f34166dd29f26967c74237",
+  "fresh_downloads": false,
+  "source_files_modified": false
+}

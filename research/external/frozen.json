@@ -1,0 +1,29 @@
+{
+  "frozen_utc": "2026-10-08T19:24:49.740485+00:00",
+  "protocol_sha256": "443fc7c2e2cc93c6907bad2cb088cbe07e6c6a25be4da7bf4ffc698f98293281",
+  "candidate_sha256": "0ad682073646af2d89f17d9d85ccd3a5ba55fd78ea2e25750f23fec38b14f5a1",
+  "engine_sha256": "c29f8f516320adfb468447caf67e8ef17e5efdd8b4628d8771a5944b896efe7f",
+  "benchmark_sha256": "32b754a18dda6190ec3f3271cdb8fdf29aec2ae5a6a259235f5f61af40535921",
+  "universe_before_price_download": [
+    "SPY",
+    "IWM",
+    "EFA",
+    "EEM",
+    "XLF",
+    "XLE",
+    "XLI",
+    "XLV",
+    "XLP",
+    "XLU",
+    "GLD",
+    "TLT",
+    "JPM",
+    "XOM",
+    "JNJ",
+    "PG",
+    "CAT",
+    "NEE"
+  ],
+  "asset_selection_after_results": false,
+  "parameters_changed": false
+}

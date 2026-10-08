@@ -1,0 +1,19 @@
+{
+  "all-comparisons.csv": "3cb6050973975c9e3a5d29d56229b10b6f04cd277b9d85b26b50e444028d0700",
+  "cohorts.json": "952c74edcdbaba3416f658f68bc736d447e70162acd0488ea6bcf50c4f4df119",
+  "conditional-examples.json": "f4c0497a5fdf702308e5b3eed4214cc6ad5b03c8a53a96f9a0e2912cd39e56d5",
+  "daily-primary.csv.gz": "e8eb3a61132bbae5f95f19cd9343e8ca05a3ec3e78543854c1dfd102760b7a99",
+  "engine.py": "c29f8f516320adfb468447caf67e8ef17e5efdd8b4628d8771a5944b896efe7f",
+  "equal-return-comparison.png": "f19dfb9775299e9b5a6caeba21987c0c921b7791a6be275f5010d3bcdf827cd7",
+  "fixed_leverage.py": "32b754a18dda6190ec3f3271cdb8fdf29aec2ae5a6a259235f5f61af40535921",
+  "frozen-run.json": "143e29813603d4aa288768d8fd6bff2c5bab56965e14bd7952d3b1d0a932fe30",
+  "report.py": "aa5e34aef0a14846456e11f8d5395b963f4b1748862332cab9b2bb0c6fb23333",
+  "reproduce.ps1": "478fb07466d21c4901465e8ab632525b1d806428659bd4d6262d2596c92abd13",
+  "results.json": "bfdb450ccec63a7c2785f1b7f023a3a36e33db1d41ffe03d6160e9eca68085a8",
+  "run.py": "fcc48493c7f83d497d62612bce17f52a03e8b442f7378ed1630f184b37da985d",
+  "selected.json": "e9ef152873365aeeb0dd6223f428feface1809f0afeb0f9ca2191f2ce055828f",
+  "spec.json": "9aa73546a50917627974db9cc3164ed8f0eec3672a8fdcc2f3353755e5355a04",
+  "test_engine.py": "b065f9bf7eca643c7f4816cbf829c70ff8d26643f6a63b6bba61a8dac21f4803",
+  "verification.json": "3ec7a37c875b37523dbe268b2b18edcb9706924ae7c29628d3ad1b056fa2e7b4",
+  "第二轮策略研究.md": "464ebf88544720490d07ca7ab4f42c3872267feb53c93f01c53b183766ab7b54"
+}

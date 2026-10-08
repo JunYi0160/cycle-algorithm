@@ -1,0 +1,31 @@
+{
+  "version": "risk-and-drawdown-v2-one-batch",
+  "selection": "Six candidates frozen before first v2 run. No parameter tuning after screening. All candidates, failures and robustness results saved.",
+  "candidates": [
+    {"id":"AY-50","family":"peak_power","alpha":0.5},
+    {"id":"AY-75","family":"peak_power","alpha":0.75},
+    {"id":"RV-10","family":"risk_budget","risk_measure":"standard_deviation","target":0.10,"half_life":63},
+    {"id":"RV-20","family":"risk_budget","risk_measure":"standard_deviation","target":0.20,"half_life":63},
+    {"id":"RVAR-10","family":"risk_budget","risk_measure":"variance","target":0.10,"half_life":63},
+    {"id":"RVAR-20","family":"risk_budget","risk_measure":"variance","target":0.20,"half_life":63}
+  ],
+  "risk_initialization":"EWMA daily squared returns starts at annual risk 20%, at each fresh entry. No price direction, expected return, valuation or future volatility input.",
+  "parameter_rationale":"Half/three-quarter participation; 10%/20% annual risk levels; 63 trading days is one quarter. These are predetermined risk preferences and horizons, not data-estimated optima.",
+  "initial_capital":10000,
+  "one_way_cost":0.0005,
+  "cash_rate":0,
+  "borrow":false,
+  "execution":"Monthly first available trading day open, signals from previous available close only. Initial allocation predetermined. One-extra-session delay and daily execution are separate stress checks.",
+  "basket":"Same initially equal-dollar fixed-share total-return basket as previous comparator; no constituent selection or relative-weight optimization.",
+  "required_segments":{
+    "primary":["2010-01-01","2026-09-04"],
+    "full_history":["1900-01-01","2026-09-04"],
+    "development_replay":["1900-01-01","2013-12-31"],
+    "validation_replay":["2014-01-01","2019-12-31"],
+    "late_replay":["2020-01-01","2026-09-04"]
+  },
+  "decision":"Universal candidate must match a solvent fixed-leverage comparator and not have worse drawdown on every asset/basket in every required segment. No unmatched segment is counted as a pass. Report primary/full criteria separately as well.",
+  "stress_checks":"For primary and full-history: 20bp fee, one extra trading-session signal delay, daily execution. Parameter neighbors are diagnostics, never alternate selections: alpha +/-0.05; risk target +/-20%; EWMA half-life 32 and 126.",
+  "no_iteration":"After this six-candidate batch, no threshold, timing or parameter is changed in response to failures. Any further attempt must be a new version with its full trial history.",
+  "scope":"Retrospective anti-overfit safeguards, not untouched out-of-sample evidence. Cached surviving technology assets remain a narrow universe. No promised guarantee of equal-return drawdown superiority on arbitrary price paths."
+}

@@ -1,0 +1,11 @@
+{
+  "version":"retained-v2-research-candidates",
+  "authorization":"User requested retaining promising candidates and testing held-out assets.",
+  "status":"Research candidates, not approved universal winners",
+  "candidates":[
+    {"id":"AY-50","family":"peak_power","alpha":0.5},
+    {"id":"AY-75","family":"peak_power","alpha":0.75},
+    {"id":"RV-10","family":"risk_budget","risk_measure":"standard_deviation","target":0.10,"half_life":63},
+    {"id":"RV-20","family":"risk_budget","risk_measure":"standard_deviation","target":0.20,"half_life":63}
+  ]
+}

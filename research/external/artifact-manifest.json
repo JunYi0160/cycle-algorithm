@@ -1,0 +1,12 @@
+{
+  "files": {
+    "all-comparisons.csv": "1177260bf995c07cf797fb42c198ef07a9aca75828beb62f737e2e674acdff15",
+    "results.json": "f1505d1828e40f08144805e01aad04b179129c46c047768df1827f10be2dde07",
+    "cohorts.json": "67edbfe3b8c143d417e669d04c10e475139fbea6108224b3d0b12de68e1255a4",
+    "prices.json": "45dbcae7d721c33e2b2c33404366cbced23c65157ff0b7589c8a86729dce7a13",
+    "verification.json": "bb4d4e068f059e6de5671b72a00ac14b64d09650565266eef27eb1e0bb6447da",
+    "time-extension.json": "5cde261b4b785f6eda5fe13d30dbac77335360aa2787b9647d98c657eff447d2"
+  },
+  "report_uses_all_predeclared_assets": true,
+  "comparison_rows": 2544
+}

@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "version": "independent-research-examples-v1",
+  "defaults": {
+    "initial_capital": 10000,
+    "one_way_cost": 0.0005,
+    "cash_rate": 0,
+    "allow_borrowing": false,
+    "fractional_units": true,
+    "execution": "observed executable price at each externally scheduled row",
+    "terminal_valuation": "mark to market; no forced liquidation"
+  },
+  "candidates": [
+    {"id": "P-R1", "family": "potential", "potential": "rational", "anchor_multipliers": [1], "coefficients": [1], "asset_index": 0},
+    {"id": "P-R2", "family": "potential", "potential": "rational", "anchor_multipliers": [2], "coefficients": [1], "asset_index": 0},
+    {"id": "P-MIX", "family": "potential", "potential": "rational", "anchor_multipliers": [0.5, 2], "coefficients": [0.5, 0.5], "asset_index": 0},
+    {"id": "G-05", "family": "grid", "step": 0.05, "cells": 5, "budget_fraction": 0.6, "asset_index": 0, "lock_profits": true},
+    {"id": "G-10", "family": "grid", "step": 0.1, "cells": 5, "budget_fraction": 0.6, "asset_index": 0, "lock_profits": true},
+    {"id": "G-20", "family": "grid", "step": 0.2, "cells": 5, "budget_fraction": 0.6, "asset_index": 0, "lock_profits": true},
+    {"id": "E-025", "family": "entropy", "c": 0.25, "reference_initial_weights": "equal"},
+    {"id": "E-1", "family": "entropy", "c": 1, "reference_initial_weights": "equal"},
+    {"id": "E-4", "family": "entropy", "c": 4, "reference_initial_weights": "equal"},
+    {"id": "M-SINGLE", "family": "mixture", "members": ["P-R1", "G-10", "B-STOCK"], "initial_allocations": "equal", "transfer_between_members": false},
+    {"id": "M-MULTI", "family": "mixture", "members": ["E-025", "E-1", "E-4", "B-EQUAL-HOLD"], "initial_allocations": "equal", "transfer_between_members": false}
+  ],
+  "controls": [
+    {"id": "B-CASH", "family": "cash"},
+    {"id": "B-STOCK", "family": "buy_hold", "asset_index": 0},
+    {"id": "B-50", "family": "constant_mix", "stock_weight": 0.5, "asset_index": 0},
+    {"id": "B-EQUAL-HOLD", "family": "buy_hold", "initial_weights": "equal"},
+    {"id": "B-EQUAL-MIX", "family": "constant_mix", "weights": "equal"}
+  ]
+}

@@ -1,0 +1,4491 @@
+{
+  "one_x_buy_hold_checks": [
+    {
+      "suite": "SPY",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "1993-01-29",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2000-05-26",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2001-08-27",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2003-04-14",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "1998-12-22",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "1998-12-22",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "1998-12-22",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "1998-12-22",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "1998-12-22",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "1998-12-22",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2004-11-18",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2002-07-30",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "1980-03-17",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "1970-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "1970-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "1970-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "1970-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "1973-02-21",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "1998-12-22",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2003-04-14",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2004-11-18",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "1980-03-17",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2014-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2020-01-02",
+      "end": "2026-09-04",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2010-01-04",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "1993-01-29",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2000-05-26",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2001-08-27",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2003-04-14",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "1998-12-22",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "1998-12-22",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "1998-12-22",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "1998-12-22",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "1998-12-22",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "1998-12-22",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2004-11-18",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2002-07-30",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "1980-03-17",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "1970-01-02",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "1970-01-02",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "1970-01-02",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "1970-01-02",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "1973-02-21",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "1998-12-22",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2003-04-14",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2004-11-18",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "1980-03-17",
+      "end": "2026-09-04",
+      "cost": 0.002,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2000-01-03",
+      "end": "2004-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2000-01-03",
+      "end": "2004-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2000-01-03",
+      "end": "2004-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2000-01-03",
+      "end": "2004-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2000-01-03",
+      "end": "2004-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2000-01-03",
+      "end": "2004-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2000-01-03",
+      "end": "2004-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2000-01-03",
+      "end": "2004-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2000-01-03",
+      "end": "2004-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2000-01-03",
+      "end": "2004-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2000-01-03",
+      "end": "2004-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2000-01-03",
+      "end": "2004-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2000-01-03",
+      "end": "2004-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2000-01-03",
+      "end": "2004-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2000-01-03",
+      "end": "2004-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2001-01-02",
+      "end": "2005-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2002-01-02",
+      "end": "2006-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2003-01-02",
+      "end": "2007-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2004-01-02",
+      "end": "2008-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2005-01-03",
+      "end": "2009-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2006-01-03",
+      "end": "2010-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2007-01-03",
+      "end": "2011-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2008-01-02",
+      "end": "2012-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2009-01-02",
+      "end": "2013-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2010-01-04",
+      "end": "2014-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2011-01-03",
+      "end": "2015-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2012-01-03",
+      "end": "2016-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2013-01-02",
+      "end": "2017-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2014-01-02",
+      "end": "2018-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2015-01-02",
+      "end": "2019-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2016-01-04",
+      "end": "2020-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2017-01-03",
+      "end": "2021-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2018-01-02",
+      "end": "2022-12-30",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2019-01-02",
+      "end": "2023-12-29",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2020-01-02",
+      "end": "2024-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2021-01-04",
+      "end": "2025-12-31",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "SPY",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "IWM",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EFA",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "EEM",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLF",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLE",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLI",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLV",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLP",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XLU",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLD",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "TLT",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JPM",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "XOM",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "JNJ",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "PG",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "CAT",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NEE",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "US-SECTOR4",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "GLOBAL3",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "MULTIASSET4",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    },
+    {
+      "suite": "NONTECH6",
+      "start": "2010-01-04",
+      "end": "2026-10-07",
+      "cost": 0.0005,
+      "one_x_buy_hold_verified": true
+    }
+  ],
+  "prefix_invariance_checks": [
+    "SPY/AY-50",
+    "SPY/AY-75",
+    "SPY/RV-10",
+    "SPY/RV-20",
+    "IWM/AY-50",
+    "IWM/AY-75",
+    "IWM/RV-10",
+    "IWM/RV-20",
+    "EFA/AY-50",
+    "EFA/AY-75",
+    "EFA/RV-10",
+    "EFA/RV-20",
+    "EEM/AY-50",
+    "EEM/AY-75",
+    "EEM/RV-10",
+    "EEM/RV-20",
+    "XLF/AY-50",
+    "XLF/AY-75",
+    "XLF/RV-10",
+    "XLF/RV-20",
+    "XLE/AY-50",
+    "XLE/AY-75",
+    "XLE/RV-10",
+    "XLE/RV-20",
+    "XLI/AY-50",
+    "XLI/AY-75",
+    "XLI/RV-10",
+    "XLI/RV-20",
+    "XLV/AY-50",
+    "XLV/AY-75",
+    "XLV/RV-10",
+    "XLV/RV-20",
+    "XLP/AY-50",
+    "XLP/AY-75",
+    "XLP/RV-10",
+    "XLP/RV-20",
+    "XLU/AY-50",
+    "XLU/AY-75",
+    "XLU/RV-10",
+    "XLU/RV-20",
+    "GLD/AY-50",
+    "GLD/AY-75",
+    "GLD/RV-10",
+    "GLD/RV-20",
+    "TLT/AY-50",
+    "TLT/AY-75",
+    "TLT/RV-10",
+    "TLT/RV-20",
+    "JPM/AY-50",
+    "JPM/AY-75",
+    "JPM/RV-10",
+    "JPM/RV-20",
+    "XOM/AY-50",
+    "XOM/AY-75",
+    "XOM/RV-10",
+    "XOM/RV-20",
+    "JNJ/AY-50",
+    "JNJ/AY-75",
+    "JNJ/RV-10",
+    "JNJ/RV-20",
+    "PG/AY-50",
+    "PG/AY-75",
+    "PG/RV-10",
+    "PG/RV-20",
+    "CAT/AY-50",
+    "CAT/AY-75",
+    "CAT/RV-10",
+    "CAT/RV-20",
+    "NEE/AY-50",
+    "NEE/AY-75",
+    "NEE/RV-10",
+    "NEE/RV-20",
+    "US-SECTOR4/AY-50",
+    "US-SECTOR4/AY-75",
+    "US-SECTOR4/RV-10",
+    "US-SECTOR4/RV-20",
+    "GLOBAL3/AY-50",
+    "GLOBAL3/AY-75",
+    "GLOBAL3/RV-10",
+    "GLOBAL3/RV-20",
+    "MULTIASSET4/AY-50",
+    "MULTIASSET4/AY-75",
+    "MULTIASSET4/RV-10",
+    "MULTIASSET4/RV-20",
+    "NONTECH6/AY-50",
+    "NONTECH6/AY-75",
+    "NONTECH6/RV-10",
+    "NONTECH6/RV-20"
+  ],
+  "no_today_close_leakage_checks": [
+    "SPY/AY-50",
+    "SPY/AY-75",
+    "SPY/RV-10",
+    "SPY/RV-20",
+    "IWM/AY-50",
+    "IWM/AY-75",
+    "IWM/RV-10",
+    "IWM/RV-20",
+    "EFA/AY-50",
+    "EFA/AY-75",
+    "EFA/RV-10",
+    "EFA/RV-20",
+    "EEM/AY-50",
+    "EEM/AY-75",
+    "EEM/RV-10",
+    "EEM/RV-20",
+    "XLF/AY-50",
+    "XLF/AY-75",
+    "XLF/RV-10",
+    "XLF/RV-20",
+    "XLE/AY-50",
+    "XLE/AY-75",
+    "XLE/RV-10",
+    "XLE/RV-20",
+    "XLI/AY-50",
+    "XLI/AY-75",
+    "XLI/RV-10",
+    "XLI/RV-20",
+    "XLV/AY-50",
+    "XLV/AY-75",
+    "XLV/RV-10",
+    "XLV/RV-20",
+    "XLP/AY-50",
+    "XLP/AY-75",
+    "XLP/RV-10",
+    "XLP/RV-20",
+    "XLU/AY-50",
+    "XLU/AY-75",
+    "XLU/RV-10",
+    "XLU/RV-20",
+    "GLD/AY-50",
+    "GLD/AY-75",
+    "GLD/RV-10",
+    "GLD/RV-20",
+    "TLT/AY-50",
+    "TLT/AY-75",
+    "TLT/RV-10",
+    "TLT/RV-20",
+    "JPM/AY-50",
+    "JPM/AY-75",
+    "JPM/RV-10",
+    "JPM/RV-20",
+    "XOM/AY-50",
+    "XOM/AY-75",
+    "XOM/RV-10",
+    "XOM/RV-20",
+    "JNJ/AY-50",
+    "JNJ/AY-75",
+    "JNJ/RV-10",
+    "JNJ/RV-20",
+    "PG/AY-50",
+    "PG/AY-75",
+    "PG/RV-10",
+    "PG/RV-20",
+    "CAT/AY-50",
+    "CAT/AY-75",
+    "CAT/RV-10",
+    "CAT/RV-20",
+    "NEE/AY-50",
+    "NEE/AY-75",
+    "NEE/RV-10",
+    "NEE/RV-20",
+    "US-SECTOR4/AY-50",
+    "US-SECTOR4/AY-75",
+    "US-SECTOR4/RV-10",
+    "US-SECTOR4/RV-20",
+    "GLOBAL3/AY-50",
+    "GLOBAL3/AY-75",
+    "GLOBAL3/RV-10",
+    "GLOBAL3/RV-20",
+    "MULTIASSET4/AY-50",
+    "MULTIASSET4/AY-75",
+    "MULTIASSET4/RV-10",
+    "MULTIASSET4/RV-20",
+    "NONTECH6/AY-50",
+    "NONTECH6/AY-75",
+    "NONTECH6/RV-10",
+    "NONTECH6/RV-20"
+  ],
+  "maximum_self_financing_currency_residual": 7.09405867382884e-10,
+  "maximum_equal_return_relative_terminal_error": 1.354472090042691e-14,
+  "parameters_and_implementation_unchanged": true,
+  "input_and_source_hashes": {
+    "prices": "45dbcae7d721c33e2b2c33404366cbced23c65157ff0b7589c8a86729dce7a13",
+    "runner": "3a8f95ed901ad44c85477ef804f1b5193448be0e47ada8ff716d235e340a8c3c",
+    "engine": "c29f8f516320adfb468447caf67e8ef17e5efdd8b4628d8771a5944b896efe7f",
+    "benchmark": "32b754a18dda6190ec3f3271cdb8fdf29aec2ae5a6a259235f5f61af40535921"
+  }
+}
