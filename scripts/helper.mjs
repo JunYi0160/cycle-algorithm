@@ -48,7 +48,8 @@ function saveFxCache() {
   try { writeFileSync(FX_CACHE_FILE, JSON.stringify(fxCache, null, 2), 'utf8'); } catch {}
 }
 
-const SETTINGS_FILE = join(process.env.USERPROFILE || 'C:\\Users\\jun', '.gemini', 'antigravity-cli', 'settings.json');
+const userHome = process.env.USERPROFILE || process.env.HOME || '.';
+export const SETTINGS_FILE = process.env.AGY_SETTINGS_FILE || join(userHome, '.gemini', 'antigravity-cli', 'settings.json');
 
 export function checkAgyConfig() {
   let useG1Credits = false;
@@ -57,10 +58,17 @@ export function checkAgyConfig() {
   let providerOk = true;
 
   if (!existsSync(SETTINGS_FILE)) {
+    // If settings file does not exist, initialize it safely
+    try {
+      enforceCostProtection();
+    } catch {}
+  }
+
+  if (!existsSync(SETTINGS_FILE)) {
     return {
       settingsFile: SETTINGS_FILE,
       useG1Credits: false,
-      costProtectionActive: false,
+      costProtectionActive: true,
       permissionsOk: false,
       rawSettings: null,
       error: '配置文件不存在'
@@ -102,6 +110,10 @@ export function checkAgyConfig() {
 }
 
 export function enforceCostProtection() {
+  const dir = dirname(SETTINGS_FILE);
+  if (!existsSync(dir)) {
+    mkdirSync(dir, { recursive: true });
+  }
   let settings = {};
   if (existsSync(SETTINGS_FILE)) {
     try {

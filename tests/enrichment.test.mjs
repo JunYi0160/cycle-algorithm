@@ -287,6 +287,7 @@ test('12.B.7 & 12.B.8: Enrichment evidence preservation and schema roundtrip', (
 // ---------------------------------------------------------
 
 test('12.C.10: Cost protection enforces useG1Credits: false', () => {
+  enforceCostProtection();
   const configBefore = checkAgyConfig();
   assert.equal(configBefore.useG1Credits, false);
   assert.equal(configBefore.costProtectionActive, true);
@@ -296,6 +297,7 @@ test('12.C.10: Cost protection enforces useG1Credits: false', () => {
   const configAfter = checkAgyConfig();
   assert.equal(configAfter.useG1Credits, false);
   assert.equal(configAfter.costProtectionActive, true);
+  assert.equal(configAfter.permissionsOk, true);
 });
 
 test('12.C.12: v1 to v2 migration compatibility', () => {
