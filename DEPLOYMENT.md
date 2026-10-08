@@ -31,7 +31,9 @@ node scripts/build.mjs
 node scripts/serve.mjs --base /any-repository-name/
 ```
 
-打开 `http://127.0.0.1:8788/any-repository-name/`。日常网页只加载静态 HTML/CSS/JS/图标；CSP 的 `connect-src 'none'` 阻止应用发起网络数据请求。数据由浏览器保存，不会因 GitHub 部署自动上传。
+打开 `http://127.0.0.1:8788/any-repository-name/`。网页加载静态 HTML/CSS/JS/图标，并通过同源 `release.json` 检查新版本；自动补数连接本机助手。数据由浏览器保存，不会因 GitHub 部署自动上传。
+
+构建输出包含内容版本号，所有 JS 导入及样式 URL 都带有该版本。首次从不具备更新检测的旧页面升级时，使用 `https://junyi0160.github.io/cycle-algorithm/?v=<dist/release.json 的 version>` 打开；之后旧页面会在启动时更新，使用中发现新版本则提示保存后刷新。不要清除网站数据来解决缓存，否则浏览器中的持仓也会被删除。
 
 ## 当前交付状态
 

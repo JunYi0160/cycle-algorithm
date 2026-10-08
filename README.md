@@ -134,15 +134,23 @@ $$w_i = \frac{v_i}{\sum_j v_j}, \quad L_{\text{portfolio}} = \sum_i (w_i \times 
 
 ### 运行测试与构建
 ```powershell
-# 运行全部 43 项测试（包含 Python 数值基准、内部回环、状态迁移与 12.A/B/C 验收）
+# 运行全部 48 项测试（包含 Python 数值基准、内部回环、状态迁移、补数与缓存更新）
 node --test tests/*.test.mjs
 
 # 重现固定的含融资/交易费用合成场景；不调用真实账户或市场接口
 node scripts/validate-oscillation.mjs
 
-# 构建静态产物至 dist/ 目录（11 个白名单文件）
+# 构建静态产物至 dist/ 目录（13 个白名单文件）
 node scripts/build.mjs
 ```
+
+### 页面更新与浏览器缓存
+
+构建会根据前端源码生成内容版本号，并为样式、入口脚本及所有模块依赖附加同一个版本参数。`release.json` 用于绕过缓存检查新版本；启动时发现旧页面会转到新版本链接，已经打开的页面会提示“刷新到最新版”，让用户先保存编辑。
+
+如果 Chrome 仍停留在没有新版检测功能的旧页面，首次迁移时使用 `https://junyi0160.github.io/cycle-algorithm/?v=<release.json 中的版本号>` 重新打开。无需删除网站数据；持仓和估值仍保存在原浏览器的存储中。网页内的缓存 meta 标签不能替代静态托管服务的 HTTP 响应头。
+
+缓存机制参考：[MDN HTTP caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching)、[Request.cache](https://developer.mozilla.org/en-US/docs/Web/API/Request/cache)。
 
 测试覆盖：
 - **Acceptance 12.A**：市值模式权重（75%/25% 对应 1.3× 组合杠杆）、股数模式报价推导、比例缩放不变性、多币种折算与阻塞、逐标的独立路径控制器加权。
